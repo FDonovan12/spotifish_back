@@ -64,7 +64,7 @@ public class SongPlaylistService  {
         songPlaylistDTO.setCreatedAt(songPlaylist.getCreatedAt());
         songPlaylistDTO.setSongId(songPlaylist.getSong().getUuid());
         songPlaylistDTO.setPlaylistId(songPlaylist.getPlaylist().getUuid());
-//        songPlaylistDTO.setUserId(songPlaylist.getContributor().getUser().getUuid());
+        songPlaylistDTO.setUserId(songPlaylist.getContributor().getUser().getUuid());
         return songPlaylistDTO;
     }
     public SongPlaylist getObjectFromDTO(SongPlaylistDTO songPlaylistDTO) {
@@ -75,7 +75,7 @@ public class SongPlaylistService  {
         songPlaylist.setCreatedAt(songPlaylistDTO.getCreatedAt());
         songPlaylist.setSong(songService.getObjectById(songPlaylistDTO.getSongId()));
         songPlaylist.setPlaylist(playlistService.getObjectById(songPlaylistDTO.getPlaylistId()));
-//        songPlaylist.setContributor(contributorService.getObjectById(new ContributorId(songPlaylistDTO.getUserId(), songPlaylistDTO.getPlaylistId())));
+        songPlaylist.setContributor(contributorService.getObjectById(new ContributorId(songPlaylistDTO.getUserId(), songPlaylistDTO.getPlaylistId())));
         songPlaylist.setSlug("test");
         return songPlaylist;
     }

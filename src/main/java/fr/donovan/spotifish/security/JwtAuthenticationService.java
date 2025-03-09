@@ -43,8 +43,9 @@ public class JwtAuthenticationService {
             System.out.println(user.getPassword());
             user.getAuthorities().forEach(System.out::println);
 
-            String token = jwtService.generateToken(user.getUsername());
-            return ResponseEntity.ok(new JwtTokenResponse(token));
+            String accessToken = jwtService.generateToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+            return ResponseEntity.ok(new JwtTokenResponse(accessToken, refreshToken));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

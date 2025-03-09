@@ -15,18 +15,15 @@ import java.util.List;
 @Getter
 @Setter
 public class UserDTO {
-    
+
     @NotBlank(message = "The name can't be blank")
     private String name;
-    
+
     @NotBlank(message = "The email can't be blank")
     private String email;
     
     @NotBlank(message = "The password can't be blank")
     private String password;
-    
-    @NotBlank(message = "The username can't be blank")
-    private String username;
     
     @NotBlank(message = "The firstName can't be blank")
     private String firstName;
@@ -36,12 +33,4 @@ public class UserDTO {
     
     @NotNull(message = "The birthAt can't be null")
     private LocalDate birthAt;
-    
-    @NotNull(message = "The createdAt can't be null")
-    private LocalDateTime createdAt;
-    
-    private String activationCode;
-    
-    @NotNull(message = "The activationCodeExpireAt can't be null")
-    private LocalDateTime activationCodeExpireAt;
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,9 +40,6 @@ public class User extends LikeableItem implements UserDetails {
     @JsonView(JsonViewsUser.Password.class)
     private String password;
 
-    @JsonView(JsonViewsUser.Username.class)
-    private String username;
-
     @JsonView(JsonViewsUser.FirstName.class)
     private String firstName;
 
@@ -51,6 +49,7 @@ public class User extends LikeableItem implements UserDetails {
     @JsonView(JsonViewsUser.BirthAt.class)
     private LocalDate birthAt;
 
+    @CreationTimestamp
     @JsonView(JsonViewsUser.CreatedAt.class)
     private LocalDateTime createdAt;
 
@@ -71,5 +70,10 @@ public class User extends LikeableItem implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 }

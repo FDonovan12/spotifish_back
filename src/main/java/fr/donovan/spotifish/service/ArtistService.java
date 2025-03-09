@@ -55,13 +55,10 @@ public class ArtistService  {
         artistDTO.setName(artist.getName());
         artistDTO.setEmail(artist.getEmail());
         artistDTO.setPassword(artist.getPassword());
-        artistDTO.setUsername(artist.getUsername());
+        artistDTO.setName(artist.getName());
         artistDTO.setFirstName(artist.getFirstName());
         artistDTO.setLastName(artist.getLastName());
         artistDTO.setBirthAt(artist.getBirthAt());
-        artistDTO.setCreatedAt(artist.getCreatedAt());
-        artistDTO.setActivationCode(artist.getActivationCode());
-        artistDTO.setActivationCodeExpireAt(artist.getActivationCodeExpireAt());
         return artistDTO;
     }
     public Artist getObjectFromDTO(ArtistDTO artistDTO) {
@@ -71,13 +68,9 @@ public class ArtistService  {
         artist.setName(artistDTO.getName());
         artist.setEmail(artistDTO.getEmail());
         artist.setPassword(artistDTO.getPassword());
-        artist.setUsername(artistDTO.getUsername());
         artist.setFirstName(artistDTO.getFirstName());
         artist.setLastName(artistDTO.getLastName());
         artist.setBirthAt(artistDTO.getBirthAt());
-        artist.setCreatedAt(artistDTO.getCreatedAt());
-        artist.setActivationCode(artistDTO.getActivationCode());
-        artist.setActivationCodeExpireAt(artistDTO.getActivationCodeExpireAt());
         artist.setSlug("test");
         return artist;
     }

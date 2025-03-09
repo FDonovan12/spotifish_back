@@ -55,7 +55,6 @@ public class ModeratorService  {
         moderatorDTO.setName(moderator.getName());
         moderatorDTO.setEmail(moderator.getEmail());
         moderatorDTO.setPassword(moderator.getPassword());
-        moderatorDTO.setUsername(moderator.getUsername());
         moderatorDTO.setFirstName(moderator.getFirstName());
         moderatorDTO.setLastName(moderator.getLastName());
         moderatorDTO.setBirthAt(moderator.getBirthAt());
@@ -71,7 +70,6 @@ public class ModeratorService  {
         moderator.setName(moderatorDTO.getName());
         moderator.setEmail(moderatorDTO.getEmail());
         moderator.setPassword(moderatorDTO.getPassword());
-        moderator.setUsername(moderatorDTO.getUsername());
         moderator.setFirstName(moderatorDTO.getFirstName());
         moderator.setLastName(moderatorDTO.getLastName());
         moderator.setBirthAt(moderatorDTO.getBirthAt());

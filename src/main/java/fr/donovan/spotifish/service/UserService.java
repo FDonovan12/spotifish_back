@@ -65,13 +65,9 @@ private BCryptPasswordEncoder passwordEncoder;
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
-        userDTO.setUsername(user.getUsername());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         userDTO.setBirthAt(user.getBirthAt());
-        userDTO.setCreatedAt(user.getCreatedAt());
-        userDTO.setActivationCode(user.getActivationCode());
-        userDTO.setActivationCodeExpireAt(user.getActivationCodeExpireAt());
         return userDTO;
     }
     public User getObjectFromDTO(UserDTO userDTO) {
@@ -81,13 +77,9 @@ private BCryptPasswordEncoder passwordEncoder;
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setUsername(userDTO.getUsername());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setBirthAt(userDTO.getBirthAt());
-        user.setCreatedAt(userDTO.getCreatedAt());
-        user.setActivationCode(userDTO.getActivationCode());
-        user.setActivationCodeExpireAt(userDTO.getActivationCodeExpireAt());
         user.setSlug("test");
         return user;
     }

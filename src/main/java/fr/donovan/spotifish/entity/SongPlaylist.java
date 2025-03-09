@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class SongPlaylist implements SluggerInterface {
     @Column(nullable = false)
     private int position;
 
+    @CreationTimestamp
     @JsonView(JsonViewsSongPlaylist.CreatedAt.class)
     @Column(nullable = false)
     private LocalDateTime createdAt;

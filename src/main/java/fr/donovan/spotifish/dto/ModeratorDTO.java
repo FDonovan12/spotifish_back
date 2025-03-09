@@ -24,10 +24,7 @@ public class ModeratorDTO {
     
     @NotBlank(message = "The password can't be blank")
     private String password;
-    
-    @NotBlank(message = "The username can't be blank")
-    private String username;
-    
+
     @NotBlank(message = "The firstName can't be blank")
     private String firstName;
     

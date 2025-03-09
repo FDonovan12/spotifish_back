@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -31,17 +32,32 @@ public class JwtService {
         }
     }
 
-    public String generateToken(String username) {
+    public String generateToken(UserDetails user) {
         // If ya want to add more claims to this token
         // There you add to the "claims" Map
-//        Map<String, Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("isAdmin", user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(role -> role.equals("ROLE_ADMIN")));
         return Jwts.builder()
                 .claims()
-//                .add(claims)
-                .subject(username)
-                .issuer("botteprintemps")
+                .add(claims)
+                .subject(user.getUsername())
+                .issuer("spotifish")
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // Update the time limit
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1 * 1 * 1)) // Update the time limit 1 hour here
+                .and() // add more infos to the token ?
+                .signWith(getKey())
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetails user) {
+        return Jwts.builder()
+                .claims()
+                .subject(user.getUsername())
+                .issuer("spotifish")
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30)) // Update the time limit 30 day here
                 .and() // add more infos to the token ?
                 .signWith(getKey())
                 .compact();
