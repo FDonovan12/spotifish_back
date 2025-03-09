@@ -28,8 +28,8 @@ public class UserControllerApi {
 
     @GetMapping(path = UrlRoute.URL_USER)
     @JsonView(JsonViews.UserListJsonViews.class)
-    public CustomResponse<List<User>> list() {
-        return new CustomResponse<>(HttpStatus.OK.value(), "UserControllerApi - list()", "User", this.userService.findAll());
+    public List<User> list() {
+        return this.userService.findAll();
     }
 
 //    @ModelAttribute("user")

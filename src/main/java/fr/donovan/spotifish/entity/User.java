@@ -1,5 +1,6 @@
 package fr.donovan.spotifish.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.donovan.spotifish.entity.*;
