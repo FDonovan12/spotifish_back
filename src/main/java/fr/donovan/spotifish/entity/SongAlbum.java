@@ -21,7 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class SongAlbum implements SluggerInterface {
+public class SongAlbum implements SluggerInterface, EntityInterface {
 
     @EmbeddedId
     @JsonView(JsonViewsSongAlbum.Id.class)

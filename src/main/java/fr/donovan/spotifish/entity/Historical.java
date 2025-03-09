@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Historical implements SluggerInterface {
+public class Historical implements SluggerInterface, EntityInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

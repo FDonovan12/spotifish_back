@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class UserLikeableItem implements SluggerInterface {
+public class UserLikeableItem implements SluggerInterface, EntityInterface {
 
     @EmbeddedId
     @JsonView(JsonViewsUserLikeableItem.Id.class)

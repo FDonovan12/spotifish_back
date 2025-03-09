@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class SongPlaylist implements SluggerInterface {
+public class SongPlaylist implements SluggerInterface, EntityInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
