@@ -153,6 +153,7 @@ public class InitDataLoader implements CommandLineRunner {
             AlbumDTO albumDTO = new AlbumDTO();
             albumDTO.setName(faker.name().name());
             albumDTO.setDescription(faker.kaamelott().quote());
+            albumDTO.setCreatedAt(faker.timeAndDate().birthday(1, 10));
             albumDTO.setImage(faker.internet().url());
             albumDTO.setArtistId(artistRepository.findRandom().getUuid());
             albumService.persist(albumDTO);
@@ -188,6 +189,7 @@ public class InitDataLoader implements CommandLineRunner {
             songDTO.setName(faker.name().name());
             songDTO.setPath(faker.internet().url());
             songDTO.setDuration(faker.duration().atMostMinutes(3).toSecondsPart());
+            songDTO.setCreatedAt(faker.timeAndDate().birthday(1, 10));
             songDTO.setImage(faker.internet().url());
             songDTO.setNumberOfListen((long) faker.number().numberBetween(10,20));
             songService.persist(songDTO);

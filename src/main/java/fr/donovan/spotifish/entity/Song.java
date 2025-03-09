@@ -23,18 +23,23 @@ import java.util.List;
 public class Song extends LikeableItem  {
 
     @JsonView(JsonViewsSong.Path.class)
+    @Column(nullable = false)
     private String path;
 
     @JsonView(JsonViewsSong.Duration.class)
+    @Column(nullable = false)
     private int duration;
 
     @JsonView(JsonViewsSong.Image.class)
+    @Column(nullable = false)
     private String image;
 
     @JsonView(JsonViewsSong.CreatedAt.class)
+    @Column(nullable = false)
     private LocalDate createdAt;
 
     @JsonView(JsonViewsSong.NumberOfListen.class)
+    @Column(nullable = false)
     private Long numberOfListen;
 
     @OneToMany(mappedBy = "song")

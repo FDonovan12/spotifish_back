@@ -23,9 +23,10 @@ import java.util.List;
 public class MusicalGenre extends LikeableItem  {
 
     @JsonView(JsonViewsMusicalGenre.Description.class)
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @JsonView(JsonViewsMusicalGenre.Image.class)
+    @Column(nullable = false)
     private String image;
 }

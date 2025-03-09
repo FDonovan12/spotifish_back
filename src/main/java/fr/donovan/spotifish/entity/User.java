@@ -35,22 +35,28 @@ public class User extends LikeableItem implements UserDetails {
     private String uuid;
 
     @JsonView(JsonViewsUser.Email.class)
+    @Column(nullable = false)
     private String email;
 
     @JsonView(JsonViewsUser.Password.class)
+    @Column(nullable = false)
     private String password;
 
     @JsonView(JsonViewsUser.FirstName.class)
+    @Column(nullable = false)
     private String firstName;
 
     @JsonView(JsonViewsUser.LastName.class)
+    @Column(nullable = false)
     private String lastName;
 
     @JsonView(JsonViewsUser.BirthAt.class)
+    @Column(nullable = false)
     private LocalDate birthAt;
 
     @CreationTimestamp
     @JsonView(JsonViewsUser.CreatedAt.class)
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @JsonView(JsonViewsUser.ActivationCode.class)

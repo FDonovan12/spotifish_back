@@ -23,16 +23,19 @@ import java.util.List;
 public class Playlist extends LikeableItem  {
 
     @JsonView(JsonViewsPlaylist.Description.class)
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @JsonView(JsonViewsPlaylist.Image.class)
+    @Column(nullable = false)
     private String image;
 
     @JsonView(JsonViewsPlaylist.CeratedAt.class)
-    private LocalDateTime ceratedAt;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @JsonView(JsonViewsPlaylist.IsPrivate.class)
+    @Column(nullable = false)
     private Boolean isPrivate;
 
     @OneToOne

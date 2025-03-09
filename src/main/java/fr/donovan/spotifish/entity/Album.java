@@ -23,17 +23,20 @@ import java.util.List;
 public class Album extends LikeableItem  {
 
     @JsonView(JsonViewsAlbum.Description.class)
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @JsonView(JsonViewsAlbum.Image.class)
+    @Column(nullable = false)
     private String image;
 
     @JsonView(JsonViewsAlbum.CreatedAt.class)
+    @Column(nullable = false)
     private LocalDate createdAt;
 
     @ManyToOne
     @JsonView(JsonViewsAlbum.Artist.class)
+    @JoinColumn(nullable = false)
     private Artist artist;
 
     @OneToMany(mappedBy = "album")
