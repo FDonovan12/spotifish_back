@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Shared implements SluggerInterface, EntityInterface {
+public class Shared implements SluggerInterface, PermissionEntityInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

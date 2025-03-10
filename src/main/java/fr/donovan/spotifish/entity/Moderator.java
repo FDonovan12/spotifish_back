@@ -27,6 +27,10 @@ public class Moderator extends Artist  {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_MODERATOR"));
+        return List.of(
+                new SimpleGrantedAuthority("ROLE_USER"),
+                new SimpleGrantedAuthority("ROLE_ARTIST"),
+                new SimpleGrantedAuthority("ROLE_MODERATOR")
+                );
     }
 }

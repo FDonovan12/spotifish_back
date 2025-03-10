@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import fr.donovan.spotifish.entity.interfaces.EntityInterface;
+import fr.donovan.spotifish.entity.interfaces.PermissionEntityInterface;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ public class JacksonConfig {
 //        SimpleModule module = new SimpleModule("MyBooleanSerializer");
 //        mapper.registerModule(new JavaTimeModule()); // Ajout du support pour java.time
 //        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-////        module.addSerializer(EntityInterface.class, new CustomEntitySerializer());
+////        module.addSerializer(PermissionEntityInterface.class, new CustomEntitySerializer());
 //        module.setSerializerModifier(securityBeanSerializerModifier);
 //
 //        mapper.registerModule(module);

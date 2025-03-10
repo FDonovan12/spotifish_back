@@ -24,7 +24,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @EntityListeners(SluggerEventListener.class)
-public class LikeableItem implements SluggerInterface, EntityInterface {
+public class LikeableItem implements SluggerInterface, PermissionEntityInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
