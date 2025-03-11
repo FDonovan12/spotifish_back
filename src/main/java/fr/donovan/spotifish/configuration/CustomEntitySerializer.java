@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.interfaces.PermissionEntityInterface;
 import fr.donovan.spotifish.security.SecurityService;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.IOException;
 
@@ -31,7 +32,7 @@ public class CustomEntitySerializer extends StdSerializer<PermissionEntityInterf
         jsonGenerator.writeStartObject();
         jsonGenerator.writeFieldName("data");
         defaultSerializer.serialize(permissionEntityInterface, jsonGenerator, serializerProvider);
-        User user = (User) securityService.getCurrentUser();
+        UserDetails user = securityService.getCurrentUser();
         jsonGenerator.writeFieldName("permission");
         jsonGenerator.writeStartObject();
         jsonGenerator.writeBooleanField("canEdit", permissionEntityInterface.canEdit(user));

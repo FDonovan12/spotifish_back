@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -84,6 +85,15 @@ private BCryptPasswordEncoder passwordEncoder;
         return user;
     }
 
+    public User getByCurrentUser(Principal principal) {
+        Optional<User> optionalUser = userRepository.findByEmail(principal.getName());
+        return optionalUser.orElseThrow(() -> new NotFoundSpotifishException("UserService - getByCurrentUser("+principal.getName()+")", "User", principal.getName()));
+    }
+
+    public User getByCurrentUser(UserDetails userDetails) {
+        Optional<User> optionalUser = userRepository.findByEmail(userDetails.getUsername());
+        return optionalUser.orElseThrow(() -> new NotFoundSpotifishException("UserService - getByCurrentUser("+userDetails.getUsername()+")", "User", userDetails.getUsername()));
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

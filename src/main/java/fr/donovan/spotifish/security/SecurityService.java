@@ -1,5 +1,6 @@
 package fr.donovan.spotifish.security;
 
+import fr.donovan.spotifish.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,11 +17,13 @@ public class SecurityService {
 
     private ObjectProvider<SecurityServiceProvider> securityServiceProvider;
 
+    private UserService userService;
+
     public UserDetails getCurrentUser() {
         SecurityServiceProvider securityServiceProvide = securityServiceProvider.getIfAvailable();
         if (securityServiceProvide == null) {
             return null;
         }
-        return securityServiceProvide.getCurrentUser();
+        return userService.getByCurrentUser(securityServiceProvide.getCurrentUser());
     }
 }
