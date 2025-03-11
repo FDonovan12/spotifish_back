@@ -32,7 +32,7 @@ public class CustomEntitySerializer extends StdSerializer<PermissionEntityInterf
         jsonGenerator.writeStartObject();
         jsonGenerator.writeFieldName("data");
         defaultSerializer.serialize(permissionEntityInterface, jsonGenerator, serializerProvider);
-        UserDetails user = securityService.getCurrentUser();
+        User user = securityService.getCurrentUser();
         jsonGenerator.writeFieldName("permission");
         jsonGenerator.writeStartObject();
         jsonGenerator.writeBooleanField("canEdit", permissionEntityInterface.canEdit(user));

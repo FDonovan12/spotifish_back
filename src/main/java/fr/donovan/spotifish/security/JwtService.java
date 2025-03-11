@@ -26,35 +26,36 @@ public class JwtService {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
             SecretKey sk = keyGen.generateKey();
-            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
+//            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
+            secretKey = "azsedrtyuiqsdfgyuDTFYGTYUJIdrFTGHJCVGBHNJCGVJHBKNLcgvhjb5445645";
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String generateToken(UserDetails user) {
+    public String generateToken(UserDetails currentUser) {
         // If ya want to add more claims to this token
         // There you add to the "claims" Map
         Map<String, Object> claims = new HashMap<>();
-        claims.put("isAdmin", user.getAuthorities().stream()
+        claims.put("isAdmin", currentUser.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(role -> role.equals("ROLE_ADMIN")));
         return Jwts.builder()
                 .claims()
                 .add(claims)
-                .subject(user.getUsername())
+                .subject(currentUser.getUsername())
                 .issuer("spotifish")
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1 * 1 * 1)) // Update the time limit 1 hour here
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10 * 1)) // Update the time limit 1 hour here
                 .and() // add more infos to the token ?
                 .signWith(getKey())
                 .compact();
     }
 
-    public String generateRefreshToken(UserDetails user) {
+    public String generateRefreshToken(UserDetails currentUser) {
         return Jwts.builder()
                 .claims()
-                .subject(user.getUsername())
+                .subject(currentUser.getUsername())
                 .issuer("spotifish")
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30)) // Update the time limit 30 day here
