@@ -4,6 +4,7 @@ import fr.donovan.spotifish.entity.MusicalGenre;
 import fr.donovan.spotifish.repository.MusicalGenreRepository;
 import fr.donovan.spotifish.dto.MusicalGenreDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 public class MusicalGenreService  {
 
     private final MusicalGenreRepository musicalGenreRepository;
+    private final SecurityService securityService;
 
     public List<MusicalGenre> findAll() {
         return this.musicalGenreRepository.findAll();
@@ -24,11 +26,15 @@ public class MusicalGenreService  {
 
     public MusicalGenre getObjectById(String id) {
         Optional<MusicalGenre> optionalMusicalGenre = musicalGenreRepository.findById(id);
-        return optionalMusicalGenre.orElseThrow(() -> new NotFoundSpotifishException("MusicalGenreService - getObjectById("+id+")", "MusicalGenre", id));
+        MusicalGenre musicalGenre = optionalMusicalGenre.orElseThrow(() -> new NotFoundSpotifishException("MusicalGenreService - getObjectById("+id+")", "MusicalGenre", id));
+        securityService.assertCanSee(musicalGenre);
+        return musicalGenre;
     }
 
     public Boolean delete(String id) {
-        musicalGenreRepository.deleteById(id);
+        MusicalGenre musicalGenre = getObjectById(id);
+        securityService.assertCanDelete(musicalGenre);
+        musicalGenreRepository.delete(musicalGenre);
         return true;
     }
 
@@ -40,6 +46,7 @@ public class MusicalGenreService  {
         MusicalGenre musicalGenre = new MusicalGenre();
         if (id != null) {
             musicalGenre = getObjectById(id);
+            securityService.assertCanEdit(musicalGenre);
         }
         musicalGenre = getObjectFromDTO(musicalGenreDTO, musicalGenre);
         return musicalGenreRepository.saveAndFlush(musicalGenre);

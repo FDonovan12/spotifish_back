@@ -4,6 +4,7 @@ import fr.donovan.spotifish.entity.Historical;
 import fr.donovan.spotifish.repository.HistoricalRepository;
 import fr.donovan.spotifish.dto.HistoricalDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class HistoricalService  {
     private final HistoricalRepository historicalRepository;
     private final UserService userService;
     private final SongService songService;
+    private final SecurityService securityService;
 
     public List<Historical> findAll() {
         return this.historicalRepository.findAll();
@@ -26,15 +28,21 @@ public class HistoricalService  {
 
     public Historical getObjectById(String id) {
         Optional<Historical> optionalHistorical = historicalRepository.findById(id);
-        return optionalHistorical.orElseThrow(() -> new NotFoundSpotifishException("HistoricalService - getObjectById("+id+")", "Historical", id));
+        Historical historical = optionalHistorical.orElseThrow(() -> new NotFoundSpotifishException("HistoricalService - getObjectById("+id+")", "Historical", id));
+        securityService.assertCanSee(historical);
+        return historical;
     }
     public Historical getObjectBySlug(String slug) {
         Optional<Historical> optionalHistorical = historicalRepository.findBySlug(slug);
-        return optionalHistorical.orElseThrow(() -> new NotFoundSpotifishException("HistoricalService - getObjectBySlug("+slug+")", "Historical", slug));
+        Historical historical = optionalHistorical.orElseThrow(() -> new NotFoundSpotifishException("HistoricalService - getObjectBySlug("+slug+")", "Historical", slug));
+        securityService.assertCanSee(historical);
+        return historical;
     }
 
     public Boolean delete(String id) {
-        historicalRepository.deleteById(id);
+        Historical historical = getObjectById(id);
+        securityService.assertCanDelete(historical);
+        historicalRepository.delete(historical);
         return true;
     }
 
@@ -46,6 +54,7 @@ public class HistoricalService  {
         Historical historical = new Historical();
         if (id != null) {
             historical = getObjectById(id);
+            securityService.assertCanEdit(historical);
         }
         historical = getObjectFromDTO(historicalDTO, historical);
         return historicalRepository.saveAndFlush(historical);

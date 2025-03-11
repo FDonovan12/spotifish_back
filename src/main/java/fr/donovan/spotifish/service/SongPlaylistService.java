@@ -1,10 +1,12 @@
 package fr.donovan.spotifish.service;
 
+import fr.donovan.spotifish.entity.Contributor;
 import fr.donovan.spotifish.entity.SongPlaylist;
 import fr.donovan.spotifish.entity.embed.ContributorId;
 import fr.donovan.spotifish.repository.SongPlaylistRepository;
 import fr.donovan.spotifish.dto.SongPlaylistDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ public class SongPlaylistService  {
     private final SongService songService;
     private final PlaylistService playlistService;
     private final ContributorService contributorService;
+    private final SecurityService securityService;
 
     public List<SongPlaylist> findAll() {
         return this.songPlaylistRepository.findAll();
@@ -28,15 +31,21 @@ public class SongPlaylistService  {
 
     public SongPlaylist getObjectById(Long id) {
         Optional<SongPlaylist> optionalSongPlaylist = songPlaylistRepository.findById(id);
-        return optionalSongPlaylist.orElseThrow(() -> new NotFoundSpotifishException("SongPlaylistService - getObjectById("+id+")", "SongPlaylist", id));
+        SongPlaylist songPlaylist = optionalSongPlaylist.orElseThrow(() -> new NotFoundSpotifishException("SongPlaylistService - getObjectById("+id+")", "SongPlaylist", id));
+        securityService.assertCanSee(songPlaylist);
+        return songPlaylist;
     }
     public SongPlaylist getObjectBySlug(String slug) {
         Optional<SongPlaylist> optionalSongPlaylist = songPlaylistRepository.findBySlug(slug);
-        return optionalSongPlaylist.orElseThrow(() -> new NotFoundSpotifishException("SongPlaylistService - getObjectBySlug("+slug+")", "SongPlaylist", slug));
+        SongPlaylist songPlaylist = optionalSongPlaylist.orElseThrow(() -> new NotFoundSpotifishException("SongPlaylistService - getObjectBySlug("+slug+")", "SongPlaylist", slug));
+        securityService.assertCanSee(songPlaylist);
+        return songPlaylist;
     }
 
     public Boolean delete(Long id) {
-        songPlaylistRepository.deleteById(id);
+        SongPlaylist songPlaylist = getObjectById(id);
+        securityService.assertCanDelete(songPlaylist);
+        songPlaylistRepository.delete(songPlaylist);
         return true;
     }
 
@@ -48,6 +57,7 @@ public class SongPlaylistService  {
         SongPlaylist songPlaylist = new SongPlaylist();
         if (id != null) {
             songPlaylist = getObjectById(id);
+            securityService.assertCanEdit(songPlaylist);
         }
         songPlaylist = getObjectFromDTO(songPlaylistDTO, songPlaylist);
         return songPlaylistRepository.saveAndFlush(songPlaylist);
@@ -61,7 +71,6 @@ public class SongPlaylistService  {
     public SongPlaylistDTO getDTOFromObject(SongPlaylist songPlaylist) {
         SongPlaylistDTO songPlaylistDTO = new SongPlaylistDTO();
         songPlaylistDTO.setPosition(songPlaylist.getPosition());
-        songPlaylistDTO.setCreatedAt(songPlaylist.getCreatedAt());
         songPlaylistDTO.setSongId(songPlaylist.getSong().getUuid());
         songPlaylistDTO.setPlaylistId(songPlaylist.getPlaylist().getUuid());
         songPlaylistDTO.setUserId(songPlaylist.getContributor().getUser().getUuid());
@@ -72,10 +81,10 @@ public class SongPlaylistService  {
     }
     public SongPlaylist getObjectFromDTO(SongPlaylistDTO songPlaylistDTO, SongPlaylist songPlaylist) {
         songPlaylist.setPosition(songPlaylistDTO.getPosition());
-        songPlaylist.setCreatedAt(songPlaylistDTO.getCreatedAt());
         songPlaylist.setSong(songService.getObjectById(songPlaylistDTO.getSongId()));
         songPlaylist.setPlaylist(playlistService.getObjectById(songPlaylistDTO.getPlaylistId()));
-        songPlaylist.setContributor(contributorService.getObjectById(new ContributorId(songPlaylistDTO.getUserId(), songPlaylistDTO.getPlaylistId())));
+        ContributorId contributorId = new ContributorId(songPlaylistDTO.getPlaylistId(), songPlaylistDTO.getUserId());
+        songPlaylist.setContributor(contributorService.getObjectById(contributorId));
         songPlaylist.setSlug("test");
         return songPlaylist;
     }

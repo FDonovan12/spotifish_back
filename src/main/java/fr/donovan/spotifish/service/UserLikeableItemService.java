@@ -5,6 +5,7 @@ import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.UserLikeableItemRepository;
 import fr.donovan.spotifish.dto.UserLikeableItemDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class UserLikeableItemService  {
     private final UserLikeableItemRepository userLikeableItemRepository;
     private final UserService userService;
     private final LikeableItemService likeableItemService;
+    private final SecurityService securityService;
 
     public List<UserLikeableItem> findAll() {
         return this.userLikeableItemRepository.findAll();
@@ -27,15 +29,21 @@ public class UserLikeableItemService  {
 
     public UserLikeableItem getObjectById(UserLikeableItemId id) {
         Optional<UserLikeableItem> optionalUserLikeableItem = userLikeableItemRepository.findById(id);
-        return optionalUserLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("UserLikeableItemService - getObjectById("+id+")", "UserLikeableItem", id));
+        UserLikeableItem userLikeableItem = optionalUserLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("UserLikeableItemService - getObjectById("+id+")", "UserLikeableItem", id));
+        securityService.assertCanSee(userLikeableItem);
+        return userLikeableItem;
     }
     public UserLikeableItem getObjectBySlug(String slug) {
         Optional<UserLikeableItem> optionalUserLikeableItem = userLikeableItemRepository.findBySlug(slug);
-        return optionalUserLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("UserLikeableItemService - getObjectBySlug("+slug+")", "UserLikeableItem", slug));
+        UserLikeableItem userLikeableItem = optionalUserLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("UserLikeableItemService - getObjectBySlug("+slug+")", "UserLikeableItem", slug));
+        securityService.assertCanSee(userLikeableItem);
+        return userLikeableItem;
     }
 
     public Boolean delete(UserLikeableItemId id) {
-        userLikeableItemRepository.deleteById(id);
+        UserLikeableItem userLikeableItem = getObjectById(id);
+        securityService.assertCanDelete(userLikeableItem);
+        userLikeableItemRepository.delete(userLikeableItem);
         return true;
     }
 
@@ -47,6 +55,7 @@ public class UserLikeableItemService  {
         UserLikeableItem userLikeableItem = new UserLikeableItem();
         if (id != null) {
             userLikeableItem = getObjectById(id);
+            securityService.assertCanEdit(userLikeableItem);
         }
         userLikeableItem = getObjectFromDTO(userLikeableItemDTO, userLikeableItem);
         return userLikeableItemRepository.saveAndFlush(userLikeableItem);

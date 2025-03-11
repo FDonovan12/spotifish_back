@@ -4,6 +4,7 @@ import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.repository.UserRepository;
 import fr.donovan.spotifish.dto.UserDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -26,22 +25,23 @@ import java.util.stream.Stream;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
+    private final SecurityService securityService;
     private BCryptPasswordEncoder passwordEncoder;
-
     public List<User> findAll() {
         return this.userRepository.findAll();
     }
 
-
     public User getObjectById(String id) {
-        System.out.println("id = " + id);
         Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.orElseThrow(() -> new NotFoundSpotifishException("UserService - getObjectById("+id+")", "User", id));
+        User user = optionalUser.orElseThrow(() -> new NotFoundSpotifishException("UserService - getObjectById("+id+")", "User", id));
+        securityService.assertCanSee(user);
+        return user;
     }
 
     public Boolean delete(String id) {
-        userRepository.deleteById(id);
+        User user = getObjectById(id);
+        securityService.assertCanDelete(user);
+        userRepository.delete(user);
         return true;
     }
 
@@ -53,6 +53,7 @@ public class UserService implements UserDetailsService {
         User user = new User();
         if (id != null) {
             user = getObjectById(id);
+            securityService.assertCanEdit(user);
         }
         user = getObjectFromDTO(userDTO, user);
         return userRepository.saveAndFlush(user);
@@ -85,16 +86,6 @@ public class UserService implements UserDetailsService {
         user.setBirthAt(userDTO.getBirthAt());
         user.setSlug("test");
         return user;
-    }
-
-    public User getByCurrentUser(Principal principal) {
-        Optional<User> optionalUser = userRepository.findByEmail(principal.getName());
-        return optionalUser.orElseThrow(() -> new NotFoundSpotifishException("UserService - getByCurrentUser("+principal.getName()+")", "User", principal.getName()));
-    }
-
-    public User getByCurrentUser(UserDetails userDetails) {
-        Optional<User> optionalUser = userRepository.findByEmail(userDetails.getUsername());
-        return optionalUser.orElseThrow(() -> new NotFoundSpotifishException("UserService - getByCurrentUser("+userDetails.getUsername()+")", "User", userDetails.getUsername()));
     }
 
     @Override

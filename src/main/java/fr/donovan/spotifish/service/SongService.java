@@ -4,6 +4,7 @@ import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.repository.SongRepository;
 import fr.donovan.spotifish.dto.SongDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 public class SongService  {
 
     private final SongRepository songRepository;
+    private final SecurityService securityService;
 
     public List<Song> findAll() {
         return this.songRepository.findAll();
@@ -24,11 +26,15 @@ public class SongService  {
 
     public Song getObjectById(String id) {
         Optional<Song> optionalSong = songRepository.findById(id);
-        return optionalSong.orElseThrow(() -> new NotFoundSpotifishException("SongService - getObjectById("+id+")", "Song", id));
+        Song song = optionalSong.orElseThrow(() -> new NotFoundSpotifishException("SongService - getObjectById("+id+")", "Song", id));
+        securityService.assertCanSee(song);
+        return song;
     }
 
     public Boolean delete(String id) {
-        songRepository.deleteById(id);
+        Song song = getObjectById(id);
+        securityService.assertCanDelete(song);
+        songRepository.delete(song);
         return true;
     }
 
@@ -40,6 +46,7 @@ public class SongService  {
         Song song = new Song();
         if (id != null) {
             song = getObjectById(id);
+            securityService.assertCanEdit(song);
         }
         song = getObjectFromDTO(songDTO, song);
         return songRepository.saveAndFlush(song);
@@ -56,7 +63,6 @@ public class SongService  {
         songDTO.setPath(song.getPath());
         songDTO.setDuration(song.getDuration());
         songDTO.setImage(song.getImage());
-        songDTO.setCreatedAt(song.getCreatedAt());
         songDTO.setNumberOfListen(song.getNumberOfListen());
         return songDTO;
     }
@@ -68,7 +74,6 @@ public class SongService  {
         song.setPath(songDTO.getPath());
         song.setDuration(songDTO.getDuration());
         song.setImage(songDTO.getImage());
-        song.setCreatedAt(songDTO.getCreatedAt());
         song.setNumberOfListen(songDTO.getNumberOfListen());
         song.setSlug("test");
         return song;

@@ -5,6 +5,7 @@ import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.SongAlbumRepository;
 import fr.donovan.spotifish.dto.SongAlbumDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class SongAlbumService  {
     private final SongAlbumRepository songAlbumRepository;
     private final SongService songService;
     private final AlbumService albumService;
+    private final SecurityService securityService;
 
     public List<SongAlbum> findAll() {
         return this.songAlbumRepository.findAll();
@@ -27,15 +29,21 @@ public class SongAlbumService  {
 
     public SongAlbum getObjectById(SongAlbumId id) {
         Optional<SongAlbum> optionalSongAlbum = songAlbumRepository.findById(id);
-        return optionalSongAlbum.orElseThrow(() -> new NotFoundSpotifishException("SongAlbumService - getObjectById("+id+")", "SongAlbum", id));
+        SongAlbum songAlbum = optionalSongAlbum.orElseThrow(() -> new NotFoundSpotifishException("SongAlbumService - getObjectById("+id+")", "SongAlbum", id));
+        securityService.assertCanSee(songAlbum);
+        return songAlbum;
     }
     public SongAlbum getObjectBySlug(String slug) {
         Optional<SongAlbum> optionalSongAlbum = songAlbumRepository.findBySlug(slug);
-        return optionalSongAlbum.orElseThrow(() -> new NotFoundSpotifishException("SongAlbumService - getObjectBySlug("+slug+")", "SongAlbum", slug));
+        SongAlbum songAlbum = optionalSongAlbum.orElseThrow(() -> new NotFoundSpotifishException("SongAlbumService - getObjectBySlug("+slug+")", "SongAlbum", slug));
+        securityService.assertCanSee(songAlbum);
+        return songAlbum;
     }
 
     public Boolean delete(SongAlbumId id) {
-        songAlbumRepository.deleteById(id);
+        SongAlbum songAlbum = getObjectById(id);
+        securityService.assertCanDelete(songAlbum);
+        songAlbumRepository.delete(songAlbum);
         return true;
     }
 
@@ -47,6 +55,7 @@ public class SongAlbumService  {
         SongAlbum songAlbum = new SongAlbum();
         if (id != null) {
             songAlbum = getObjectById(id);
+            securityService.assertCanEdit(songAlbum);
         }
         songAlbum = getObjectFromDTO(songAlbumDTO, songAlbum);
         return songAlbumRepository.saveAndFlush(songAlbum);
@@ -60,7 +69,6 @@ public class SongAlbumService  {
     public SongAlbumDTO getDTOFromObject(SongAlbum songAlbum) {
         SongAlbumDTO songAlbumDTO = new SongAlbumDTO();
         songAlbumDTO.setPosition(songAlbum.getPosition());
-        songAlbumDTO.setCreatedAt(songAlbum.getCreatedAt());
         songAlbumDTO.setSongId(songAlbum.getSong().getUuid());
         songAlbumDTO.setAlbumId(songAlbum.getAlbum().getUuid());
         return songAlbumDTO;
@@ -70,7 +78,6 @@ public class SongAlbumService  {
     }
     public SongAlbum getObjectFromDTO(SongAlbumDTO songAlbumDTO, SongAlbum songAlbum) {
         songAlbum.setPosition(songAlbumDTO.getPosition());
-        songAlbum.setCreatedAt(songAlbumDTO.getCreatedAt());
         songAlbum.setSong(songService.getObjectById(songAlbumDTO.getSongId()));
         songAlbum.setAlbum(albumService.getObjectById(songAlbumDTO.getAlbumId()));
         songAlbum.setId(new SongAlbumId(songAlbumDTO.getSongId(), songAlbumDTO.getAlbumId()));

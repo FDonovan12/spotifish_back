@@ -3,9 +3,12 @@ package fr.donovan.spotifish.security;
 import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.interfaces.PermissionEntityInterface;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.service.ConnectedUserService;
 import fr.donovan.spotifish.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,14 +17,14 @@ public class SecurityService {
 
     private ObjectProvider<SecurityServiceProvider> securityServiceProvider;
 
-    private UserService userService;
+    private ConnectedUserService connectedUserService;
 
     public User getCurrentUser() {
         SecurityServiceProvider securityServiceProvide = securityServiceProvider.getIfAvailable();
         if (securityServiceProvide == null || securityServiceProvide.getCurrentUser() == null) {
             return null;
         }
-        return userService.getByCurrentUser(securityServiceProvide.getCurrentUser());
+        return connectedUserService.getByCurrentUser(securityServiceProvide.getCurrentUser());
     }
 
     public void assertCanSee(PermissionEntityInterface entity) {

@@ -4,9 +4,11 @@ import fr.donovan.spotifish.entity.Moderator;
 import fr.donovan.spotifish.repository.ModeratorRepository;
 import fr.donovan.spotifish.dto.ModeratorDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -18,20 +20,23 @@ import java.util.stream.Stream;
 public class ModeratorService  {
 
     private final ModeratorRepository moderatorRepository;
-
+    private final SecurityService securityService;
     private BCryptPasswordEncoder passwordEncoder;
-
     public List<Moderator> findAll() {
         return this.moderatorRepository.findAll();
     }
 
     public Moderator getObjectById(String id) {
         Optional<Moderator> optionalModerator = moderatorRepository.findById(id);
-        return optionalModerator.orElseThrow(() -> new NotFoundSpotifishException("ModeratorService - getObjectById("+id+")", "Moderator", id));
+        Moderator moderator = optionalModerator.orElseThrow(() -> new NotFoundSpotifishException("ModeratorService - getObjectById("+id+")", "Moderator", id));
+        securityService.assertCanSee(moderator);
+        return moderator;
     }
 
     public Boolean delete(String id) {
-        moderatorRepository.deleteById(id);
+        Moderator moderator = getObjectById(id);
+        securityService.assertCanDelete(moderator);
+        moderatorRepository.delete(moderator);
         return true;
     }
 
@@ -43,6 +48,7 @@ public class ModeratorService  {
         Moderator moderator = new Moderator();
         if (id != null) {
             moderator = getObjectById(id);
+            securityService.assertCanEdit(moderator);
         }
         moderator = getObjectFromDTO(moderatorDTO, moderator);
         return moderatorRepository.saveAndFlush(moderator);
@@ -61,9 +67,6 @@ public class ModeratorService  {
         moderatorDTO.setFirstName(moderator.getFirstName());
         moderatorDTO.setLastName(moderator.getLastName());
         moderatorDTO.setBirthAt(moderator.getBirthAt());
-        moderatorDTO.setCreatedAt(moderator.getCreatedAt());
-        moderatorDTO.setActivationCode(moderator.getActivationCode());
-        moderatorDTO.setActivationCodeExpireAt(moderator.getActivationCodeExpireAt());
         return moderatorDTO;
     }
     public Moderator getObjectFromDTO(ModeratorDTO moderatorDTO) {
@@ -76,9 +79,6 @@ public class ModeratorService  {
         moderator.setFirstName(moderatorDTO.getFirstName());
         moderator.setLastName(moderatorDTO.getLastName());
         moderator.setBirthAt(moderatorDTO.getBirthAt());
-        moderator.setCreatedAt(moderatorDTO.getCreatedAt());
-        moderator.setActivationCode(moderatorDTO.getActivationCode());
-        moderator.setActivationCodeExpireAt(moderatorDTO.getActivationCodeExpireAt());
         moderator.setSlug("test");
         return moderator;
     }

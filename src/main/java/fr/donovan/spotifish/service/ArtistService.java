@@ -4,9 +4,11 @@ import fr.donovan.spotifish.entity.Artist;
 import fr.donovan.spotifish.repository.ArtistRepository;
 import fr.donovan.spotifish.dto.ArtistDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -18,20 +20,23 @@ import java.util.stream.Stream;
 public class ArtistService  {
 
     private final ArtistRepository artistRepository;
-
+    private final SecurityService securityService;
     private BCryptPasswordEncoder passwordEncoder;
-
     public List<Artist> findAll() {
         return this.artistRepository.findAll();
     }
 
     public Artist getObjectById(String id) {
         Optional<Artist> optionalArtist = artistRepository.findById(id);
-        return optionalArtist.orElseThrow(() -> new NotFoundSpotifishException("ArtistService - getObjectById("+id+")", "Artist", id));
+        Artist artist = optionalArtist.orElseThrow(() -> new NotFoundSpotifishException("ArtistService - getObjectById("+id+")", "Artist", id));
+        securityService.assertCanSee(artist);
+        return artist;
     }
 
     public Boolean delete(String id) {
-        artistRepository.deleteById(id);
+        Artist artist = getObjectById(id);
+        securityService.assertCanDelete(artist);
+        artistRepository.delete(artist);
         return true;
     }
 
@@ -43,6 +48,7 @@ public class ArtistService  {
         Artist artist = new Artist();
         if (id != null) {
             artist = getObjectById(id);
+            securityService.assertCanEdit(artist);
         }
         artist = getObjectFromDTO(artistDTO, artist);
         return artistRepository.saveAndFlush(artist);
@@ -58,7 +64,6 @@ public class ArtistService  {
         artistDTO.setName(artist.getName());
         artistDTO.setEmail(artist.getEmail());
         artistDTO.setPassword(artist.getPassword());
-        artistDTO.setName(artist.getName());
         artistDTO.setFirstName(artist.getFirstName());
         artistDTO.setLastName(artist.getLastName());
         artistDTO.setBirthAt(artist.getBirthAt());

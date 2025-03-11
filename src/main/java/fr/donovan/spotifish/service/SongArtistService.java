@@ -5,6 +5,7 @@ import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.SongArtistRepository;
 import fr.donovan.spotifish.dto.SongArtistDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class SongArtistService  {
     private final SongArtistRepository songArtistRepository;
     private final SongService songService;
     private final ArtistService artistService;
+    private final SecurityService securityService;
 
     public List<SongArtist> findAll() {
         return this.songArtistRepository.findAll();
@@ -27,15 +29,21 @@ public class SongArtistService  {
 
     public SongArtist getObjectById(SongArtistId id) {
         Optional<SongArtist> optionalSongArtist = songArtistRepository.findById(id);
-        return optionalSongArtist.orElseThrow(() -> new NotFoundSpotifishException("SongArtistService - getObjectById("+id+")", "SongArtist", id));
+        SongArtist songArtist = optionalSongArtist.orElseThrow(() -> new NotFoundSpotifishException("SongArtistService - getObjectById("+id+")", "SongArtist", id));
+        securityService.assertCanSee(songArtist);
+        return songArtist;
     }
     public SongArtist getObjectBySlug(String slug) {
         Optional<SongArtist> optionalSongArtist = songArtistRepository.findBySlug(slug);
-        return optionalSongArtist.orElseThrow(() -> new NotFoundSpotifishException("SongArtistService - getObjectBySlug("+slug+")", "SongArtist", slug));
+        SongArtist songArtist = optionalSongArtist.orElseThrow(() -> new NotFoundSpotifishException("SongArtistService - getObjectBySlug("+slug+")", "SongArtist", slug));
+        securityService.assertCanSee(songArtist);
+        return songArtist;
     }
 
     public Boolean delete(SongArtistId id) {
-        songArtistRepository.deleteById(id);
+        SongArtist songArtist = getObjectById(id);
+        securityService.assertCanDelete(songArtist);
+        songArtistRepository.delete(songArtist);
         return true;
     }
 
@@ -47,6 +55,7 @@ public class SongArtistService  {
         SongArtist songArtist = new SongArtist();
         if (id != null) {
             songArtist = getObjectById(id);
+            securityService.assertCanEdit(songArtist);
         }
         songArtist = getObjectFromDTO(songArtistDTO, songArtist);
         return songArtistRepository.saveAndFlush(songArtist);

@@ -4,6 +4,7 @@ import fr.donovan.spotifish.entity.LikeableItem;
 import fr.donovan.spotifish.repository.LikeableItemRepository;
 import fr.donovan.spotifish.dto.LikeableItemDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 public class LikeableItemService  {
 
     private final LikeableItemRepository likeableItemRepository;
+    private final SecurityService securityService;
 
     public List<LikeableItem> findAll() {
         return this.likeableItemRepository.findAll();
@@ -24,18 +26,24 @@ public class LikeableItemService  {
 
     public LikeableItem getObjectById(String id) {
         Optional<LikeableItem> optionalLikeableItem = likeableItemRepository.findById(id);
-        return optionalLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("LikeableItemService - getObjectById("+id+")", "LikeableItem", id));
+        LikeableItem likeableItem = optionalLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("LikeableItemService - getObjectById("+id+")", "LikeableItem", id));
+        securityService.assertCanSee(likeableItem);
+        return likeableItem;
     }
     public LikeableItem getObjectBySlug(String slug) {
         Optional<LikeableItem> optionalLikeableItem = likeableItemRepository.findBySlug(slug);
-        return optionalLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("LikeableItemService - getObjectBySlug("+slug+")", "LikeableItem", slug));
+        LikeableItem likeableItem = optionalLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("LikeableItemService - getObjectBySlug("+slug+")", "LikeableItem", slug));
+        securityService.assertCanSee(likeableItem);
+        return likeableItem;
     }
 
     public Boolean delete(String id) {
-        likeableItemRepository.deleteById(id);
+        LikeableItem likeableItem = getObjectById(id);
+        securityService.assertCanDelete(likeableItem);
+        likeableItemRepository.delete(likeableItem);
         return true;
     }
-
+//
 //    public LikeableItem persist(LikeableItemDTO likeableItemDTO) {
 //        return persist(likeableItemDTO, null);
 //    }
@@ -44,6 +52,7 @@ public class LikeableItemService  {
 //        LikeableItem likeableItem = new LikeableItem();
 //        if (id != null) {
 //            likeableItem = getObjectById(id);
+//            securityService.assertCanEdit(likeableItem);
 //        }
 //        likeableItem = getObjectFromDTO(likeableItemDTO, likeableItem);
 //        return likeableItemRepository.saveAndFlush(likeableItem);

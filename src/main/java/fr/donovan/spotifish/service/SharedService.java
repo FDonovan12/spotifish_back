@@ -4,6 +4,7 @@ import fr.donovan.spotifish.entity.Shared;
 import fr.donovan.spotifish.repository.SharedRepository;
 import fr.donovan.spotifish.dto.SharedDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class SharedService  {
 
     private final SharedRepository sharedRepository;
     private final PlaylistService playlistService;
+    private final SecurityService securityService;
 
     public List<Shared> findAll() {
         return this.sharedRepository.findAll();
@@ -25,15 +27,21 @@ public class SharedService  {
 
     public Shared getObjectById(String id) {
         Optional<Shared> optionalShared = sharedRepository.findById(id);
-        return optionalShared.orElseThrow(() -> new NotFoundSpotifishException("SharedService - getObjectById("+id+")", "Shared", id));
+        Shared shared = optionalShared.orElseThrow(() -> new NotFoundSpotifishException("SharedService - getObjectById("+id+")", "Shared", id));
+        securityService.assertCanSee(shared);
+        return shared;
     }
     public Shared getObjectBySlug(String slug) {
         Optional<Shared> optionalShared = sharedRepository.findBySlug(slug);
-        return optionalShared.orElseThrow(() -> new NotFoundSpotifishException("SharedService - getObjectBySlug("+slug+")", "Shared", slug));
+        Shared shared = optionalShared.orElseThrow(() -> new NotFoundSpotifishException("SharedService - getObjectBySlug("+slug+")", "Shared", slug));
+        securityService.assertCanSee(shared);
+        return shared;
     }
 
     public Boolean delete(String id) {
-        sharedRepository.deleteById(id);
+        Shared shared = getObjectById(id);
+        securityService.assertCanDelete(shared);
+        sharedRepository.delete(shared);
         return true;
     }
 
@@ -45,6 +53,7 @@ public class SharedService  {
         Shared shared = new Shared();
         if (id != null) {
             shared = getObjectById(id);
+            securityService.assertCanEdit(shared);
         }
         shared = getObjectFromDTO(sharedDTO, shared);
         return sharedRepository.saveAndFlush(shared);
