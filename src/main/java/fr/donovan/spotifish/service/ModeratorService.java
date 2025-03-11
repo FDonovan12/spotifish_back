@@ -5,6 +5,7 @@ import fr.donovan.spotifish.repository.ModeratorRepository;
 import fr.donovan.spotifish.dto.ModeratorDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -17,6 +18,8 @@ import java.util.stream.Stream;
 public class ModeratorService  {
 
     private final ModeratorRepository moderatorRepository;
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     public List<Moderator> findAll() {
         return this.moderatorRepository.findAll();
@@ -69,7 +72,7 @@ public class ModeratorService  {
     public Moderator getObjectFromDTO(ModeratorDTO moderatorDTO, Moderator moderator) {
         moderator.setName(moderatorDTO.getName());
         moderator.setEmail(moderatorDTO.getEmail());
-        moderator.setPassword(moderatorDTO.getPassword());
+        moderator.setPassword(passwordEncoder.encode(moderatorDTO.getPassword()));
         moderator.setFirstName(moderatorDTO.getFirstName());
         moderator.setLastName(moderatorDTO.getLastName());
         moderator.setBirthAt(moderatorDTO.getBirthAt());

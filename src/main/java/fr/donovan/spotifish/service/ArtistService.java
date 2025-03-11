@@ -5,6 +5,7 @@ import fr.donovan.spotifish.repository.ArtistRepository;
 import fr.donovan.spotifish.dto.ArtistDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -17,6 +18,8 @@ import java.util.stream.Stream;
 public class ArtistService  {
 
     private final ArtistRepository artistRepository;
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     public List<Artist> findAll() {
         return this.artistRepository.findAll();
@@ -67,7 +70,7 @@ public class ArtistService  {
     public Artist getObjectFromDTO(ArtistDTO artistDTO, Artist artist) {
         artist.setName(artistDTO.getName());
         artist.setEmail(artistDTO.getEmail());
-        artist.setPassword(artistDTO.getPassword());
+        artist.setPassword(passwordEncoder.encode(artistDTO.getPassword()));
         artist.setFirstName(artistDTO.getFirstName());
         artist.setLastName(artistDTO.getLastName());
         artist.setBirthAt(artistDTO.getBirthAt());

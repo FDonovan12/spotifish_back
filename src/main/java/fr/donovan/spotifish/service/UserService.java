@@ -26,7 +26,9 @@ import java.util.stream.Stream;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-private BCryptPasswordEncoder passwordEncoder;
+
+    private BCryptPasswordEncoder passwordEncoder;
+
     public List<User> findAll() {
         return this.userRepository.findAll();
     }
