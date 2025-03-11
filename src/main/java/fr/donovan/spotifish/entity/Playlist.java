@@ -52,13 +52,20 @@ public class Playlist extends LikeableItem  {
 
     @Override
     public boolean canDelete(User user) {
-        if (user == null) return false;
-        return false;
+        return this.canEdit(user);
     }
 
     @Override
     public boolean canEdit(User user) {
         if (user == null) return false;
+        if (
+                !this.getContributors().stream()
+                        .filter(Contributor::getIsOwner)
+                        .map(Contributor::getUser)
+                        .filter(user::isTheSameUser)
+                        .toList().isEmpty()
+        ) return true;
+        if (user.isModerator()) return true;
         return false;
     }
 }

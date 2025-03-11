@@ -66,12 +66,25 @@ public class SongPlaylist implements SluggerInterface, PermissionEntityInterface
     @Override
     public boolean canDelete(User user) {
         if (user == null) return false;
+        if (
+                user.isTheSameUser(this.contributor.getUser())  &&
+                this.contributor.getStillContributing() ||
+                this.contributor.getIsOwner()
+        ) return true;
+        if (user.isModerator()) return true;
         return false;
     }
 
     @Override
     public boolean canEdit(User user) {
         if (user == null) return false;
+        if (
+                !this.playlist.getContributors().stream()
+                        .map(Contributor::getUser)
+                        .filter(user::isTheSameUser)
+                        .toList().isEmpty()
+        ) return true;
+        if (user.isModerator()) return true;
         return false;
     }
 }

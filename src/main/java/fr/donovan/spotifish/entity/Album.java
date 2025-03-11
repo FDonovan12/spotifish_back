@@ -45,13 +45,14 @@ public class Album extends LikeableItem  {
 
     @Override
     public boolean canDelete(User user) {
-        if (user == null) return false;
-        return false;
+        return this.canEdit(user);
     }
 
     @Override
     public boolean canEdit(User user) {
         if (user == null) return false;
+        if (user.isModerator()) return true;
+        if (user.isTheSameUser(this.artist)) return true;
         return false;
     }
 }

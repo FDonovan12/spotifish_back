@@ -59,13 +59,11 @@ public class SongAlbum implements SluggerInterface, PermissionEntityInterface {
 
     @Override
     public boolean canDelete(User user) {
-        if (user == null) return false;
-        return false;
+        return this.album.canDelete(user);
     }
 
     @Override
     public boolean canEdit(User user) {
-        if (user == null) return false;
-        return false;
+        return this.album.canEdit(user);
     }
 }

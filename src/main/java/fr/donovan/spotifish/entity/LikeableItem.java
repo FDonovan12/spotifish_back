@@ -24,7 +24,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @EntityListeners(SluggerEventListener.class)
-public class LikeableItem implements SluggerInterface, PermissionEntityInterface {
+public abstract class LikeableItem implements SluggerInterface, PermissionEntityInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -42,17 +42,5 @@ public class LikeableItem implements SluggerInterface, PermissionEntityInterface
     @Override
     public String getField() {
         return "" + getUuid();
-    }
-
-    @Override
-    public boolean canDelete(User user) {
-        if (user == null) return false;
-        return false;
-    }
-
-    @Override
-    public boolean canEdit(User user) {
-        if (user == null) return false;
-        return false;
     }
 }

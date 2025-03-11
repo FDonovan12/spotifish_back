@@ -53,13 +53,13 @@ public class UserLikeableItem implements SluggerInterface, PermissionEntityInter
 
     @Override
     public boolean canDelete(User user) {
-        if (user == null) return false;
-        return false;
+        return this.canEdit(user);
     }
 
     @Override
     public boolean canEdit(User user) {
         if (user == null) return false;
+        if (user.isTheSameUser(this.user)) return true;
         return false;
     }
 }

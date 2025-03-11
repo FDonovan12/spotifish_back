@@ -33,12 +33,14 @@ public class MusicalGenre extends LikeableItem  {
     @Override
     public boolean canDelete(User user) {
         if (user == null) return false;
+        if (user.isModerator()) return true;
         return false;
     }
 
     @Override
     public boolean canEdit(User user) {
         if (user == null) return false;
+        if (user.isModerator()) return true;
         return false;
     }
 }

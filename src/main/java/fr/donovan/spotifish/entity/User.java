@@ -98,15 +98,20 @@ public class User extends LikeableItem implements UserDetails {
         return email;
     }
 
+    public boolean isTheSameUser(User otherUser) {
+        return this.getUsername().equals(otherUser.getUsername());
+    }
+
     @Override
     public boolean canDelete(User user) {
-        if (user == null) return false;
-        return false;
+        return this.canEdit(user);
     }
 
     @Override
     public boolean canEdit(User user) {
-        if (user == null) return true;
+        if (user == null) return false;
+        if (user.isTheSameUser(this)) return true;
+        if (user.isModerator()) return true;
         return false;
     }
 }

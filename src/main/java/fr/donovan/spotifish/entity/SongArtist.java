@@ -1,5 +1,6 @@
 package fr.donovan.spotifish.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.donovan.spotifish.entity.*;
@@ -53,13 +54,11 @@ public class SongArtist implements SluggerInterface, PermissionEntityInterface {
 
     @Override
     public boolean canDelete(User user) {
-        if (user == null) return false;
-        return false;
+        return this.artist.canDelete(user) || this.song.canDelete(user);
     }
 
     @Override
     public boolean canEdit(User user) {
-        if (user == null) return false;
-        return false;
+        return this.artist.canEdit(user) || this.song.canEdit(user);
     }
 }
