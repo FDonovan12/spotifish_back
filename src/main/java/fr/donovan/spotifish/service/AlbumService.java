@@ -4,6 +4,7 @@ import fr.donovan.spotifish.entity.Album;
 import fr.donovan.spotifish.repository.AlbumRepository;
 import fr.donovan.spotifish.dto.AlbumDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class AlbumService  {
 
     private final AlbumRepository albumRepository;
     private final ArtistService artistService;
+    private final SecurityService securityService;
 
     public List<Album> findAll() {
         return this.albumRepository.findAll();
@@ -25,11 +27,15 @@ public class AlbumService  {
 
     public Album getObjectById(String id) {
         Optional<Album> optionalAlbum = albumRepository.findById(id);
-        return optionalAlbum.orElseThrow(() -> new NotFoundSpotifishException("AlbumService - getObjectById("+id+")", "Album", id));
+        Album album = optionalAlbum.orElseThrow(() -> new NotFoundSpotifishException("AlbumService - getObjectById("+id+")", "Album", id));
+        securityService.assertCanSee(album);
+        return album;
     }
 
     public Boolean delete(String id) {
-        albumRepository.deleteById(id);
+        Album album = getObjectById(id);
+        securityService.assertCanDelete(album);
+        albumRepository.delete(album);
         return true;
     }
 
@@ -41,6 +47,7 @@ public class AlbumService  {
         Album album = new Album();
         if (id != null) {
             album = getObjectById(id);
+            securityService.assertCanEdit(album);
         }
         album = getObjectFromDTO(albumDTO, album);
         return albumRepository.saveAndFlush(album);
