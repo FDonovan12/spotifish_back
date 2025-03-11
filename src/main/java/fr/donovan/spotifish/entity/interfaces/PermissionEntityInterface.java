@@ -10,4 +10,7 @@ public interface PermissionEntityInterface {
 
     public boolean canEdit(User user);
 
+    public default boolean canSee(User user) {
+        return true;
+    }
 }

@@ -30,7 +30,7 @@ public class Playlist extends LikeableItem  {
     @Column(nullable = false)
     private String image;
 
-    @JsonView(JsonViewsPlaylist.CeratedAt.class)
+    @JsonView(JsonViewsPlaylist.CreatedAt.class)
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -66,6 +66,18 @@ public class Playlist extends LikeableItem  {
                         .toList().isEmpty()
         ) return true;
         if (user.isModerator()) return true;
+        return false;
+    }
+
+    @Override
+    public boolean canSee(User user) {
+        if (!this.isPrivate) return true;
+        if (
+                !this.contributors.stream()
+                        .map(Contributor::getUser)
+                        .filter(user::isTheSameUser)
+                        .toList().isEmpty()
+        ) return true;
         return false;
     }
 }

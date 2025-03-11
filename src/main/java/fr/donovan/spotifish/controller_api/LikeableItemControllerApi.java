@@ -34,18 +34,18 @@ public class LikeableItemControllerApi {
         return new CustomResponse<>(HttpStatus.OK.value(), "LikeableItemControllerApi - show("+slug+")", "LikeableItem", this.likeableItemService.getObjectBySlug(slug));
     }
     
-    @PostMapping(path = UrlRoute.URL_LIKEABLEITEM_NEW)
-    @JsonView(JsonViews.LikeableItemShowJsonViews.class)
-    @ResponseStatus(HttpStatus.CREATED)
-    public CustomResponse<LikeableItem> create(@Valid @RequestBody LikeableItemDTO likeableItemDTO) {
-        return new CustomResponse<>(HttpStatus.CREATED.value(), "LikeableItemControllerApi - create()", "LikeableItem", likeableItemService.persist(likeableItemDTO));
-    }
-    
-    @PutMapping(path = UrlRoute.URL_LIKEABLEITEM_EDIT + "/{id}")
-    @JsonView(JsonViews.LikeableItemShowJsonViews.class)
-    public CustomResponse<LikeableItem> update(@Valid @RequestBody LikeableItemDTO likeableItemDTO, @PathVariable String id) {
-        return new CustomResponse<>(HttpStatus.OK.value(), "LikeableItemControllerApi - update("+id+")", "LikeableItem", likeableItemService.persist(likeableItemDTO, id));
-    }
+//    @PostMapping(path = UrlRoute.URL_LIKEABLEITEM_NEW)
+//    @JsonView(JsonViews.LikeableItemShowJsonViews.class)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public CustomResponse<LikeableItem> create(@Valid @RequestBody LikeableItemDTO likeableItemDTO) {
+//        return new CustomResponse<>(HttpStatus.CREATED.value(), "LikeableItemControllerApi - create()", "LikeableItem", likeableItemService.persist(likeableItemDTO));
+//    }
+//
+//    @PutMapping(path = UrlRoute.URL_LIKEABLEITEM_EDIT + "/{id}")
+//    @JsonView(JsonViews.LikeableItemShowJsonViews.class)
+//    public CustomResponse<LikeableItem> update(@Valid @RequestBody LikeableItemDTO likeableItemDTO, @PathVariable String id) {
+//        return new CustomResponse<>(HttpStatus.OK.value(), "LikeableItemControllerApi - update("+id+")", "LikeableItem", likeableItemService.persist(likeableItemDTO, id));
+//    }
     
     @DeleteMapping(path = UrlRoute.URL_LIKEABLEITEM_DELETE + "/{id}")
     public CustomResponse<Boolean> delete(@PathVariable String id) {

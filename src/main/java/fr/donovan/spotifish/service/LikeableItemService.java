@@ -36,37 +36,37 @@ public class LikeableItemService  {
         return true;
     }
 
-    public LikeableItem persist(LikeableItemDTO likeableItemDTO) {
-        return persist(likeableItemDTO, null);
-    }
-
-    public LikeableItem persist(LikeableItemDTO likeableItemDTO, String id) {
-        LikeableItem likeableItem = new LikeableItem();
-        if (id != null) {
-            likeableItem = getObjectById(id);
-        }
-        likeableItem = getObjectFromDTO(likeableItemDTO, likeableItem);
-        return likeableItemRepository.saveAndFlush(likeableItem);
-    }
-
-    public LikeableItemDTO getDTOById(String id) {
-        LikeableItem likeableItem = getObjectById(id);
-        return getDTOFromObject(likeableItem);
-    }
-
-    public LikeableItemDTO getDTOFromObject(LikeableItem likeableItem) {
-        LikeableItemDTO likeableItemDTO = new LikeableItemDTO();
-        likeableItemDTO.setName(likeableItem.getName());
-        return likeableItemDTO;
-    }
-    public LikeableItem getObjectFromDTO(LikeableItemDTO likeableItemDTO) {
-        return getObjectFromDTO(likeableItemDTO, new LikeableItem());
-    }
-    public LikeableItem getObjectFromDTO(LikeableItemDTO likeableItemDTO, LikeableItem likeableItem) {
-        likeableItem.setName(likeableItemDTO.getName());
-        likeableItem.setSlug("test");
-        return likeableItem;
-    }
+//    public LikeableItem persist(LikeableItemDTO likeableItemDTO) {
+//        return persist(likeableItemDTO, null);
+//    }
+//
+//    public LikeableItem persist(LikeableItemDTO likeableItemDTO, String id) {
+//        LikeableItem likeableItem = new LikeableItem();
+//        if (id != null) {
+//            likeableItem = getObjectById(id);
+//        }
+//        likeableItem = getObjectFromDTO(likeableItemDTO, likeableItem);
+//        return likeableItemRepository.saveAndFlush(likeableItem);
+//    }
+//
+//    public LikeableItemDTO getDTOById(String id) {
+//        LikeableItem likeableItem = getObjectById(id);
+//        return getDTOFromObject(likeableItem);
+//    }
+//
+//    public LikeableItemDTO getDTOFromObject(LikeableItem likeableItem) {
+//        LikeableItemDTO likeableItemDTO = new LikeableItemDTO();
+//        likeableItemDTO.setName(likeableItem.getName());
+//        return likeableItemDTO;
+//    }
+//    public LikeableItem getObjectFromDTO(LikeableItemDTO likeableItemDTO) {
+//        return getObjectFromDTO(likeableItemDTO, new LikeableItem());
+//    }
+//    public LikeableItem getObjectFromDTO(LikeableItemDTO likeableItemDTO, LikeableItem likeableItem) {
+//        likeableItem.setName(likeableItemDTO.getName());
+//        likeableItem.setSlug("test");
+//        return likeableItem;
+//    }
 
 
 }

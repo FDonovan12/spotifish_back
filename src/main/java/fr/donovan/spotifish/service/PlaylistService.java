@@ -55,7 +55,7 @@ public class PlaylistService  {
         playlistDTO.setName(playlist.getName());
         playlistDTO.setDescription(playlist.getDescription());
         playlistDTO.setImage(playlist.getImage());
-        playlistDTO.setCeratedAt(playlist.getCreatedAt());
+        playlistDTO.setCreatedAt(playlist.getCreatedAt());
         playlistDTO.setIsPrivate(playlist.getIsPrivate());
         return playlistDTO;
     }
@@ -66,7 +66,7 @@ public class PlaylistService  {
         playlist.setName(playlistDTO.getName());
         playlist.setDescription(playlistDTO.getDescription());
         playlist.setImage(playlistDTO.getImage());
-        playlist.setCreatedAt(playlistDTO.getCeratedAt());
+        playlist.setCreatedAt(playlistDTO.getCreatedAt());
         playlist.setIsPrivate(playlistDTO.getIsPrivate());
         playlist.setSlug("test");
         return playlist;

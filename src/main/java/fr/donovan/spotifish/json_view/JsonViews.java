@@ -42,20 +42,20 @@ public class JsonViews {
     public interface SongArtistListJsonViews extends AllJsonViews, MinimalSongArtist, MinimalSong, MinimalArtist {}
     public interface SongArtistShowJsonViews extends AllJsonViews, AllSongArtist, MinimalSong, MinimalArtist {}
 
-    public interface SongListJsonViews extends AllJsonViews, MinimalSong, MinimalMusicalGenre {}
-    public interface SongShowJsonViews extends AllJsonViews, AllSong, MinimalMusicalGenre {}
+    public interface SongListJsonViews extends AllJsonViews, FromSongSongPlaylistWithoutId, MinimalMusicalGenre {}
+    public interface SongShowJsonViews extends AllJsonViews, FromSongSongPlaylistWithoutId, MinimalMusicalGenre {}
 
-    public interface SongPlaylistListJsonViews extends AllJsonViews, MinimalSongPlaylist, MinimalSong, MinimalPlaylist, MinimalContributor {}
+    public interface SongPlaylistListJsonViews extends AllJsonViews, AllSongPlaylist, MinimalSong, MinimalPlaylist, MinimalContributor {}
     public interface SongPlaylistShowJsonViews extends AllJsonViews, AllSongPlaylist, MinimalSong, MinimalPlaylist, MinimalContributor {}
 
-    public interface ContributorListJsonViews extends AllJsonViews, MinimalContributor, MinimalUser, MinimalPlaylist {}
-    public interface ContributorShowJsonViews extends AllJsonViews, AllContributor, MinimalUser, MinimalPlaylist {}
+    public interface ContributorListJsonViews extends AllJsonViews, FromContributorSongPlaylistWithoutId, MinimalUser, MinimalPlaylist {}
+    public interface ContributorShowJsonViews extends AllJsonViews, FromContributorSongPlaylistWithoutId, MinimalUser, MinimalPlaylist {}
 
     public interface SharedListJsonViews extends AllJsonViews, MinimalShared, MinimalPlaylist {}
     public interface SharedShowJsonViews extends AllJsonViews, AllShared, MinimalPlaylist {}
 
-    public interface PlaylistListJsonViews extends AllJsonViews, MinimalPlaylist, MinimalShared, MinimalContributor {}
-    public interface PlaylistShowJsonViews extends AllJsonViews, AllPlaylist, MinimalShared, MinimalContributor {}
+    public interface PlaylistListJsonViews extends AllJsonViews, MinimalPlaylist, FromPlaylistSongPlaylistWithoutId, MinimalShared, MinimalContributor, MinimalSong {}
+    public interface PlaylistShowJsonViews extends AllJsonViews, MinimalPlaylist, FromPlaylistSongPlaylistWithoutId, MinimalShared, MinimalContributor, MinimalSong {}
 
     public interface MusicalGenreListJsonViews extends AllJsonViews, MinimalMusicalGenre {}
     public interface MusicalGenreShowJsonViews extends AllJsonViews, AllMusicalGenre {}
