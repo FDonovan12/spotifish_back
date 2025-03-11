@@ -97,4 +97,16 @@ public class User extends LikeableItem implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+    @Override
+    public boolean canDelete(User user) {
+        if (user == null) return false;
+        return false;
+    }
+
+    @Override
+    public boolean canEdit(User user) {
+        if (user == null) return true;
+        return false;
+    }
 }

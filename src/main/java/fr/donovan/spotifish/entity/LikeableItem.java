@@ -43,4 +43,16 @@ public class LikeableItem implements SluggerInterface, PermissionEntityInterface
     public String getField() {
         return "" + getUuid();
     }
+
+    @Override
+    public boolean canDelete(User user) {
+        if (user == null) return false;
+        return false;
+    }
+
+    @Override
+    public boolean canEdit(User user) {
+        if (user == null) return false;
+        return false;
+    }
 }

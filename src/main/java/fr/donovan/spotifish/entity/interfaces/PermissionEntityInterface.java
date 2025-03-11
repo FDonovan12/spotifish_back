@@ -6,16 +6,8 @@ import static org.springframework.security.authorization.AuthorityAuthorizationM
 
 public interface PermissionEntityInterface {
 
-    public default boolean canDelete(User user) {
-        if (user == null) return false;
-        if (user.isModerator()) return true;
-        return false;
-    }
+    public boolean canDelete(User user);
 
-    public default boolean canEdit(User user) {
-        if (user == null) return false;
-        if (user.isArtist()) return true;
-        return false;
-    }
+    public boolean canEdit(User user);
 
 }

@@ -49,4 +49,16 @@ public class Playlist extends LikeableItem  {
     @OneToMany(mappedBy = "playlist")
     @JsonView(JsonViewsPlaylist.SongPlaylists.class)
     private List<SongPlaylist> songPlaylists = new ArrayList<>();
+
+    @Override
+    public boolean canDelete(User user) {
+        if (user == null) return false;
+        return false;
+    }
+
+    @Override
+    public boolean canEdit(User user) {
+        if (user == null) return false;
+        return false;
+    }
 }

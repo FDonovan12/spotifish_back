@@ -29,4 +29,16 @@ public class MusicalGenre extends LikeableItem  {
     @JsonView(JsonViewsMusicalGenre.Image.class)
     @Column(nullable = false)
     private String image;
+
+    @Override
+    public boolean canDelete(User user) {
+        if (user == null) return false;
+        return false;
+    }
+
+    @Override
+    public boolean canEdit(User user) {
+        if (user == null) return false;
+        return false;
+    }
 }

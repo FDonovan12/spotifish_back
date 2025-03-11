@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanSerializer;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import fr.donovan.spotifish.entity.LikeableItem;
 import fr.donovan.spotifish.entity.interfaces.PermissionEntityInterface;
-import fr.donovan.spotifish.security.CanEditService;
 import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,14 +18,13 @@ public class SecurityBeanSerializerModifier extends BeanSerializerModifier {
 
     @Override
     public JsonSerializer<?> modifySerializer(
-            SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
-        System.out.println("SecurityBeanSerializerModifier.modifySerializer");
+            SerializationConfig config,
+            BeanDescription beanDesc,
+            JsonSerializer<?> serializer) {
         if (PermissionEntityInterface.class.isAssignableFrom(beanDesc.getBeanClass())) {
-            System.out.println(beanDesc.getBeanClass());
             if (serializer instanceof BeanSerializer beanSerializer) {
                 return new CustomEntitySerializer(beanSerializer, securityService);
             }
-//            return new CustomEntitySerializer((JsonSerializer<Object>) serializer, canEditService);
         }
 
         return serializer;
