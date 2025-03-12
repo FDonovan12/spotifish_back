@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
@@ -25,6 +26,9 @@ public class UserLikeableItem implements SluggerInterface, PermissionEntityInter
     @EmbeddedId
     @JsonView(JsonViewsUserLikeableItem.Id.class)
     private UserLikeableItemId id;
+
+    @JsonView(JsonViewsUser.Uuid.class)
+    private String uuid;
 
     @JsonView(JsonViewsUserLikeableItem.AddAt.class)
     @Column(nullable = false)
@@ -43,12 +47,23 @@ public class UserLikeableItem implements SluggerInterface, PermissionEntityInter
     private LikeableItem likeableItem;
 
     @JsonView(JsonViewsUserLikeableItem.Slug.class)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String slug;
 
     @Override
     public String getField() {
-        return "" + getId();
+        return this.user.getSlug() + '_' + this.likeableItem.getSlug();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID().toString();
+        }
+    }
+
+    public String getIdToSerializer() {
+        return this.uuid;
     }
 
     @Override

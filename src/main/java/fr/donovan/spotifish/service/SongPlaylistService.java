@@ -83,7 +83,7 @@ public class SongPlaylistService  {
         songPlaylist.setPosition(songPlaylistDTO.getPosition());
         songPlaylist.setSong(songService.getObjectById(songPlaylistDTO.getSongId()));
         songPlaylist.setPlaylist(playlistService.getObjectById(songPlaylistDTO.getPlaylistId()));
-        ContributorId contributorId = new ContributorId(songPlaylistDTO.getPlaylistId(), songPlaylistDTO.getUserId());
+        ContributorId contributorId = new ContributorId(songPlaylistDTO.getUserId(), songPlaylistDTO.getPlaylistId());
         songPlaylist.setContributor(contributorService.getObjectById(contributorId));
         songPlaylist.setSlug("test");
         return songPlaylist;

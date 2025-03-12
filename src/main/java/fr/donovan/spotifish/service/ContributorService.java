@@ -1,6 +1,8 @@
 package fr.donovan.spotifish.service;
 
 import fr.donovan.spotifish.entity.Contributor;
+import fr.donovan.spotifish.entity.Playlist;
+import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.ContributorRepository;
 import fr.donovan.spotifish.dto.ContributorDTO;
@@ -33,6 +35,7 @@ public class ContributorService  {
         securityService.assertCanSee(contributor);
         return contributor;
     }
+
     public Contributor getObjectBySlug(String slug) {
         Optional<Contributor> optionalContributor = contributorRepository.findBySlug(slug);
         Contributor contributor = optionalContributor.orElseThrow(() -> new NotFoundSpotifishException("ContributorService - getObjectBySlug("+slug+")", "Contributor", slug));

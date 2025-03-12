@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import fr.donovan.spotifish.entity.Album;
 import fr.donovan.spotifish.custom_response.CustomResponse;
 import fr.donovan.spotifish.dto.AlbumDTO;
+import fr.donovan.spotifish.json_view.JsonViewsLikeableItem;
 import fr.donovan.spotifish.service.AlbumService;
 import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;

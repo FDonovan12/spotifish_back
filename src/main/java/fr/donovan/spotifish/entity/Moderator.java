@@ -6,9 +6,7 @@ import fr.donovan.spotifish.entity.*;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -18,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Getter
 @Setter

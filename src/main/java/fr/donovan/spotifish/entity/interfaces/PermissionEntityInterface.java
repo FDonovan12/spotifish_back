@@ -6,11 +6,13 @@ import static org.springframework.security.authorization.AuthorityAuthorizationM
 
 public interface PermissionEntityInterface {
 
-    public boolean canDelete(User user);
-
-    public boolean canEdit(User user);
+    public Object getIdToSerializer();
 
     public default boolean canSee(User user) {
         return true;
     }
+
+    public boolean canEdit(User user);
+
+    public boolean canDelete(User user);
 }

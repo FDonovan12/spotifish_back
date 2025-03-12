@@ -3,6 +3,7 @@ package fr.donovan.spotifish.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.donovan.spotifish.entity.*;
+import fr.donovan.spotifish.entity.embed.ContributorId;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
@@ -45,12 +46,16 @@ public class Historical implements SluggerInterface, PermissionEntityInterface {
     private Song song;
 
     @JsonView(JsonViewsHistorical.Slug.class)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String slug;
 
     @Override
     public String getField() {
         return "" + getUuid();
+    }
+
+    public String getIdToSerializer() {
+        return this.uuid;
     }
 
     @Override

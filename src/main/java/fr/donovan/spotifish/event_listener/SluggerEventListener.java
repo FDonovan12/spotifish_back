@@ -5,8 +5,10 @@ import fr.donovan.spotifish.utils.Slugger;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
+@Component
 public class SluggerEventListener {
 
     @PrePersist

@@ -25,9 +25,6 @@ public class PlaylistDTO {
     @NotBlank(message = "The image can't be blank")
     private String image;
     
-    @NotNull(message = "The createdAt can't be null")
-    private LocalDateTime createdAt;
-    
     @NotNull(message = "The isPrivate can't be null")
     private Boolean isPrivate;
 }

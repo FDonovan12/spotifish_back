@@ -73,6 +73,7 @@ public class SongService  {
         song.setName(songDTO.getName());
         song.setPath(songDTO.getPath());
         song.setDuration(songDTO.getDuration());
+        song.setCreatedAt(songDTO.getCreatedAt());
         song.setImage(songDTO.getImage());
         song.setNumberOfListen(songDTO.getNumberOfListen());
         song.setSlug("test");

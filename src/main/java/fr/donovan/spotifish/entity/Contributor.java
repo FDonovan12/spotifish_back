@@ -7,26 +7,28 @@ import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Data
 @Entity
 public class Contributor implements SluggerInterface, PermissionEntityInterface {
 
     @EmbeddedId
     @JsonView(JsonViewsContributor.Id.class)
     private ContributorId id;
+
+    @JsonView(JsonViewsUser.Uuid.class)
+    private String uuid;
 
     @JsonView(JsonViewsContributor.IsOwner.class)
     @Column(nullable = false)
@@ -49,12 +51,23 @@ public class Contributor implements SluggerInterface, PermissionEntityInterface 
     private Playlist playlist;
 
     @JsonView(JsonViewsContributor.Slug.class)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String slug;
 
     @Override
     public String getField() {
-        return "" + getId();
+        return this.playlist.getSlug() + '_' + this.user.getSlug();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID().toString();
+        }
+    }
+
+    public String getIdToSerializer() {
+        return this.uuid;
     }
 
     @Override

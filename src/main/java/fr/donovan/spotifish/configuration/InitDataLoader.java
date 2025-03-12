@@ -228,7 +228,6 @@ public class InitDataLoader implements CommandLineRunner {
             playlistDTO.setName(faker.name().name());
             playlistDTO.setDescription(faker.backToTheFuture().quote());
             playlistDTO.setImage(faker.internet().url());
-            playlistDTO.setCreatedAt(faker.timeAndDate().birthday(-2, 10).atStartOfDay());
             playlistDTO.setIsPrivate(false);
             playlistService.persist(playlistDTO);
         }

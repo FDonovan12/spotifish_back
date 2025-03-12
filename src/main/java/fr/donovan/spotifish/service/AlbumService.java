@@ -72,6 +72,7 @@ public class AlbumService  {
     public Album getObjectFromDTO(AlbumDTO albumDTO, Album album) {
         album.setName(albumDTO.getName());
         album.setDescription(albumDTO.getDescription());
+        album.setCreatedAt(albumDTO.getCreatedAt());
         album.setImage(albumDTO.getImage());
         album.setArtist(artistService.getObjectById(albumDTO.getArtistId()));
         album.setSlug("test");

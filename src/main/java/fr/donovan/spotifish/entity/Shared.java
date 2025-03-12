@@ -39,12 +39,16 @@ public class Shared implements SluggerInterface, PermissionEntityInterface {
     private Playlist user;
 
     @JsonView(JsonViewsShared.Slug.class)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String slug;
 
     @Override
     public String getField() {
         return "" + getUuid();
+    }
+
+    public String getIdToSerializer() {
+        return this.getUuid();
     }
 
     @Override

@@ -58,6 +58,7 @@ public class SongArtistService  {
             securityService.assertCanEdit(songArtist);
         }
         songArtist = getObjectFromDTO(songArtistDTO, songArtist);
+
         return songArtistRepository.saveAndFlush(songArtist);
     }
 

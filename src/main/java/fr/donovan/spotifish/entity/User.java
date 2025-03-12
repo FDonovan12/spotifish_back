@@ -7,9 +7,7 @@ import fr.donovan.spotifish.entity.*;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,10 +19,12 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Data
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("USER")
@@ -57,7 +57,6 @@ public class User extends LikeableItem implements UserDetails {
 
     @CreationTimestamp
     @JsonView(JsonViewsUser.CreatedAt.class)
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @JsonView(JsonViewsUser.ActivationCode.class)

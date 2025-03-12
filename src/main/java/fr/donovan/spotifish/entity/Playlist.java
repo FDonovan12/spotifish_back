@@ -6,9 +6,8 @@ import fr.donovan.spotifish.entity.*;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -30,8 +29,8 @@ public class Playlist extends LikeableItem  {
     @Column(nullable = false)
     private String image;
 
+    @CreationTimestamp
     @JsonView(JsonViewsPlaylist.CreatedAt.class)
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @JsonView(JsonViewsPlaylist.IsPrivate.class)

@@ -7,6 +7,7 @@ import fr.donovan.spotifish.event_listener.SluggerEventListener;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,9 +22,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Data
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-@EntityListeners(SluggerEventListener.class)
 public abstract class LikeableItem implements SluggerInterface, PermissionEntityInterface {
 
     @Id
@@ -36,11 +37,15 @@ public abstract class LikeableItem implements SluggerInterface, PermissionEntity
     private String name;
 
     @JsonView(JsonViewsLikeableItem.Slug.class)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String slug;
 
     @Override
     public String getField() {
-        return "" + getUuid();
+        return "" + this.getUuid();
+    }
+
+    public String getIdToSerializer() {
+        return this.getUuid();
     }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 version="2.1">
+    <persistence-unit-metadata>
+        <persistence-unit-defaults>
+            <entity-listeners>
+                <entity-listener class="fr.donovan.spotifish.event_listener.SluggerEventListener"/>
+            </entity-listeners>
+        </persistence-unit-defaults>
+    </persistence-unit-metadata>
+</entity-mappings>

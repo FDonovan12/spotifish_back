@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
@@ -27,13 +28,15 @@ public class SongAlbum implements SluggerInterface, PermissionEntityInterface {
     @JsonView(JsonViewsSongAlbum.Id.class)
     private SongAlbumId id;
 
+    @JsonView(JsonViewsUser.Uuid.class)
+    private String uuid;
+
     @JsonView(JsonViewsSongAlbum.Position.class)
     @Column(nullable = false)
     private int position;
 
     @CreationTimestamp
     @JsonView(JsonViewsSongAlbum.CreatedAt.class)
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @MapsId("songId")
@@ -49,12 +52,24 @@ public class SongAlbum implements SluggerInterface, PermissionEntityInterface {
     private Album album;
 
     @JsonView(JsonViewsSongAlbum.Slug.class)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String slug;
 
     @Override
     public String getField() {
-        return "" + getId();
+        return this.song.getSlug() + '_' + this.album.getSlug();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID().toString();
+        }
+    }
+
+    @Override
+    public String getIdToSerializer() {
+        return this.uuid;
     }
 
     @Override

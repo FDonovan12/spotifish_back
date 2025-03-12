@@ -19,10 +19,7 @@ public class SongPlaylistDTO {
     
     @NotNull(message = "The position can't be null")
     private int position;
-    
-    @NotNull(message = "The createdAt can't be null")
-    private LocalDateTime createdAt;
-    
+
     @NotNull(message = "The song can't be null")
     private String songId;
     
