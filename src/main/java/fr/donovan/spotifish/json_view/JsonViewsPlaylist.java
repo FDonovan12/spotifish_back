@@ -7,6 +7,7 @@ public class JsonViewsPlaylist {
 
     public interface AllPlaylistWithoutId extends Description, Image, CreatedAt, IsPrivate, Contributors, SongPlaylists, JsonViewsLikeableItem.AllLikeableItemWithoutId {}
     public interface MinimalPlaylistWithoutId extends Description, Image, CreatedAt, IsPrivate, JsonViewsLikeableItem.MinimalLikeableItemWithoutId {}
+    public interface SearchPlaylistWithoutId extends Image, CreatedAt, Contributors, JsonViewsLikeableItem.MinimalLikeableItemWithoutId {}
 
     public interface Description  {}
     public interface Image  {}

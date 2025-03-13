@@ -8,6 +8,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -85,4 +86,7 @@ public class SongService  {
     }
 
 
+    public ArrayList<Song> search(String search) {
+        return songRepository.findByNameContaining(search);
+    }
 }

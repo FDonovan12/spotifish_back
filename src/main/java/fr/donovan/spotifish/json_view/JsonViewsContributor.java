@@ -7,6 +7,7 @@ public class JsonViewsContributor {
 
     public interface AllContributorWithoutId extends IsOwner, StillContributing, User, Playlist, Slug {}
     public interface MinimalContributorWithoutId extends IsOwner, StillContributing, Slug {}
+    public interface FromPlaylistContributorWithoutId extends IsOwner, Slug, User {}
 
     public interface Id  {}
     public interface IsOwner  {}

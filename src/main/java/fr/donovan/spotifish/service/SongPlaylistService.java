@@ -29,7 +29,7 @@ public class SongPlaylistService  {
         return this.songPlaylistRepository.findAll();
     }
 
-    public SongPlaylist getObjectById(Long id) {
+    public SongPlaylist getObjectById(String id) {
         Optional<SongPlaylist> optionalSongPlaylist = songPlaylistRepository.findById(id);
         SongPlaylist songPlaylist = optionalSongPlaylist.orElseThrow(() -> new NotFoundSpotifishException("SongPlaylistService - getObjectById("+id+")", "SongPlaylist", id));
         securityService.assertCanSee(songPlaylist);
@@ -42,7 +42,7 @@ public class SongPlaylistService  {
         return songPlaylist;
     }
 
-    public Boolean delete(Long id) {
+    public Boolean delete(String id) {
         SongPlaylist songPlaylist = getObjectById(id);
         securityService.assertCanDelete(songPlaylist);
         songPlaylistRepository.delete(songPlaylist);
@@ -53,7 +53,7 @@ public class SongPlaylistService  {
         return persist(songPlaylistDTO, null);
     }
 
-    public SongPlaylist persist(SongPlaylistDTO songPlaylistDTO, Long id) {
+    public SongPlaylist persist(SongPlaylistDTO songPlaylistDTO, String id) {
         SongPlaylist songPlaylist = new SongPlaylist();
         if (id != null) {
             songPlaylist = getObjectById(id);
@@ -63,7 +63,7 @@ public class SongPlaylistService  {
         return songPlaylistRepository.saveAndFlush(songPlaylist);
     }
 
-    public SongPlaylistDTO getDTOById(Long id) {
+    public SongPlaylistDTO getDTOById(String id) {
         SongPlaylist songPlaylist = getObjectById(id);
         return getDTOFromObject(songPlaylist);
     }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -50,5 +51,11 @@ public class LikeableItemControllerApi {
     @DeleteMapping(path = UrlRoute.URL_LIKEABLEITEM_DELETE + "/{id}")
     public CustomResponse<Boolean> delete(@PathVariable String id) {
         return new CustomResponse<>(HttpStatus.OK.value(), "LikeableItemControllerApi - delete("+id+")", "LikeableItem", likeableItemService.delete(id));
+    }
+
+    @GetMapping(path = UrlRoute.URL_LIKEABLEITEM + "/search/{search}")
+    @JsonView(JsonViews.LikeableItemSearchJsonViews.class)
+    public CustomResponse<Map<String, List<? extends LikeableItem>>> search(@PathVariable String search) {
+        return new CustomResponse<>(HttpStatus.OK.value(), "LikeableItemControllerApi - list()", "LikeableItem", this.likeableItemService.search(search));
     }
 }

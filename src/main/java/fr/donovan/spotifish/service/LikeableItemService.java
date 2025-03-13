@@ -1,6 +1,9 @@
 package fr.donovan.spotifish.service;
 
+import fr.donovan.spotifish.entity.Artist;
 import fr.donovan.spotifish.entity.LikeableItem;
+import fr.donovan.spotifish.entity.Playlist;
+import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.repository.LikeableItemRepository;
 import fr.donovan.spotifish.dto.LikeableItemDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
@@ -8,9 +11,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 @AllArgsConstructor
@@ -18,6 +19,9 @@ import java.util.stream.Stream;
 public class LikeableItemService  {
 
     private final LikeableItemRepository likeableItemRepository;
+    private final SongService songService;
+    private final PlaylistService playlistService;
+    private final ArtistService artistService;
     private final SecurityService securityService;
 
     public List<LikeableItem> findAll() {
@@ -77,5 +81,17 @@ public class LikeableItemService  {
 //        return likeableItem;
 //    }
 
+    public Map<String, List<? extends LikeableItem>> search(String search) {
+        Map<String, List<? extends LikeableItem>> result = new HashMap<>();
 
+        List<Song> songs = songService.search(search);
+        List<Playlist> playlists = playlistService.search(search);
+        List<Artist> artists = artistService.search(search);
+
+        result.put("songs", songs);
+        result.put("playlists", playlists);
+        result.put("artists", artists);
+
+        return result;
+    }
 }

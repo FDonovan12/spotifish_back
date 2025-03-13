@@ -7,6 +7,8 @@ public class JsonViewsSongArtist {
 
     public interface AllSongArtistWithoutId extends IsPrincipalArtist, Song, Artist, Slug {}
     public interface MinimalSongArtistWithoutId extends IsPrincipalArtist, Slug {}
+    public interface FromSongSongArtistWithoutId extends IsPrincipalArtist, Slug, Artist {}
+    public interface FromArtistSongArtistWithoutId extends IsPrincipalArtist, Slug, Song {}
 
     public interface Id  {}
     public interface IsPrincipalArtist  {}

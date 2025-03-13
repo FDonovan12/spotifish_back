@@ -26,7 +26,7 @@ public class SongPlaylist implements SluggerInterface, PermissionEntityInterface
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(JsonViewsSongPlaylist.Id.class)
-    private Long id;
+    private String uuid;
 
     @JsonView(JsonViewsSongPlaylist.Position.class)
     @Column(nullable = false)
@@ -60,12 +60,12 @@ public class SongPlaylist implements SluggerInterface, PermissionEntityInterface
 
     @Override
     public String getField() {
-        return "" + getId();
+        return "" + this.uuid;
     }
 
     @Override
-    public Long getIdToSerializer() {
-        return this.id;
+    public String getIdToSerializer() {
+        return this.uuid;
     }
 
     @Override

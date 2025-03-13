@@ -20,5 +20,4 @@ public class SluggerEventListener {
 
         sluggerInterface.setSlug(Slugger.slugify(sluggerInterface.getField()));
     }
-
 }

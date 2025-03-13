@@ -42,7 +42,7 @@ public abstract class LikeableItem implements SluggerInterface, PermissionEntity
 
     @Override
     public String getField() {
-        return "" + this.getUuid();
+        return this.name + " " + this.getUuid().substring(0, 8);
     }
 
     public String getIdToSerializer() {

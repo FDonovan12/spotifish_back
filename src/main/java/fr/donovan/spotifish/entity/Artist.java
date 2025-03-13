@@ -47,6 +47,11 @@ public class Artist extends User  {
     private List<Artist> group = new ArrayList<>();
 
     @Override
+    public String getField() {
+        return "" + this.getUuid();
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(
                 new SimpleGrantedAuthority("ROLE_USER"),

@@ -24,7 +24,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Data
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("USER")

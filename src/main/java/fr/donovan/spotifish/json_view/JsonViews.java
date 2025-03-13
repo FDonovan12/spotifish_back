@@ -23,6 +23,12 @@ public class JsonViews {
 
     public interface LikeableItemListJsonViews extends AllJsonViews, MinimalLikeableItem {}
     public interface LikeableItemShowJsonViews extends AllJsonViews, AllLikeableItem {}
+    public interface LikeableItemSearchJsonViews extends
+            AllJsonViews,
+            SearchSongWithoutId,
+            FromSongSongArtistWithoutId,
+            SearchPlaylistWithoutId,
+            FromPlaylistContributorWithoutId {}
 
     public interface ArtistListJsonViews extends AllJsonViews, MinimalArtist, MinimalAlbum {}
     public interface ArtistShowJsonViews extends AllJsonViews, AllArtist, MinimalAlbum {}

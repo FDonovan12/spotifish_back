@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -84,4 +85,7 @@ public class ArtistService  {
     }
 
 
+    public ArrayList<Artist> search(String search) {
+        return artistRepository.findByNameContaining(search);
+    }
 }
