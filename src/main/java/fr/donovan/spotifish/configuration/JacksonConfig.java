@@ -17,18 +17,6 @@ public class JacksonConfig {
 
     private final SecurityBeanSerializerModifier securityBeanSerializerModifier;
 
-//    @Bean
-//    public ObjectMapper objectMapper() {
-//        ObjectMapper mapper = new ObjectMapper();
-//        SimpleModule module = new SimpleModule("MyBooleanSerializer");
-//        mapper.registerModule(new JavaTimeModule()); // Ajout du support pour java.time
-//        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-////        module.addSerializer(PermissionEntityInterface.class, new CustomEntitySerializer());
-//        module.setSerializerModifier(securityBeanSerializerModifier);
-//
-//        mapper.registerModule(module);
-//        return mapper;
-//    }
     @Bean
     public SimpleModule customModule() {
         SimpleModule module = new SimpleModule("CanEditSerializer");
