@@ -4,17 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class ResponseException<T> extends CustomResponse<T> {
+public class ResponseException<String> extends CustomResponse<String> {
 
-    private String field;
+    private Object value;
 
-    public ResponseException(int code, String message, String entity, T value, String field) {
-        super(code, message, entity, value);
-        this.field = field;
+    public ResponseException(HttpStatus httpStatus, String message, Object value) {
+        super(httpStatus, message);
+        this.value = value;
     }
 }

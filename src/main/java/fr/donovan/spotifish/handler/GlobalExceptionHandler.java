@@ -21,11 +21,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundSpotifishException.class) // L'exception qui doit être "catch"
     ResponseException notFoundResponseHandler(NotFoundSpotifishException e) {
         return new ResponseException(
-            HttpStatus.NOT_FOUND.value(),
-            e.getType(),
-            e.getField(),
-            e.getValue(),
-            e.getMessage()
+            HttpStatus.NOT_FOUND,
+            e.getMessage(),
+            e.getValue()
         );
     }
     
@@ -35,11 +33,9 @@ public class GlobalExceptionHandler {
     public ResponseException handleException(MethodArgumentNotValidException e) {
         List<ErrorModel> errorModels = processErrors(e);
         return new ResponseException(
-                HttpStatus.UNPROCESSABLE_ENTITY.value(),
-                null,
-                null,
-                errorModels,
-                e.getMessage()
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                e.getMessage(),
+                errorModels
         );
     }
 
