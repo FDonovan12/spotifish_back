@@ -1,6 +1,5 @@
 package fr.donovan.spotifish.service;
 
-import fr.donovan.spotifish.entity.Contributor;
 import fr.donovan.spotifish.entity.SongPlaylist;
 import fr.donovan.spotifish.entity.embed.ContributorId;
 import fr.donovan.spotifish.repository.SongPlaylistRepository;
@@ -9,6 +8,7 @@ import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -24,12 +24,11 @@ public class SongPlaylistService  {
     private final PlaylistService playlistService;
     private final ContributorService contributorService;
     private final SecurityService securityService;
-
     public List<SongPlaylist> findAll() {
         return this.songPlaylistRepository.findAll();
     }
 
-    public SongPlaylist getObjectById(String id) {
+    public SongPlaylist getObjectById(Long id) {
         Optional<SongPlaylist> optionalSongPlaylist = songPlaylistRepository.findById(id);
         SongPlaylist songPlaylist = optionalSongPlaylist.orElseThrow(() -> new NotFoundSpotifishException("SongPlaylistService - getObjectById("+id+")", "SongPlaylist", id));
         securityService.assertCanSee(songPlaylist);
@@ -42,7 +41,7 @@ public class SongPlaylistService  {
         return songPlaylist;
     }
 
-    public Boolean delete(String id) {
+    public Boolean delete(Long id) {
         SongPlaylist songPlaylist = getObjectById(id);
         securityService.assertCanDelete(songPlaylist);
         songPlaylistRepository.delete(songPlaylist);
@@ -53,7 +52,7 @@ public class SongPlaylistService  {
         return persist(songPlaylistDTO, null);
     }
 
-    public SongPlaylist persist(SongPlaylistDTO songPlaylistDTO, String id) {
+    public SongPlaylist persist(SongPlaylistDTO songPlaylistDTO, Long id) {
         SongPlaylist songPlaylist = new SongPlaylist();
         if (id != null) {
             songPlaylist = getObjectById(id);
@@ -63,7 +62,7 @@ public class SongPlaylistService  {
         return songPlaylistRepository.saveAndFlush(songPlaylist);
     }
 
-    public SongPlaylistDTO getDTOById(String id) {
+    public SongPlaylistDTO getDTOById(Long id) {
         SongPlaylist songPlaylist = getObjectById(id);
         return getDTOFromObject(songPlaylist);
     }
@@ -88,6 +87,4 @@ public class SongPlaylistService  {
         songPlaylist.setSlug("test");
         return songPlaylist;
     }
-
-
 }

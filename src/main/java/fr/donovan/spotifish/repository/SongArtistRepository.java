@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface SongArtistRepository extends JpaRepository<SongArtist, SongArtistId>, EntitySlugRepositoryInterface<SongArtist> {
-@Query("SELECT e FROM SongArtist AS e ORDER BY RAND() LIMIT 1")
+
+    @Query("SELECT e FROM SongArtist AS e ORDER BY RAND() LIMIT 1")
     SongArtist findRandom();
 }

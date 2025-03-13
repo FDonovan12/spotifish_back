@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MusicalGenreRepository extends JpaRepository<MusicalGenre, String>{
-@Query("SELECT e FROM MusicalGenre AS e ORDER BY RAND() LIMIT 1")
+public interface MusicalGenreRepository extends JpaRepository<MusicalGenre, String>, EntitySlugRepositoryInterface<MusicalGenre> {
+
+    @Query("SELECT e FROM MusicalGenre AS e ORDER BY RAND() LIMIT 1")
     MusicalGenre findRandom();
 }

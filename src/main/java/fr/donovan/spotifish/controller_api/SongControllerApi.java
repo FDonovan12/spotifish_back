@@ -55,6 +55,6 @@ public class SongControllerApi {
     @GetMapping(path = UrlRoute.URL_SONG+"/searchSongByEverything")
     @JsonView(JsonViews.SongListJsonViews.class)
     public CustomResponse<List<Song>> searchSongByEverything() {
-        return CustomListResponse.success(songService.query());
+        return CustomListResponse.success(songService.searchSongByEverything());
     }
 }

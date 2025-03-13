@@ -5,17 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SongRepository extends JpaRepository<Song, String>{
+public interface SongRepository extends JpaRepository<Song, String>, EntitySlugRepositoryInterface<Song> {
 
     @Query("SELECT e FROM Song AS e ORDER BY RAND() LIMIT 1")
     public List<Song> searchSongByEverything();
 
-@Query("SELECT e FROM Song AS e ORDER BY RAND() LIMIT 1")
+    @Query("SELECT e FROM Song AS e ORDER BY RAND() LIMIT 1")
     Song findRandom();
 
     @Query("SELECT s, COUNT(s) FROM Song s " +
@@ -23,5 +22,5 @@ public interface SongRepository extends JpaRepository<Song, String>{
             "WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "GROUP BY s " +
             "ORDER BY COUNT(s) DESC")
-    ArrayList<Song> findByNameContaining(String search);
+    List<Song> findByNameContaining(String search);
 }

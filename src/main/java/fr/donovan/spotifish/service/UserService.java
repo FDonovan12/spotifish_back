@@ -37,6 +37,12 @@ public class UserService implements UserDetailsService {
         securityService.assertCanSee(user);
         return user;
     }
+    public User getObjectBySlug(String slug) {
+        Optional<User> optionalUser = userRepository.findBySlug(slug);
+        User user = optionalUser.orElseThrow(() -> new NotFoundSpotifishException("UserService - getObjectBySlug("+slug+")", "User", slug));
+        securityService.assertCanSee(user);
+        return user;
+    }
 
     public Boolean delete(String id) {
         User user = getObjectById(id);

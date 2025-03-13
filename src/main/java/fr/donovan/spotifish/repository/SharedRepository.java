@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface SharedRepository extends JpaRepository<Shared, String>, EntitySlugRepositoryInterface<Shared> {
-@Query("SELECT e FROM Shared AS e ORDER BY RAND() LIMIT 1")
+
+    @Query("SELECT e FROM Shared AS e ORDER BY RAND() LIMIT 1")
     Shared findRandom();
 }

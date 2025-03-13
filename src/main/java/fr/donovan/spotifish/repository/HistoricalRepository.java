@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface HistoricalRepository extends JpaRepository<Historical, String>, EntitySlugRepositoryInterface<Historical> {
-@Query("SELECT e FROM Historical AS e ORDER BY RAND() LIMIT 1")
+
+    @Query("SELECT e FROM Historical AS e ORDER BY RAND() LIMIT 1")
     Historical findRandom();
 }

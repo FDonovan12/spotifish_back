@@ -8,6 +8,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,6 @@ public class SharedService  {
     private final SharedRepository sharedRepository;
     private final PlaylistService playlistService;
     private final SecurityService securityService;
-
     public List<Shared> findAll() {
         return this.sharedRepository.findAll();
     }
@@ -81,6 +81,4 @@ public class SharedService  {
         shared.setSlug("test");
         return shared;
     }
-
-
 }

@@ -8,6 +8,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,6 @@ public class AlbumService  {
     private final AlbumRepository albumRepository;
     private final ArtistService artistService;
     private final SecurityService securityService;
-
     public List<Album> findAll() {
         return this.albumRepository.findAll();
     }
@@ -28,6 +28,12 @@ public class AlbumService  {
     public Album getObjectById(String id) {
         Optional<Album> optionalAlbum = albumRepository.findById(id);
         Album album = optionalAlbum.orElseThrow(() -> new NotFoundSpotifishException("AlbumService - getObjectById("+id+")", "Album", id));
+        securityService.assertCanSee(album);
+        return album;
+    }
+    public Album getObjectBySlug(String slug) {
+        Optional<Album> optionalAlbum = albumRepository.findBySlug(slug);
+        Album album = optionalAlbum.orElseThrow(() -> new NotFoundSpotifishException("AlbumService - getObjectBySlug("+slug+")", "Album", slug));
         securityService.assertCanSee(album);
         return album;
     }
@@ -72,12 +78,9 @@ public class AlbumService  {
     public Album getObjectFromDTO(AlbumDTO albumDTO, Album album) {
         album.setName(albumDTO.getName());
         album.setDescription(albumDTO.getDescription());
-        album.setCreatedAt(albumDTO.getCreatedAt());
         album.setImage(albumDTO.getImage());
         album.setArtist(artistService.getObjectById(albumDTO.getArtistId()));
         album.setSlug("test");
         return album;
     }
-
-
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +29,12 @@ public class ArtistService  {
     public Artist getObjectById(String id) {
         Optional<Artist> optionalArtist = artistRepository.findById(id);
         Artist artist = optionalArtist.orElseThrow(() -> new NotFoundSpotifishException("ArtistService - getObjectById("+id+")", "Artist", id));
+        securityService.assertCanSee(artist);
+        return artist;
+    }
+    public Artist getObjectBySlug(String slug) {
+        Optional<Artist> optionalArtist = artistRepository.findBySlug(slug);
+        Artist artist = optionalArtist.orElseThrow(() -> new NotFoundSpotifishException("ArtistService - getObjectBySlug("+slug+")", "Artist", slug));
         securityService.assertCanSee(artist);
         return artist;
     }
@@ -85,7 +90,7 @@ public class ArtistService  {
     }
 
 
-    public ArrayList<Artist> search(String search) {
+    public List<Artist> search(String search) {
         return artistRepository.findByNameContaining(search);
     }
 }

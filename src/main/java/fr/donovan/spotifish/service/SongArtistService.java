@@ -9,6 +9,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,6 @@ public class SongArtistService  {
     private final SongService songService;
     private final ArtistService artistService;
     private final SecurityService securityService;
-
     public List<SongArtist> findAll() {
         return this.songArtistRepository.findAll();
     }
@@ -58,7 +58,6 @@ public class SongArtistService  {
             securityService.assertCanEdit(songArtist);
         }
         songArtist = getObjectFromDTO(songArtistDTO, songArtist);
-
         return songArtistRepository.saveAndFlush(songArtist);
     }
 
@@ -85,6 +84,4 @@ public class SongArtistService  {
         songArtist.setSlug("test");
         return songArtist;
     }
-
-
 }

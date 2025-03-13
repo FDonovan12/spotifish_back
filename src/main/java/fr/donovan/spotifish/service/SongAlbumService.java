@@ -9,6 +9,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,6 @@ public class SongAlbumService  {
     private final SongService songService;
     private final AlbumService albumService;
     private final SecurityService securityService;
-
     public List<SongAlbum> findAll() {
         return this.songAlbumRepository.findAll();
     }
@@ -84,6 +84,4 @@ public class SongAlbumService  {
         songAlbum.setSlug("test");
         return songAlbum;
     }
-
-
 }

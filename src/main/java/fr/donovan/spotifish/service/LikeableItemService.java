@@ -11,6 +11,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -19,10 +20,10 @@ import java.util.stream.Stream;
 public class LikeableItemService  {
 
     private final LikeableItemRepository likeableItemRepository;
+    private final SecurityService securityService;
     private final SongService songService;
     private final PlaylistService playlistService;
     private final ArtistService artistService;
-    private final SecurityService securityService;
 
     public List<LikeableItem> findAll() {
         return this.likeableItemRepository.findAll();

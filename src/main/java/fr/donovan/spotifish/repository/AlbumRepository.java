@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AlbumRepository extends JpaRepository<Album, String>{
-@Query("SELECT e FROM Album AS e ORDER BY RAND() LIMIT 1")
+public interface AlbumRepository extends JpaRepository<Album, String>, EntitySlugRepositoryInterface<Album> {
+
+    @Query("SELECT e FROM Album AS e ORDER BY RAND() LIMIT 1")
     Album findRandom();
 }

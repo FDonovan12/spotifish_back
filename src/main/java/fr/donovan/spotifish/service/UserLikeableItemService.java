@@ -9,6 +9,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,6 @@ public class UserLikeableItemService  {
     private final UserService userService;
     private final LikeableItemService likeableItemService;
     private final SecurityService securityService;
-
     public List<UserLikeableItem> findAll() {
         return this.userLikeableItemRepository.findAll();
     }
@@ -84,6 +84,4 @@ public class UserLikeableItemService  {
         userLikeableItem.setSlug("test");
         return userLikeableItem;
     }
-
-
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -34,21 +35,27 @@ public class LikeableItemControllerApi {
         return CustomResponse.success(likeableItemService.getObjectBySlug(slug));
     }
     
-    @PostMapping(path = UrlRoute.URL_LIKEABLEITEM_NEW)
-    @JsonView(JsonViews.LikeableItemShowJsonViews.class)
-    @ResponseStatus(HttpStatus.CREATED)
-    public CustomResponse<LikeableItem> create(@Valid @RequestBody LikeableItemDTO likeableItemDTO) {
-        return CustomResponse.created(likeableItemService.persist(likeableItemDTO));
-    }
-    
-    @PutMapping(path = UrlRoute.URL_LIKEABLEITEM_EDIT + "/{id}")
-    @JsonView(JsonViews.LikeableItemShowJsonViews.class)
-    public CustomResponse<LikeableItem> update(@Valid @RequestBody LikeableItemDTO likeableItemDTO, @PathVariable String id) {
-        return CustomResponse.success(likeableItemService.persist(likeableItemDTO, id));
-    }
+//    @PostMapping(path = UrlRoute.URL_LIKEABLEITEM_NEW)
+//    @JsonView(JsonViews.LikeableItemShowJsonViews.class)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public CustomResponse<LikeableItem> create(@Valid @RequestBody LikeableItemDTO likeableItemDTO) {
+//        return CustomResponse.created(likeableItemService.persist(likeableItemDTO));
+//    }
+//
+//    @PutMapping(path = UrlRoute.URL_LIKEABLEITEM_EDIT + "/{id}")
+//    @JsonView(JsonViews.LikeableItemShowJsonViews.class)
+//    public CustomResponse<LikeableItem> update(@Valid @RequestBody LikeableItemDTO likeableItemDTO, @PathVariable String id) {
+//        return CustomResponse.success(likeableItemService.persist(likeableItemDTO, id));
+//    }
     
     @DeleteMapping(path = UrlRoute.URL_LIKEABLEITEM_DELETE + "/{id}")
     public CustomResponse<Boolean> delete(@PathVariable String id) {
         return CustomResponse.success(likeableItemService.delete(id));
+    }
+
+    @GetMapping(path = UrlRoute.URL_LIKEABLEITEM + "/search/{search}")
+    @JsonView(JsonViews.LikeableItemSearchJsonViews.class)
+    public CustomResponse<Map<String, List<? extends LikeableItem>>> search(@PathVariable String search) {
+        return CustomResponse.success(likeableItemService.search(search));
     }
 }

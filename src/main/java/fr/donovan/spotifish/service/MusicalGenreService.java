@@ -8,6 +8,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,6 @@ public class MusicalGenreService  {
 
     private final MusicalGenreRepository musicalGenreRepository;
     private final SecurityService securityService;
-
     public List<MusicalGenre> findAll() {
         return this.musicalGenreRepository.findAll();
     }
@@ -27,6 +27,12 @@ public class MusicalGenreService  {
     public MusicalGenre getObjectById(String id) {
         Optional<MusicalGenre> optionalMusicalGenre = musicalGenreRepository.findById(id);
         MusicalGenre musicalGenre = optionalMusicalGenre.orElseThrow(() -> new NotFoundSpotifishException("MusicalGenreService - getObjectById("+id+")", "MusicalGenre", id));
+        securityService.assertCanSee(musicalGenre);
+        return musicalGenre;
+    }
+    public MusicalGenre getObjectBySlug(String slug) {
+        Optional<MusicalGenre> optionalMusicalGenre = musicalGenreRepository.findBySlug(slug);
+        MusicalGenre musicalGenre = optionalMusicalGenre.orElseThrow(() -> new NotFoundSpotifishException("MusicalGenreService - getObjectBySlug("+slug+")", "MusicalGenre", slug));
         securityService.assertCanSee(musicalGenre);
         return musicalGenre;
     }
@@ -74,6 +80,4 @@ public class MusicalGenreService  {
         musicalGenre.setSlug("test");
         return musicalGenre;
     }
-
-
 }

@@ -32,6 +32,12 @@ public class ModeratorService  {
         securityService.assertCanSee(moderator);
         return moderator;
     }
+    public Moderator getObjectBySlug(String slug) {
+        Optional<Moderator> optionalModerator = moderatorRepository.findBySlug(slug);
+        Moderator moderator = optionalModerator.orElseThrow(() -> new NotFoundSpotifishException("ModeratorService - getObjectBySlug("+slug+")", "Moderator", slug));
+        securityService.assertCanSee(moderator);
+        return moderator;
+    }
 
     public Boolean delete(String id) {
         Moderator moderator = getObjectById(id);
@@ -82,6 +88,4 @@ public class ModeratorService  {
         moderator.setSlug("test");
         return moderator;
     }
-
-
 }

@@ -8,7 +8,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,6 @@ public class PlaylistService  {
 
     private final PlaylistRepository playlistRepository;
     private final SecurityService securityService;
-
     public List<Playlist> findAll() {
         return this.playlistRepository.findAll();
     }
@@ -28,6 +27,12 @@ public class PlaylistService  {
     public Playlist getObjectById(String id) {
         Optional<Playlist> optionalPlaylist = playlistRepository.findById(id);
         Playlist playlist = optionalPlaylist.orElseThrow(() -> new NotFoundSpotifishException("PlaylistService - getObjectById("+id+")", "Playlist", id));
+        securityService.assertCanSee(playlist);
+        return playlist;
+    }
+    public Playlist getObjectBySlug(String slug) {
+        Optional<Playlist> optionalPlaylist = playlistRepository.findBySlug(slug);
+        Playlist playlist = optionalPlaylist.orElseThrow(() -> new NotFoundSpotifishException("PlaylistService - getObjectBySlug("+slug+")", "Playlist", slug));
         securityService.assertCanSee(playlist);
         return playlist;
     }
@@ -79,7 +84,7 @@ public class PlaylistService  {
     }
 
 
-    public ArrayList<Playlist> search(String search) {
+    public List<Playlist> search(String search) {
         return playlistRepository.findByNameContaining(search);
     }
 }

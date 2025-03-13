@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String>{
-Optional<User> findByEmail(String email);
-@Query("SELECT e FROM User AS e ORDER BY RAND() LIMIT 1")
+public interface UserRepository extends JpaRepository<User, String>, EntitySlugRepositoryInterface<User> {Optional<User> findByEmail(String email);
+
+    @Query("SELECT e FROM User AS e ORDER BY RAND() LIMIT 1")
     User findRandom();
 }

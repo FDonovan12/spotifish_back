@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserLikeableItemRepository extends JpaRepository<UserLikeableItem, UserLikeableItemId>, EntitySlugRepositoryInterface<UserLikeableItem> {
-@Query("SELECT e FROM UserLikeableItem AS e ORDER BY RAND() LIMIT 1")
+
+    @Query("SELECT e FROM UserLikeableItem AS e ORDER BY RAND() LIMIT 1")
     UserLikeableItem findRandom();
 }

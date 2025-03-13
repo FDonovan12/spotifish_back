@@ -8,6 +8,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,6 @@ public class HistoricalService  {
     private final UserService userService;
     private final SongService songService;
     private final SecurityService securityService;
-
     public List<Historical> findAll() {
         return this.historicalRepository.findAll();
     }
@@ -84,6 +84,4 @@ public class HistoricalService  {
         historical.setSlug("test");
         return historical;
     }
-
-
 }

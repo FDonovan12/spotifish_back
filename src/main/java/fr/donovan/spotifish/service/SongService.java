@@ -8,7 +8,7 @@ import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,6 @@ public class SongService  {
 
     private final SongRepository songRepository;
     private final SecurityService securityService;
-
     public List<Song> findAll() {
         return this.songRepository.findAll();
     }
@@ -28,6 +27,12 @@ public class SongService  {
     public Song getObjectById(String id) {
         Optional<Song> optionalSong = songRepository.findById(id);
         Song song = optionalSong.orElseThrow(() -> new NotFoundSpotifishException("SongService - getObjectById("+id+")", "Song", id));
+        securityService.assertCanSee(song);
+        return song;
+    }
+    public Song getObjectBySlug(String slug) {
+        Optional<Song> optionalSong = songRepository.findBySlug(slug);
+        Song song = optionalSong.orElseThrow(() -> new NotFoundSpotifishException("SongService - getObjectBySlug("+slug+")", "Song", slug));
         securityService.assertCanSee(song);
         return song;
     }
@@ -74,7 +79,6 @@ public class SongService  {
         song.setName(songDTO.getName());
         song.setPath(songDTO.getPath());
         song.setDuration(songDTO.getDuration());
-        song.setCreatedAt(songDTO.getCreatedAt());
         song.setImage(songDTO.getImage());
         song.setNumberOfListen(songDTO.getNumberOfListen());
         song.setSlug("test");
@@ -86,7 +90,7 @@ public class SongService  {
     }
 
 
-    public ArrayList<Song> search(String search) {
+    public List<Song> search(String search) {
         return songRepository.findByNameContaining(search);
     }
 }

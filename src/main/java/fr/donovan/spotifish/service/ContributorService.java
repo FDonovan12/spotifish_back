@@ -1,8 +1,6 @@
 package fr.donovan.spotifish.service;
 
 import fr.donovan.spotifish.entity.Contributor;
-import fr.donovan.spotifish.entity.Playlist;
-import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.ContributorRepository;
 import fr.donovan.spotifish.dto.ContributorDTO;
@@ -10,6 +8,7 @@ import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +23,6 @@ public class ContributorService  {
     private final UserService userService;
     private final PlaylistService playlistService;
     private final SecurityService securityService;
-
     public List<Contributor> findAll() {
         return this.contributorRepository.findAll();
     }
@@ -35,7 +33,6 @@ public class ContributorService  {
         securityService.assertCanSee(contributor);
         return contributor;
     }
-
     public Contributor getObjectBySlug(String slug) {
         Optional<Contributor> optionalContributor = contributorRepository.findBySlug(slug);
         Contributor contributor = optionalContributor.orElseThrow(() -> new NotFoundSpotifishException("ContributorService - getObjectBySlug("+slug+")", "Contributor", slug));
@@ -89,6 +86,4 @@ public class ContributorService  {
         contributor.setSlug("test");
         return contributor;
     }
-
-
 }
