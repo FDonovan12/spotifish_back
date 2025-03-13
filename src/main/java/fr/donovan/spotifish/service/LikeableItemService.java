@@ -1,19 +1,15 @@
 package fr.donovan.spotifish.service;
 
-import fr.donovan.spotifish.entity.Artist;
-import fr.donovan.spotifish.entity.LikeableItem;
-import fr.donovan.spotifish.entity.Playlist;
-import fr.donovan.spotifish.entity.Song;
+import fr.donovan.spotifish.entity.*;
 import fr.donovan.spotifish.repository.LikeableItemRepository;
-import fr.donovan.spotifish.dto.LikeableItemDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.security.Principal;
 import java.util.*;
-import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Service
@@ -24,6 +20,7 @@ public class LikeableItemService  {
     private final SongService songService;
     private final PlaylistService playlistService;
     private final ArtistService artistService;
+    private final ConnectedUserService connectedUserService;
 
     public List<LikeableItem> findAll() {
         return this.likeableItemRepository.findAll();
@@ -94,5 +91,20 @@ public class LikeableItemService  {
         result.put("artists", artists);
 
         return result;
+    }
+
+    public List<LikeableItem> getAllLiked(Principal principal) {
+        User user = connectedUserService.getByCurrentUser(principal);
+        return likeableItemRepository.findWithoutSong(user);
+    }
+
+    public long getSongsLikedNumber(Principal principal) {
+        User user = connectedUserService.getByCurrentUser(principal);
+        return likeableItemRepository.countSongsLiked(user);
+    }
+
+    public List<Song> getSongsLiked(Principal principal) {
+        User user = connectedUserService.getByCurrentUser(principal);
+        return likeableItemRepository.getSongsLiked(user);
     }
 }

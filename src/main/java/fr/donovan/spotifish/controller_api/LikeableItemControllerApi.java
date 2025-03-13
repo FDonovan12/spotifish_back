@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import fr.donovan.spotifish.entity.LikeableItem;
 import fr.donovan.spotifish.custom_response.*;
 import fr.donovan.spotifish.dto.LikeableItemDTO;
+import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.service.LikeableItemService;
 import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -57,5 +59,23 @@ public class LikeableItemControllerApi {
     @JsonView(JsonViews.LikeableItemSearchJsonViews.class)
     public CustomResponse<Map<String, List<? extends LikeableItem>>> search(@PathVariable String search) {
         return CustomResponse.success(likeableItemService.search(search));
+    }
+
+    @GetMapping(path = UrlRoute.URL_LIKEABLEITEM + "/me")
+    @JsonView(JsonViews.LikeableItemSearchJsonViews.class)
+    public CustomResponse<List<LikeableItem>> listLikedItem(Principal principal) {
+        return CustomListResponse.success(likeableItemService.getAllLiked(principal));
+    }
+
+    @GetMapping(path = UrlRoute.URL_LIKEABLEITEM + "/me/songs-number")
+    @JsonView(JsonViews.LikeableItemSearchJsonViews.class)
+    public CustomResponse<Long> listSongsLikedNumber(Principal principal) {
+        return CustomListResponse.success(likeableItemService.getSongsLikedNumber(principal));
+    }
+
+    @GetMapping(path = UrlRoute.URL_LIKEABLEITEM + "/me/songs")
+    @JsonView(JsonViews.LikeableItemSearchJsonViews.class)
+    public CustomResponse<List<Song>> listSongsLiked(Principal principal) {
+        return CustomListResponse.success(likeableItemService.getSongsLiked(principal));
     }
 }
