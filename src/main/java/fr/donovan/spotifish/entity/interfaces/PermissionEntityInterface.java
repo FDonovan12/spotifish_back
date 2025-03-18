@@ -1,10 +1,18 @@
 package fr.donovan.spotifish.entity.interfaces;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import fr.donovan.spotifish.entity.Permission;
 import fr.donovan.spotifish.entity.User;
-
-import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
+import fr.donovan.spotifish.json_view.JsonViews;
 
 public interface PermissionEntityInterface {
+
+    @JsonProperty("type")
+    @JsonView(JsonViews.AllJsonViews.class)
+    public default String getType() {
+        return this.getClass().getSimpleName();
+    }
 
     public Object getIdToSerializer();
 
@@ -15,4 +23,16 @@ public interface PermissionEntityInterface {
     public boolean canEdit(User user);
 
     public boolean canDelete(User user);
+
+    public default Permission computePermission(User user) {
+        boolean canDelete = this.canDelete(user);
+        Object idEntity = canDelete ? this.getIdToSerializer() : null;
+        return new Permission(this.canEdit(user), canDelete, idEntity, this);
+    }
+
+    @JsonView(JsonViews.AllJsonViews.class)
+    public default Permission getPermission() {
+        System.out.println("PermissionEntityInterface.getPermission");
+        return new Permission(false, false, null, this);
+    }
 }
