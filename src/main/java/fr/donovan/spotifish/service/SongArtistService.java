@@ -69,8 +69,8 @@ public class SongArtistService  {
     public SongArtistDTO getDTOFromObject(SongArtist songArtist) {
         SongArtistDTO songArtistDTO = new SongArtistDTO();
         songArtistDTO.setIsPrincipalArtist(songArtist.getIsPrincipalArtist());
-        songArtistDTO.setSongId(songArtist.getSong().getUuid());
-        songArtistDTO.setArtistId(songArtist.getArtist().getUuid());
+        songArtistDTO.setSongSlug(songArtist.getSong().getUuid());
+        songArtistDTO.setArtistSlug(songArtist.getArtist().getUuid());
         return songArtistDTO;
     }
     public SongArtist getObjectFromDTO(SongArtistDTO songArtistDTO) {
@@ -78,9 +78,8 @@ public class SongArtistService  {
     }
     public SongArtist getObjectFromDTO(SongArtistDTO songArtistDTO, SongArtist songArtist) {
         songArtist.setIsPrincipalArtist(songArtistDTO.getIsPrincipalArtist());
-        songArtist.setSong(songService.getObjectById(songArtistDTO.getSongId()));
-        songArtist.setArtist(artistService.getObjectById(songArtistDTO.getArtistId()));
-        songArtist.setId(new SongArtistId(songArtistDTO.getSongId(), songArtistDTO.getArtistId()));
+        songArtist.setSong(songService.getObjectBySlug(songArtistDTO.getSongSlug()));
+        songArtist.setArtist(artistService.getObjectBySlug(songArtistDTO.getArtistSlug()));
         songArtist.setSlug("test");
         return songArtist;
     }

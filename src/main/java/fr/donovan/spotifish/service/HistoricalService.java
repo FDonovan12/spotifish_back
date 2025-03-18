@@ -69,8 +69,8 @@ public class HistoricalService  {
         HistoricalDTO historicalDTO = new HistoricalDTO();
         historicalDTO.setNumberOflisten(historical.getNumberOflisten());
         historicalDTO.setListenAt(historical.getListenAt());
-        historicalDTO.setUserId(historical.getUser().getUuid());
-        historicalDTO.setSongId(historical.getSong().getUuid());
+        historicalDTO.setUserSlug(historical.getUser().getUuid());
+        historicalDTO.setSongSlug(historical.getSong().getUuid());
         return historicalDTO;
     }
     public Historical getObjectFromDTO(HistoricalDTO historicalDTO) {
@@ -79,8 +79,8 @@ public class HistoricalService  {
     public Historical getObjectFromDTO(HistoricalDTO historicalDTO, Historical historical) {
         historical.setNumberOflisten(historicalDTO.getNumberOflisten());
         historical.setListenAt(historicalDTO.getListenAt());
-        historical.setUser(userService.getObjectById(historicalDTO.getUserId()));
-        historical.setSong(songService.getObjectById(historicalDTO.getSongId()));
+        historical.setUser(userService.getObjectBySlug(historicalDTO.getUserSlug()));
+        historical.setSong(songService.getObjectBySlug(historicalDTO.getSongSlug()));
         historical.setSlug("test");
         return historical;
     }

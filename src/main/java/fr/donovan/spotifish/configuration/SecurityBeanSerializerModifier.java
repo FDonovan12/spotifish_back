@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanSerializer;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import fr.donovan.spotifish.entity.Permission;
-import fr.donovan.spotifish.entity.interfaces.PermissionEntityInterface;
 import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -23,7 +23,7 @@ public class PlaylistControllerApi {
     private PlaylistService playlistService;
 
     @GetMapping(path = UrlRoute.URL_PLAYLIST)
-    @JsonView(JsonViews.PlaylistListJsonViews.class)
+    @JsonView(JsonViews.PlaylistShowJsonViews.class)
     public CustomResponse<List<Playlist>> list() {
         return CustomListResponse.success(playlistService.findAll());
     }

@@ -22,5 +22,5 @@ public class SharedDTO {
     @NotNull(message = "The remainingInvitation can't be null")
     private Integer remainingInvitation;
     
-    private String userId;
+    private String playlistSlug;
 }

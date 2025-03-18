@@ -58,12 +58,6 @@ public class User extends LikeableItem implements UserDetails {
     @JsonView(JsonViewsUser.CreatedAt.class)
     private LocalDateTime createdAt;
 
-    @JsonView(JsonViewsUser.ActivationCode.class)
-    private String activationCode;
-
-    @JsonView(JsonViewsUser.ActivationCodeExpireAt.class)
-    private LocalDateTime activationCodeExpireAt;
-
     @OneToMany(mappedBy = "user")
     @JsonView(JsonViewsUser.UserLikeableItems.class)
     private List<UserLikeableItem> userLikeableItems = new ArrayList<>();

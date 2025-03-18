@@ -21,11 +21,11 @@ public class SongPlaylistDTO {
     private int position;
 
     @NotNull(message = "The song can't be null")
-    private String songId;
+    private String songSlug;
     
     @NotNull(message = "The playlist can't be null")
-    private String playlistId;
+    private String playlistSlug;
     
     @NotNull(message = "The user can't be null")
-    private String userId;
+    private String userSlug;
 }

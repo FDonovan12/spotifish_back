@@ -141,8 +141,8 @@ public class InitDataLoader implements CommandLineRunner {
         for (int i = 0; i < countInsert; i++) {
             UserLikeableItemDTO userLikeableItemDTO = new UserLikeableItemDTO();
             userLikeableItemDTO.setAddAt(faker.timeAndDate().birthday(-2, 10).atStartOfDay());
-            userLikeableItemDTO.setUserId(userRepository.findRandom().getUuid());
-            userLikeableItemDTO.setLikeableItemId(likeableItemRepository.findRandom().getUuid());
+            userLikeableItemDTO.setUserSlug(userRepository.findRandom().getUuid());
+            userLikeableItemDTO.setLikeableItemSlug(likeableItemRepository.findRandom().getUuid());
             userLikeableItemService.persist(userLikeableItemDTO);
         }
         userLikeableItemRepository.flush();
@@ -155,7 +155,7 @@ public class InitDataLoader implements CommandLineRunner {
             albumDTO.setDescription(faker.kaamelott().quote());
             albumDTO.setCreatedAt(faker.timeAndDate().birthday(1, 10));
             albumDTO.setImage(faker.internet().url());
-            albumDTO.setArtistId(artistRepository.findRandom().getUuid());
+            albumDTO.setArtistSlug(artistRepository.findRandom().getUuid());
             albumService.persist(albumDTO);
         }
         albumRepository.flush();
@@ -165,8 +165,8 @@ public class InitDataLoader implements CommandLineRunner {
         for (int i = 0; i < countInsert; i++) {
             SongAlbumDTO songAlbumDTO = new SongAlbumDTO();
             songAlbumDTO.setPosition(1);
-            songAlbumDTO.setSongId(songRepository.findRandom().getUuid());
-            songAlbumDTO.setAlbumId(albumRepository.findRandom().getUuid());
+            songAlbumDTO.setSongSlug(songRepository.findRandom().getUuid());
+            songAlbumDTO.setAlbumSlug(albumRepository.findRandom().getUuid());
             songAlbumService.persist(songAlbumDTO);
         }
         songAlbumRepository.flush();
@@ -176,8 +176,8 @@ public class InitDataLoader implements CommandLineRunner {
         for (int i = 0; i < countInsert; i++) {
             SongArtistDTO songArtistDTO = new SongArtistDTO();
             songArtistDTO.setIsPrincipalArtist(true);
-            songArtistDTO.setSongId(songRepository.findRandom().getUuid());
-            songArtistDTO.setArtistId(artistRepository.findRandom().getUuid());
+            songArtistDTO.setSongSlug(songRepository.findRandom().getUuid());
+            songArtistDTO.setArtistSlug(artistRepository.findRandom().getUuid());
             songArtistService.persist(songArtistDTO);
         }
         songArtistRepository.flush();
@@ -201,10 +201,10 @@ public class InitDataLoader implements CommandLineRunner {
         for (int i = 0; i < countInsert; i++) {
             SongPlaylistDTO songPlaylistDTO = new SongPlaylistDTO();
             songPlaylistDTO.setPosition(1);
-            songPlaylistDTO.setSongId(songRepository.findRandom().getUuid());
+            songPlaylistDTO.setSongSlug(songRepository.findRandom().getUuid());
             Contributor contributor = contributorRepository.findRandom();
-            songPlaylistDTO.setPlaylistId(contributor.getPlaylist().getUuid());
-            songPlaylistDTO.setUserId(contributor.getUser().getUuid());
+            songPlaylistDTO.setPlaylistSlug(contributor.getPlaylist().getUuid());
+            songPlaylistDTO.setUserSlug(contributor.getUser().getUuid());
             songPlaylistService.persist(songPlaylistDTO);
         }
         songPlaylistRepository.flush();
@@ -215,8 +215,8 @@ public class InitDataLoader implements CommandLineRunner {
             ContributorDTO contributorDTO = new ContributorDTO();
             contributorDTO.setIsOwner(true);
             contributorDTO.setStillContributing(true);
-            contributorDTO.setUserId(userRepository.findRandom().getUuid());
-            contributorDTO.setPlaylistId(playlistRepository.findRandom().getUuid());
+            contributorDTO.setUserSlug(userRepository.findRandom().getUuid());
+            contributorDTO.setPlaylistSlug(playlistRepository.findRandom().getUuid());
             contributorService.persist(contributorDTO);
         }
         contributorRepository.flush();
@@ -250,8 +250,8 @@ public class InitDataLoader implements CommandLineRunner {
             HistoricalDTO historicalDTO = new HistoricalDTO();
             historicalDTO.setNumberOflisten(1L);
             historicalDTO.setListenAt(faker.timeAndDate().birthday(-2, 10).atStartOfDay());
-            historicalDTO.setUserId(userRepository.findRandom().getUuid());
-            historicalDTO.setSongId(songRepository.findRandom().getUuid());
+            historicalDTO.setUserSlug(userRepository.findRandom().getUuid());
+            historicalDTO.setSongSlug(songRepository.findRandom().getUuid());
             historicalService.persist(historicalDTO);
         }
         historicalRepository.flush();

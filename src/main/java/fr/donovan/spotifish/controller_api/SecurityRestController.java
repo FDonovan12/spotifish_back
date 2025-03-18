@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
 @AllArgsConstructor
+@RequestMapping(UrlRoute.URL_API)
 public class SecurityRestController {
 
     private UserService userService;

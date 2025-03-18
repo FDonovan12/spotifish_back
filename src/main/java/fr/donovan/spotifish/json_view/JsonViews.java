@@ -48,8 +48,8 @@ public class JsonViews {
     public interface SongArtistListJsonViews extends AllJsonViews, MinimalSongArtist, MinimalSong, MinimalArtist {}
     public interface SongArtistShowJsonViews extends AllJsonViews, AllSongArtist, MinimalSong, MinimalArtist {}
 
-    public interface SongListJsonViews extends AllJsonViews, FromSongSongPlaylistWithoutId, MinimalMusicalGenre {}
-    public interface SongShowJsonViews extends AllJsonViews, FromSongSongPlaylistWithoutId, MinimalMusicalGenre {}
+    public interface SongListJsonViews extends AllJsonViews, MinimalSong, FromSongSongPlaylistWithoutId, MinimalMusicalGenre {}
+    public interface SongShowJsonViews extends AllJsonViews, AllSong, FromSongSongPlaylistWithoutId, MinimalMusicalGenre {}
 
     public interface SongPlaylistListJsonViews extends AllJsonViews, AllSongPlaylist, MinimalSong, MinimalPlaylist, MinimalContributor {}
     public interface SongPlaylistShowJsonViews extends AllJsonViews, AllSongPlaylist, MinimalSong, MinimalPlaylist, MinimalContributor {}
@@ -60,8 +60,8 @@ public class JsonViews {
     public interface SharedListJsonViews extends AllJsonViews, MinimalShared, MinimalPlaylist {}
     public interface SharedShowJsonViews extends AllJsonViews, AllShared, MinimalPlaylist {}
 
-    public interface PlaylistListJsonViews extends AllJsonViews, MinimalPlaylist, FromPlaylistSongPlaylistWithoutId, MinimalShared, MinimalContributor, MinimalSong {}
-    public interface PlaylistShowJsonViews extends AllJsonViews, MinimalPlaylist, FromPlaylistSongPlaylistWithoutId, MinimalShared, MinimalContributor, MinimalSong {}
+    public interface PlaylistListJsonViews extends AllJsonViews, MinimalPlaylist, FromPlaylistSongPlaylistWithoutId, MinimalContributor, MinimalSong {}
+    public interface PlaylistShowJsonViews extends AllJsonViews, AllPlaylist, FromPlaylistSongPlaylistWithoutId, FromSongSongArtistWithoutId, MinimalContributor, MinimalSong {}
 
     public interface MusicalGenreListJsonViews extends AllJsonViews, MinimalMusicalGenre {}
     public interface MusicalGenreShowJsonViews extends AllJsonViews, AllMusicalGenre {}

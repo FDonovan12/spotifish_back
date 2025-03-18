@@ -35,17 +35,6 @@ public class Artist extends User  {
     @JsonView(JsonViewsArtist.Albums.class)
     private List<Album> albums = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "members_group",
-        joinColumns = @JoinColumn(name="members_uuid"),
-        inverseJoinColumns = @JoinColumn(name="group_uuid"))
-    @JsonView(JsonViewsArtist.Members.class)
-    private List<Artist> members = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "members")
-    @JsonView(JsonViewsArtist.Group.class)
-    private List<Artist> group = new ArrayList<>();
-
     @Override
     public String getField() {
         return "" + this.getUuid();

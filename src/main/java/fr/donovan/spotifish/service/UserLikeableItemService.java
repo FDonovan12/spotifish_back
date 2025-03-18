@@ -69,8 +69,8 @@ public class UserLikeableItemService  {
     public UserLikeableItemDTO getDTOFromObject(UserLikeableItem userLikeableItem) {
         UserLikeableItemDTO userLikeableItemDTO = new UserLikeableItemDTO();
         userLikeableItemDTO.setAddAt(userLikeableItem.getAddAt());
-        userLikeableItemDTO.setUserId(userLikeableItem.getUser().getUuid());
-        userLikeableItemDTO.setLikeableItemId(userLikeableItem.getLikeableItem().getUuid());
+        userLikeableItemDTO.setUserSlug(userLikeableItem.getUser().getUuid());
+        userLikeableItemDTO.setLikeableItemSlug(userLikeableItem.getLikeableItem().getUuid());
         return userLikeableItemDTO;
     }
     public UserLikeableItem getObjectFromDTO(UserLikeableItemDTO userLikeableItemDTO) {
@@ -78,9 +78,8 @@ public class UserLikeableItemService  {
     }
     public UserLikeableItem getObjectFromDTO(UserLikeableItemDTO userLikeableItemDTO, UserLikeableItem userLikeableItem) {
         userLikeableItem.setAddAt(userLikeableItemDTO.getAddAt());
-        userLikeableItem.setUser(userService.getObjectById(userLikeableItemDTO.getUserId()));
-        userLikeableItem.setLikeableItem(likeableItemService.getObjectById(userLikeableItemDTO.getLikeableItemId()));
-        userLikeableItem.setId(new UserLikeableItemId(userLikeableItemDTO.getUserId(), userLikeableItemDTO.getLikeableItemId()));
+        userLikeableItem.setUser(userService.getObjectBySlug(userLikeableItemDTO.getUserSlug()));
+        userLikeableItem.setLikeableItem(likeableItemService.getObjectBySlug(userLikeableItemDTO.getLikeableItemSlug()));
         userLikeableItem.setSlug("test");
         return userLikeableItem;
     }

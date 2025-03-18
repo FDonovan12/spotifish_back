@@ -20,8 +20,8 @@ public class UserLikeableItemDTO {
     private LocalDateTime addAt;
     
     @NotNull(message = "The user can't be null")
-    private String userId;
+    private String userSlug;
     
     @NotNull(message = "The likeableItem can't be null")
-    private String likeableItemId;
+    private String likeableItemSlug;
 }

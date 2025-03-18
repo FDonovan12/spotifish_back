@@ -1,5 +1,7 @@
 package fr.donovan.spotifish.service;
 
+import fr.donovan.spotifish.entity.Playlist;
+import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.entity.SongPlaylist;
 import fr.donovan.spotifish.entity.embed.ContributorId;
 import fr.donovan.spotifish.repository.SongPlaylistRepository;
@@ -70,9 +72,9 @@ public class SongPlaylistService  {
     public SongPlaylistDTO getDTOFromObject(SongPlaylist songPlaylist) {
         SongPlaylistDTO songPlaylistDTO = new SongPlaylistDTO();
         songPlaylistDTO.setPosition(songPlaylist.getPosition());
-        songPlaylistDTO.setSongId(songPlaylist.getSong().getUuid());
-        songPlaylistDTO.setPlaylistId(songPlaylist.getPlaylist().getUuid());
-        songPlaylistDTO.setUserId(songPlaylist.getContributor().getUser().getUuid());
+        songPlaylistDTO.setSongSlug(songPlaylist.getSong().getUuid());
+        songPlaylistDTO.setPlaylistSlug(songPlaylist.getPlaylist().getUuid());
+        songPlaylistDTO.setUserSlug(songPlaylist.getContributor().getUser().getUuid());
         return songPlaylistDTO;
     }
     public SongPlaylist getObjectFromDTO(SongPlaylistDTO songPlaylistDTO) {
@@ -80,9 +82,11 @@ public class SongPlaylistService  {
     }
     public SongPlaylist getObjectFromDTO(SongPlaylistDTO songPlaylistDTO, SongPlaylist songPlaylist) {
         songPlaylist.setPosition(songPlaylistDTO.getPosition());
-        songPlaylist.setSong(songService.getObjectById(songPlaylistDTO.getSongId()));
-        songPlaylist.setPlaylist(playlistService.getObjectById(songPlaylistDTO.getPlaylistId()));
-        ContributorId contributorId = new ContributorId(songPlaylistDTO.getUserId(), songPlaylistDTO.getPlaylistId());
+        Song song  = songService.getObjectBySlug(songPlaylistDTO.getSongSlug());
+        songPlaylist.setSong(song);
+        Playlist playlist  = playlistService.getObjectBySlug(songPlaylistDTO.getPlaylistSlug());
+        songPlaylist.setPlaylist(playlist);
+        ContributorId contributorId = new ContributorId(song.getUuid(), playlist.getUuid());
         songPlaylist.setContributor(contributorService.getObjectById(contributorId));
         songPlaylist.setSlug("test");
         return songPlaylist;

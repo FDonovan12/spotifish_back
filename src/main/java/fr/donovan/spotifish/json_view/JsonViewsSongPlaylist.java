@@ -2,8 +2,8 @@ package fr.donovan.spotifish.json_view;
 
 public class JsonViewsSongPlaylist {
     
-    public interface AllSongPlaylist extends Id, Position, CreatedAt, Song, Playlist, Contributor, Slug {}
-    public interface MinimalSongPlaylist extends Id, Position, CreatedAt, Slug {}
+    public interface AllSongPlaylist extends Position, CreatedAt, Song, Playlist, Contributor, Slug {}
+    public interface MinimalSongPlaylist extends Position, CreatedAt, Slug {}
 
     public interface AllSongPlaylistWithoutId extends Position, CreatedAt, Song, Playlist, Contributor, Slug {}
     public interface FromSongSongPlaylistWithoutId extends Position, CreatedAt, Playlist, Contributor, Slug {}

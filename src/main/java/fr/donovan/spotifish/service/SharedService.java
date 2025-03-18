@@ -68,7 +68,7 @@ public class SharedService  {
         SharedDTO sharedDTO = new SharedDTO();
         sharedDTO.setExpireAt(shared.getExpireAt());
         sharedDTO.setRemainingInvitation(shared.getRemainingInvitation());
-        sharedDTO.setUserId(shared.getUser().getUuid());
+        sharedDTO.setPlaylistSlug(shared.getPlaylist().getUuid());
         return sharedDTO;
     }
     public Shared getObjectFromDTO(SharedDTO sharedDTO) {
@@ -77,7 +77,7 @@ public class SharedService  {
     public Shared getObjectFromDTO(SharedDTO sharedDTO, Shared shared) {
         shared.setExpireAt(sharedDTO.getExpireAt());
         shared.setRemainingInvitation(sharedDTO.getRemainingInvitation());
-        shared.setUser(playlistService.getObjectById(sharedDTO.getUserId()));
+        shared.setPlaylist(playlistService.getObjectBySlug(sharedDTO.getPlaylistSlug()));
         shared.setSlug("test");
         return shared;
     }

@@ -69,7 +69,7 @@ public class AlbumService  {
         albumDTO.setName(album.getName());
         albumDTO.setDescription(album.getDescription());
         albumDTO.setImage(album.getImage());
-        albumDTO.setArtistId(album.getArtist().getUuid());
+        albumDTO.setArtistSlug(album.getArtist().getUuid());
         return albumDTO;
     }
     public Album getObjectFromDTO(AlbumDTO albumDTO) {
@@ -79,7 +79,7 @@ public class AlbumService  {
         album.setName(albumDTO.getName());
         album.setDescription(albumDTO.getDescription());
         album.setImage(albumDTO.getImage());
-        album.setArtist(artistService.getObjectById(albumDTO.getArtistId()));
+        album.setArtist(artistService.getObjectBySlug(albumDTO.getArtistSlug()));
         album.setSlug("test");
         return album;
     }

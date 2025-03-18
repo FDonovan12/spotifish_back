@@ -33,12 +33,4 @@ public class ArtistDTO {
     
     @NotNull(message = "The birthAt can't be null")
     private LocalDate birthAt;
-    
-    @NotNull(message = "The createdAt can't be null")
-    private LocalDateTime createdAt;
-    
-    private String activationCode;
-    
-    @NotNull(message = "The activationCodeExpireAt can't be null")
-    private LocalDateTime activationCodeExpireAt;
 }

@@ -23,8 +23,8 @@ public class HistoricalDTO {
     private LocalDateTime listenAt;
     
     @NotNull(message = "The user can't be null")
-    private String userId;
+    private String userSlug;
     
     @NotNull(message = "The song can't be null")
-    private String songId;
+    private String songSlug;
 }

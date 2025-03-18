@@ -1,6 +1,8 @@
 package fr.donovan.spotifish.service;
 
 import fr.donovan.spotifish.entity.Contributor;
+import fr.donovan.spotifish.entity.Playlist;
+import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.ContributorRepository;
 import fr.donovan.spotifish.dto.ContributorDTO;
@@ -70,8 +72,8 @@ public class ContributorService  {
         ContributorDTO contributorDTO = new ContributorDTO();
         contributorDTO.setIsOwner(contributor.getIsOwner());
         contributorDTO.setStillContributing(contributor.getStillContributing());
-        contributorDTO.setUserId(contributor.getUser().getUuid());
-        contributorDTO.setPlaylistId(contributor.getPlaylist().getUuid());
+        contributorDTO.setUserSlug(contributor.getUser().getUuid());
+        contributorDTO.setPlaylistSlug(contributor.getPlaylist().getUuid());
         return contributorDTO;
     }
     public Contributor getObjectFromDTO(ContributorDTO contributorDTO) {
@@ -80,9 +82,8 @@ public class ContributorService  {
     public Contributor getObjectFromDTO(ContributorDTO contributorDTO, Contributor contributor) {
         contributor.setIsOwner(contributorDTO.getIsOwner());
         contributor.setStillContributing(contributorDTO.getStillContributing());
-        contributor.setUser(userService.getObjectById(contributorDTO.getUserId()));
-        contributor.setPlaylist(playlistService.getObjectById(contributorDTO.getPlaylistId()));
-        contributor.setId(new ContributorId(contributorDTO.getUserId(), contributorDTO.getPlaylistId()));
+        contributor.setUser(userService.getObjectBySlug(contributorDTO.getUserSlug()));
+        contributor.setPlaylist(playlistService.getObjectBySlug(contributorDTO.getPlaylistSlug()));
         contributor.setSlug("test");
         return contributor;
     }

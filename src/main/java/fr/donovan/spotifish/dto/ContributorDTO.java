@@ -23,8 +23,8 @@ public class ContributorDTO {
     private Boolean stillContributing;
     
     @NotNull(message = "The user can't be null")
-    private String userId;
+    private String userSlug;
     
     @NotNull(message = "The playlist can't be null")
-    private String playlistId;
+    private String playlistSlug;
 }

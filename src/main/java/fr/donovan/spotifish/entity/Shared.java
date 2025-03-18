@@ -36,7 +36,7 @@ public class Shared implements SluggerInterface, PermissionEntityInterface {
 
     @OneToOne
     @JsonView(JsonViewsShared.User.class)
-    private Playlist user;
+    private Playlist playlist;
 
     @JsonView(JsonViewsShared.Slug.class)
     @Column(nullable = false, unique = true)

@@ -20,8 +20,8 @@ public class SongArtistDTO {
     private Boolean isPrincipalArtist;
     
     @NotNull(message = "The song can't be null")
-    private String songId;
+    private String songSlug;
     
     @NotNull(message = "The artist can't be null")
-    private String artistId;
+    private String artistSlug;
 }

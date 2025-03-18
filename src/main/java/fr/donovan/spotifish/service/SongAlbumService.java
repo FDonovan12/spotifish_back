@@ -69,8 +69,8 @@ public class SongAlbumService  {
     public SongAlbumDTO getDTOFromObject(SongAlbum songAlbum) {
         SongAlbumDTO songAlbumDTO = new SongAlbumDTO();
         songAlbumDTO.setPosition(songAlbum.getPosition());
-        songAlbumDTO.setSongId(songAlbum.getSong().getUuid());
-        songAlbumDTO.setAlbumId(songAlbum.getAlbum().getUuid());
+        songAlbumDTO.setSongSlug(songAlbum.getSong().getUuid());
+        songAlbumDTO.setAlbumSlug(songAlbum.getAlbum().getUuid());
         return songAlbumDTO;
     }
     public SongAlbum getObjectFromDTO(SongAlbumDTO songAlbumDTO) {
@@ -78,9 +78,8 @@ public class SongAlbumService  {
     }
     public SongAlbum getObjectFromDTO(SongAlbumDTO songAlbumDTO, SongAlbum songAlbum) {
         songAlbum.setPosition(songAlbumDTO.getPosition());
-        songAlbum.setSong(songService.getObjectById(songAlbumDTO.getSongId()));
-        songAlbum.setAlbum(albumService.getObjectById(songAlbumDTO.getAlbumId()));
-        songAlbum.setId(new SongAlbumId(songAlbumDTO.getSongId(), songAlbumDTO.getAlbumId()));
+        songAlbum.setSong(songService.getObjectBySlug(songAlbumDTO.getSongSlug()));
+        songAlbum.setAlbum(albumService.getObjectBySlug(songAlbumDTO.getAlbumSlug()));
         songAlbum.setSlug("test");
         return songAlbum;
     }

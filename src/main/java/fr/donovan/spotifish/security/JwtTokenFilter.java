@@ -40,6 +40,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         // header = "Bearer MyToken"
         final String token = header.split(" ")[1].trim();
+        System.out.println("token = " + token);
         String username = jwtService.extractUserName(token);
         UserDetails userDetails = userService.loadUserByUsername(username);
 

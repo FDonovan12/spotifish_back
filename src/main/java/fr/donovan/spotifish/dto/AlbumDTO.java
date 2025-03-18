@@ -29,5 +29,5 @@ public class AlbumDTO {
     private LocalDate createdAt;
     
     @NotNull(message = "The artist can't be null")
-    private String artistId;
+    private String artistSlug;
 }
