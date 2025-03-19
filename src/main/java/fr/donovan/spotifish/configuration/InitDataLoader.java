@@ -139,11 +139,7 @@ public class InitDataLoader implements CommandLineRunner {
     private void createUserLikeableItem() {
         long countInsert = NB_USERLIKEABLEITEM - userLikeableItemRepository.count();
         for (int i = 0; i < countInsert; i++) {
-            UserLikeableItemDTO userLikeableItemDTO = new UserLikeableItemDTO();
-            userLikeableItemDTO.setAddAt(faker.timeAndDate().birthday(-2, 10).atStartOfDay());
-            userLikeableItemDTO.setUserSlug(userRepository.findRandom().getSlug());
-            userLikeableItemDTO.setLikeableItemSlug(likeableItemRepository.findRandom().getSlug());
-            userLikeableItemService.persist(userLikeableItemDTO);
+            userLikeableItemService.persist(likeableItemRepository.findRandom().getSlug(), userRepository.findRandom());
         }
         userLikeableItemRepository.flush();
     }

@@ -1,5 +1,7 @@
 package fr.donovan.spotifish.service;
 
+import fr.donovan.spotifish.entity.LikeableItem;
+import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.UserLikeableItem;
 import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.UserLikeableItemRepository;
@@ -10,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -27,61 +30,28 @@ public class UserLikeableItemService  {
         return this.userLikeableItemRepository.findAll();
     }
 
-    public UserLikeableItem getObjectById(UserLikeableItemId id) {
-        Optional<UserLikeableItem> optionalUserLikeableItem = userLikeableItemRepository.findById(id);
-        UserLikeableItem userLikeableItem = optionalUserLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("UserLikeableItemService - getObjectById("+id+")", "UserLikeableItem", id));
-        securityService.assertCanSee(userLikeableItem);
-        return userLikeableItem;
-    }
-    public UserLikeableItem getObjectBySlug(String slug) {
-        Optional<UserLikeableItem> optionalUserLikeableItem = userLikeableItemRepository.findBySlug(slug);
-        UserLikeableItem userLikeableItem = optionalUserLikeableItem.orElseThrow(() -> new NotFoundSpotifishException("UserLikeableItemService - getObjectBySlug("+slug+")", "UserLikeableItem", slug));
-        securityService.assertCanSee(userLikeableItem);
-        return userLikeableItem;
+    public boolean like(String slugLikeableItem) {
+        System.out.println("UserLikeableItemService.like");
+        return persist(slugLikeableItem, securityService.getCurrentUser());
     }
 
-    public Boolean delete(UserLikeableItemId id) {
-        UserLikeableItem userLikeableItem = getObjectById(id);
-        securityService.assertCanDelete(userLikeableItem);
-        userLikeableItemRepository.delete(userLikeableItem);
+    public boolean persist(String slugLikeableItem, User user) {
+        UserLikeableItem userLikeableItem = new UserLikeableItem();
+
+        userLikeableItem.setLikeableItem(likeableItemService.getObjectBySlug(slugLikeableItem));
+        userLikeableItem.setUser(user);
+        System.out.println("userLikeableItem = " + userLikeableItem);
+        userLikeableItemRepository.saveAndFlush(userLikeableItem);
         return true;
     }
 
-    public UserLikeableItem persist(UserLikeableItemDTO userLikeableItemDTO) {
-        return persist(userLikeableItemDTO, null);
-    }
+    public Boolean delete(String slugLikeableItem) {
+        LikeableItem likeableItem = likeableItemService.getObjectBySlug(slugLikeableItem);
+        User user = securityService.getCurrentUser();
+        UserLikeableItemId userLikeableItemId = new UserLikeableItemId(user, likeableItem);
 
-    public UserLikeableItem persist(UserLikeableItemDTO userLikeableItemDTO, UserLikeableItemId id) {
-        UserLikeableItem userLikeableItem = new UserLikeableItem();
-        if (id != null) {
-            userLikeableItem = getObjectById(id);
-            securityService.assertCanEdit(userLikeableItem);
-        }
-        userLikeableItem = getObjectFromDTO(userLikeableItemDTO, userLikeableItem);
-        return userLikeableItemRepository.saveAndFlush(userLikeableItem);
-    }
-
-    public UserLikeableItemDTO getDTOById(UserLikeableItemId id) {
-        UserLikeableItem userLikeableItem = getObjectById(id);
-        return getDTOFromObject(userLikeableItem);
-    }
-
-    public UserLikeableItemDTO getDTOFromObject(UserLikeableItem userLikeableItem) {
-        UserLikeableItemDTO userLikeableItemDTO = new UserLikeableItemDTO();
-        userLikeableItemDTO.setAddAt(userLikeableItem.getAddAt());
-        userLikeableItemDTO.setUserSlug(userLikeableItem.getUser().getUuid());
-        userLikeableItemDTO.setLikeableItemSlug(userLikeableItem.getLikeableItem().getUuid());
-        return userLikeableItemDTO;
-    }
-    public UserLikeableItem getObjectFromDTO(UserLikeableItemDTO userLikeableItemDTO) {
-        return getObjectFromDTO(userLikeableItemDTO, new UserLikeableItem());
-    }
-    public UserLikeableItem getObjectFromDTO(UserLikeableItemDTO userLikeableItemDTO, UserLikeableItem userLikeableItem) {
-        userLikeableItem.setAddAt(userLikeableItemDTO.getAddAt());
-        userLikeableItem.setUser(userService.getObjectBySlug(userLikeableItemDTO.getUserSlug()));
-        userLikeableItem.setLikeableItem(likeableItemService.getObjectBySlug(userLikeableItemDTO.getLikeableItemSlug()));
-        userLikeableItem.setSlug("test");
-        return userLikeableItem;
+        userLikeableItemRepository.deleteById(userLikeableItemId);
+        return true;
     }
 
     public boolean isExist(UserLikeableItemId id) {

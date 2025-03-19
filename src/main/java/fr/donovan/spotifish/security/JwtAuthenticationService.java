@@ -50,4 +50,10 @@ public class JwtAuthenticationService {
         }
     }
 
+    public ResponseEntity<JwtTokenResponse> refresh(String refreshToken) {
+        String username = jwtService.extractUserName(refreshToken);
+        UserDetails user = userService.loadUserByUsername(username);
+        String accessToken = jwtService.generateToken(user);
+        return ResponseEntity.ok(new JwtTokenResponse(accessToken, refreshToken));
+    }
 }

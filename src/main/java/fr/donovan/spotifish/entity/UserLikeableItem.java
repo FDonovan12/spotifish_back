@@ -7,9 +7,11 @@ import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
+@Data
 @Getter
 @Setter
 @Entity
@@ -30,6 +33,7 @@ public class UserLikeableItem implements SluggerInterface, PermissionEntityInter
     @JsonView(JsonViewsUser.Uuid.class)
     private String uuid;
 
+    @CreationTimestamp
     @JsonView(JsonViewsUserLikeableItem.AddAt.class)
     @Column(nullable = false)
     private LocalDateTime addAt;

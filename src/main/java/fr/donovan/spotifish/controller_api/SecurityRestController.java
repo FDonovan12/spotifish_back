@@ -1,6 +1,7 @@
 package fr.donovan.spotifish.controller_api;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import fr.donovan.spotifish.dto.RefreshTokenDTO;
 import fr.donovan.spotifish.dto.UserLoginDTO;
 import fr.donovan.spotifish.dto.UserDTO;
 import fr.donovan.spotifish.custom_response.JwtTokenResponse;
@@ -37,4 +38,8 @@ public class SecurityRestController {
         return jwtAuthenticationService.authenticate(userLoginDTO);
     }
 
+    @PostMapping(path =  UrlRoute.URL_REFRESH)
+    public ResponseEntity<JwtTokenResponse> refreshToken(@Valid @RequestBody RefreshTokenDTO refreshTokenDTO) {
+        return jwtAuthenticationService.refresh(refreshTokenDTO.getRefreshToken());
+    }
 }

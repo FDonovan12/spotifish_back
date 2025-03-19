@@ -39,7 +39,12 @@ public class CustomUserLikeableItemSerializer extends StdSerializer<IsLiked> {
 
         LikeableItem likeableItem = isLiked.getLikeableItem();
         User user = securityService.getCurrentUser();
-        UserLikeableItemId userLikeableItemId = new UserLikeableItemId(likeableItem.getUuid(), user.getUuid());
+        if (user == null) {
+            isLiked = new IsLiked(false, null);
+            defaultSerializer.serialize(isLiked, jsonGenerator, serializerProvider);
+            return;
+        }
+        UserLikeableItemId userLikeableItemId = new UserLikeableItemId(user, likeableItem);
         boolean bool = userLikeableItemService.isExist(userLikeableItemId);
         isLiked = new IsLiked(bool, null);
         defaultSerializer.serialize(isLiked, jsonGenerator, serializerProvider);

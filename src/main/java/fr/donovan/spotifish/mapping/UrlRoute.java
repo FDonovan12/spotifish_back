@@ -7,5 +7,6 @@ public class UrlRoute implements UserUrlRoute, LikeableItemUrlRoute, ArtistUrlRo
     public static final String URL_LOGOUT = "/logout";
     public static final String URL_REGISTER = "/security/register";
     public static final String URL_ADMIN = "/admin";
+    public static final String URL_REFRESH = "/security/refresh";
 
 }

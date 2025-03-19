@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,33 +24,17 @@ public class UserLikeableItemControllerApi {
     
     private UserLikeableItemService userLikeableItemService;
 
-    @GetMapping(path = UrlRoute.URL_USERLIKEABLEITEM)
-    @JsonView(JsonViews.UserLikeableItemListJsonViews.class)
-    public CustomResponse<List<UserLikeableItem>> list() {
-        return CustomListResponse.success(userLikeableItemService.findAll());
-    }
-
-    @GetMapping(path = UrlRoute.URL_USERLIKEABLEITEM + "/{slug}")
-    @JsonView(JsonViews.UserLikeableItemShowJsonViews.class)
-    public CustomResponse<UserLikeableItem> show(@PathVariable String slug) {
-        return CustomResponse.success(userLikeableItemService.getObjectBySlug(slug));
-    }
-    
-    @PostMapping(path = UrlRoute.URL_USERLIKEABLEITEM_NEW)
+    @PostMapping(path = UrlRoute.URL_USERLIKEABLEITEM_NEW + "/{slug}")
     @JsonView(JsonViews.UserLikeableItemShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomResponse<UserLikeableItem> create(@Valid @RequestBody UserLikeableItemDTO userLikeableItemDTO) {
-        return CustomResponse.created(userLikeableItemService.persist(userLikeableItemDTO));
+    public CustomResponse<Boolean> create(@PathVariable String slug) {
+        System.out.println("UserLikeableItemControllerApi.create");
+        return CustomResponse.created(userLikeableItemService.like(slug));
     }
-    
-    @PutMapping(path = UrlRoute.URL_USERLIKEABLEITEM_EDIT + "/{id}")
-    @JsonView(JsonViews.UserLikeableItemShowJsonViews.class)
-    public CustomResponse<UserLikeableItem> update(@Valid @RequestBody UserLikeableItemDTO userLikeableItemDTO, @PathVariable UserLikeableItemId id) {
-        return CustomResponse.success(userLikeableItemService.persist(userLikeableItemDTO, id));
-    }
-    
-    @DeleteMapping(path = UrlRoute.URL_USERLIKEABLEITEM_DELETE + "/{id}")
-    public CustomResponse<Boolean> delete(@PathVariable UserLikeableItemId id) {
-        return CustomResponse.success(userLikeableItemService.delete(id));
+
+    @DeleteMapping(path = UrlRoute.URL_USERLIKEABLEITEM_DELETE + "/{slug}")
+    public CustomResponse<Boolean> delete(@PathVariable String slug) {
+        System.out.println("UserLikeableItemControllerApi.delete");
+        return CustomResponse.success(userLikeableItemService.delete(slug));
     }
 }
