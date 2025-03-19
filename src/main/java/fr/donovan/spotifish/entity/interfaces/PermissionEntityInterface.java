@@ -32,7 +32,6 @@ public interface PermissionEntityInterface {
 
     @JsonView(JsonViews.AllJsonViews.class)
     public default Permission getPermission() {
-        System.out.println("PermissionEntityInterface.getPermission");
         return new Permission(false, false, null, this);
     }
 }

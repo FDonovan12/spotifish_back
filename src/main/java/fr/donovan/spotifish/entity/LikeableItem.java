@@ -45,6 +45,11 @@ public abstract class LikeableItem implements SluggerInterface, PermissionEntity
         return this.name + " " + this.getUuid().substring(0, 8);
     }
 
+    @JsonView(JsonViews.AllJsonViews.class)
+    public IsLiked isLiked() {
+        return new IsLiked(false, this);
+    }
+
     public String getIdToSerializer() {
         return this.getUuid();
     }

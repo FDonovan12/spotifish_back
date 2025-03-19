@@ -83,4 +83,9 @@ public class UserLikeableItemService  {
         userLikeableItem.setSlug("test");
         return userLikeableItem;
     }
+
+    public boolean isExist(UserLikeableItemId id) {
+        return userLikeableItemRepository.existsById(id);
+    }
+
 }

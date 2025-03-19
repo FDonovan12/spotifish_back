@@ -38,7 +38,6 @@ public class JwtAuthenticationService {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            System.out.println("Login :");
             System.out.println(user.getUsername());
             System.out.println(user.getPassword());
             user.getAuthorities().forEach(System.out::println);
