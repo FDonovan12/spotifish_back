@@ -35,10 +35,6 @@ public class SongAlbum implements SluggerInterface, PermissionEntityInterface {
     @Column(nullable = false)
     private int position;
 
-    @CreationTimestamp
-    @JsonView(JsonViewsSongAlbum.CreatedAt.class)
-    private LocalDateTime createdAt;
-
     @MapsId("songId")
     @ManyToOne
     @JsonView(JsonViewsSongAlbum.Song.class)

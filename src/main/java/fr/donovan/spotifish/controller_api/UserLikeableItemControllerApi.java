@@ -25,7 +25,6 @@ public class UserLikeableItemControllerApi {
     private UserLikeableItemService userLikeableItemService;
 
     @PostMapping(path = UrlRoute.URL_USERLIKEABLEITEM_NEW + "/{slug}")
-    @JsonView(JsonViews.UserLikeableItemShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Boolean> create(@PathVariable String slug) {
         System.out.println("UserLikeableItemControllerApi.create");

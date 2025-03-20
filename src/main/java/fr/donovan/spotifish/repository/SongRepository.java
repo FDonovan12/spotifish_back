@@ -21,6 +21,7 @@ public interface SongRepository extends JpaRepository<Song, String>, EntitySlugR
             "LEFT JOIN UserLikeableItem uli ON uli.likeableItem = s " +
             "WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "GROUP BY s " +
-            "ORDER BY COUNT(s) DESC")
-    List<Song> findByNameContaining(String search);
+            "ORDER BY COUNT(s) DESC " +
+            "LIMIT 10")
+    List<Song> findBySearch(String search);
 }

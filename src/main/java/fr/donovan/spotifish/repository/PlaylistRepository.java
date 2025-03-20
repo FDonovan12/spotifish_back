@@ -18,6 +18,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, String>, Ent
             "LEFT JOIN UserLikeableItem uli ON uli.likeableItem = p " +
             "WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "GROUP BY p " +
-            "ORDER BY COUNT(p) DESC")
-    List<Playlist> findByNameContaining(String search);
+            "ORDER BY COUNT(p) DESC " +
+            "LIMIT 10")
+    List<Playlist> findBySearch(String search);
 }

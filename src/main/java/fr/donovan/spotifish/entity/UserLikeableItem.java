@@ -24,14 +24,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-public class UserLikeableItem implements SluggerInterface, PermissionEntityInterface {
+public class UserLikeableItem {
 
     @EmbeddedId
     @JsonView(JsonViewsUserLikeableItem.Id.class)
     private UserLikeableItemId id;
-
-    @JsonView(JsonViewsUser.Uuid.class)
-    private String uuid;
 
     @CreationTimestamp
     @JsonView(JsonViewsUserLikeableItem.AddAt.class)
@@ -49,36 +46,4 @@ public class UserLikeableItem implements SluggerInterface, PermissionEntityInter
     @JsonView(JsonViewsUserLikeableItem.LikeableItem.class)
     @JoinColumn(nullable = false)
     private LikeableItem likeableItem;
-
-    @JsonView(JsonViewsUserLikeableItem.Slug.class)
-    @Column(nullable = false, unique = true)
-    private String slug;
-
-    @Override
-    public String getField() {
-        return this.user.getSlug() + '_' + this.likeableItem.getSlug();
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (this.uuid == null) {
-            this.uuid = UUID.randomUUID().toString();
-        }
-    }
-
-    public String getIdToSerializer() {
-        return this.uuid;
-    }
-
-    @Override
-    public boolean canDelete(User user) {
-        return this.canEdit(user);
-    }
-
-    @Override
-    public boolean canEdit(User user) {
-        if (user == null) return false;
-        if (user.isTheSameUser(this.user)) return true;
-        return false;
-    }
 }

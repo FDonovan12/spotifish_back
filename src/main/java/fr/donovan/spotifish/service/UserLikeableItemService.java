@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -37,10 +38,13 @@ public class UserLikeableItemService  {
 
     public boolean persist(String slugLikeableItem, User user) {
         UserLikeableItem userLikeableItem = new UserLikeableItem();
+        LikeableItem likeableItem = likeableItemService.getObjectBySlug(slugLikeableItem);
 
-        userLikeableItem.setLikeableItem(likeableItemService.getObjectBySlug(slugLikeableItem));
+        userLikeableItem.setLikeableItem(likeableItem);
         userLikeableItem.setUser(user);
-        System.out.println("userLikeableItem = " + userLikeableItem);
+        UserLikeableItemId userLikeableItemId = new UserLikeableItemId(user, likeableItem);
+        userLikeableItem.setId(userLikeableItemId);
+
         userLikeableItemRepository.saveAndFlush(userLikeableItem);
         return true;
     }

@@ -18,6 +18,7 @@ public interface ArtistRepository extends JpaRepository<Artist, String>, EntityS
             "LEFT JOIN UserLikeableItem uli ON uli.likeableItem = a " +
             "WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "GROUP BY a " +
-            "ORDER BY COUNT(a) DESC")
-    List<Artist> findByNameContaining(String search);
+            "ORDER BY COUNT(a) DESC " +
+            "LIMIT 10")
+    List<Artist> findBySearch(String search);
 }

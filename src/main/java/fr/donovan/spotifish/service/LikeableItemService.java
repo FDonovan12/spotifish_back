@@ -20,6 +20,7 @@ public class LikeableItemService  {
     private final SongService songService;
     private final PlaylistService playlistService;
     private final ArtistService artistService;
+    private final AlbumService albumService;
     private final ConnectedUserService connectedUserService;
 
     public List<LikeableItem> findAll() {
@@ -85,10 +86,12 @@ public class LikeableItemService  {
         List<Song> songs = songService.search(search);
         List<Playlist> playlists = playlistService.search(search);
         List<Artist> artists = artistService.search(search);
+        List<Album> albums = albumService.search(search);
 
         result.put("songs", songs);
         result.put("playlists", playlists);
         result.put("artists", artists);
+        result.put("albums", albums);
 
         return result;
     }

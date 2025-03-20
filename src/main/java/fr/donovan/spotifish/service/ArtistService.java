@@ -91,6 +91,6 @@ public class ArtistService  {
 
 
     public List<Artist> search(String search) {
-        return artistRepository.findByNameContaining(search);
+        return artistRepository.findBySearch(search);
     }
 }

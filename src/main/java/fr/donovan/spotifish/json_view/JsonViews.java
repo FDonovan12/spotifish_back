@@ -14,6 +14,7 @@ import fr.donovan.spotifish.json_view.JsonViewsShared.*;
 import fr.donovan.spotifish.json_view.JsonViewsPlaylist.*;
 import fr.donovan.spotifish.json_view.JsonViewsMusicalGenre.*;
 import fr.donovan.spotifish.json_view.JsonViewsHistorical.*;
+import org.checkerframework.checker.units.qual.min;
 
 public class JsonViews {
     public interface AllJsonViews {}
@@ -40,7 +41,7 @@ public class JsonViews {
     public interface UserLikeableItemShowJsonViews extends AllJsonViews, AllUserLikeableItem, MinimalUser, MinimalLikeableItem {}
 
     public interface AlbumListJsonViews extends AllJsonViews, MinimalAlbum, MinimalArtist {}
-    public interface AlbumShowJsonViews extends AllJsonViews, AllAlbum, MinimalArtist {}
+    public interface AlbumShowJsonViews extends AllJsonViews, AllAlbum, MinimalArtist, FromAlbumSongAlbumWithoutId, MinimalSong {}
 
     public interface SongAlbumListJsonViews extends AllJsonViews, MinimalSongAlbum, MinimalSong, MinimalAlbum {}
     public interface SongAlbumShowJsonViews extends AllJsonViews, AllSongAlbum, MinimalSong, MinimalAlbum {}

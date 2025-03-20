@@ -85,6 +85,6 @@ public class PlaylistService  {
 
 
     public List<Playlist> search(String search) {
-        return playlistRepository.findByNameContaining(search);
+        return playlistRepository.findBySearch(search);
     }
 }

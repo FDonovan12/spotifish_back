@@ -91,6 +91,6 @@ public class SongService  {
 
 
     public List<Song> search(String search) {
-        return songRepository.findByNameContaining(search);
+        return songRepository.findBySearch(search);
     }
 }

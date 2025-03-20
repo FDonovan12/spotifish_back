@@ -13,4 +13,12 @@ public interface AlbumRepository extends JpaRepository<Album, String>, EntitySlu
 
     @Query("SELECT e FROM Album AS e ORDER BY RAND() LIMIT 1")
     Album findRandom();
+
+    @Query("SELECT a, COUNT(a) FROM Album a " +
+            "LEFT JOIN UserLikeableItem uli ON uli.likeableItem = a " +
+            "WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "GROUP BY a " +
+            "ORDER BY COUNT(a) DESC " +
+            "LIMIT 10")
+    List<Album> findBySearch(String search);
 }

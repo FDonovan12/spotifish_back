@@ -21,7 +21,6 @@ public class UserLikeableItemId implements Serializable {
 
     private String likeableItemId;
 
-
     public UserLikeableItemId (User user, LikeableItem likeableItem) {
         this.userId = user.getUuid();
         this.likeableItemId = likeableItem.getUuid();

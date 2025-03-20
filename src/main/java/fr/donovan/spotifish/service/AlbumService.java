@@ -1,6 +1,7 @@
 package fr.donovan.spotifish.service;
 
 import fr.donovan.spotifish.entity.Album;
+import fr.donovan.spotifish.entity.Artist;
 import fr.donovan.spotifish.repository.AlbumRepository;
 import fr.donovan.spotifish.dto.AlbumDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
@@ -82,5 +83,9 @@ public class AlbumService  {
         album.setArtist(artistService.getObjectBySlug(albumDTO.getArtistSlug()));
         album.setSlug("test");
         return album;
+    }
+
+    public List<Album> search(String search) {
+        return albumRepository.findBySearch(search);
     }
 }
