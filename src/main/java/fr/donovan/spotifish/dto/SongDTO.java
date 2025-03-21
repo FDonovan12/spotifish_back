@@ -18,19 +18,7 @@ public class SongDTO {
     
     @NotBlank(message = "The name can't be blank")
     private String name;
-    
-    @NotBlank(message = "The path can't be blank")
-    private String path;
-    
-    @NotNull(message = "The duration can't be null")
-    private int duration;
-    
-    @NotBlank(message = "The image can't be blank")
-    private String image;
-    
+
     @NotNull(message = "The createdAt can't be null")
     private LocalDate createdAt;
-    
-    @NotNull(message = "The numberOfListen can't be null")
-    private Long numberOfListen;
 }

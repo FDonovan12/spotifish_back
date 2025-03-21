@@ -50,7 +50,7 @@ public class JsonViews {
     public interface SongArtistShowJsonViews extends AllJsonViews, AllSongArtist, MinimalSong, MinimalArtist {}
 
     public interface SongListJsonViews extends AllJsonViews, MinimalSong, FromSongSongPlaylistWithoutId, MinimalMusicalGenre {}
-    public interface SongShowJsonViews extends AllJsonViews, AllSong, FromSongSongPlaylistWithoutId, MinimalMusicalGenre {}
+    public interface SongShowJsonViews extends AllJsonViews, AllSong, FromSongSongPlaylistWithoutId, FromSongSongArtistWithoutId, MinimalArtist, MinimalMusicalGenre {}
 
     public interface SongPlaylistListJsonViews extends AllJsonViews, AllSongPlaylist, MinimalSong, MinimalPlaylist, MinimalContributor {}
     public interface SongPlaylistShowJsonViews extends AllJsonViews, AllSongPlaylist, MinimalSong, MinimalPlaylist, MinimalContributor {}

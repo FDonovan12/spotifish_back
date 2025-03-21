@@ -16,6 +16,10 @@ public interface PermissionEntityInterface {
 
     public Object getIdToSerializer();
 
+    public default boolean canCreate(User user) {
+        return true;
+    }
+
     public default boolean canSee(User user) {
         return true;
     }

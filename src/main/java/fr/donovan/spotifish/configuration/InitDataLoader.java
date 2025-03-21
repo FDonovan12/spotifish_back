@@ -183,11 +183,7 @@ public class InitDataLoader implements CommandLineRunner {
         for (int i = 0; i < countInsert; i++) {
             SongDTO songDTO = new SongDTO();
             songDTO.setName(faker.name().name());
-            songDTO.setPath(faker.internet().url());
-            songDTO.setDuration(faker.duration().atMostMinutes(3).toSecondsPart());
             songDTO.setCreatedAt(faker.timeAndDate().birthday(1, 10));
-            songDTO.setImage(faker.internet().url());
-            songDTO.setNumberOfListen((long) faker.number().numberBetween(10,20));
             songService.persist(songDTO);
         }
         songRepository.flush();

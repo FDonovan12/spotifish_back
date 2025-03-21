@@ -8,5 +8,8 @@ public class UrlRoute implements UserUrlRoute, LikeableItemUrlRoute, ArtistUrlRo
     public static final String URL_REGISTER = "/security/register";
     public static final String URL_ADMIN = "/admin";
     public static final String URL_REFRESH = "/security/refresh";
+    public static final String URL_UPLOAD = "/upload";
+    public static final String URL_UPLOAD_IMAGE = URL_UPLOAD + "/image";
+    public static final String URL_UPLOAD_SONG = URL_UPLOAD + "/song";
 
 }

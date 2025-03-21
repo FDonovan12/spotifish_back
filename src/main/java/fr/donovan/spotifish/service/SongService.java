@@ -1,12 +1,18 @@
 package fr.donovan.spotifish.service;
 
+import fr.donovan.spotifish.dto.ArtistDTO;
+import fr.donovan.spotifish.dto.SongArtistDTO;
+import fr.donovan.spotifish.entity.Artist;
 import fr.donovan.spotifish.entity.Song;
+import fr.donovan.spotifish.entity.SongArtist;
+import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.repository.SongRepository;
 import fr.donovan.spotifish.dto.SongDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.Collection;
@@ -19,6 +25,7 @@ import java.util.stream.Stream;
 public class SongService  {
 
     private final SongRepository songRepository;
+    private final SongArtistService songArtistService;
     private final SecurityService securityService;
     public List<Song> findAll() {
         return this.songRepository.findAll();
@@ -50,12 +57,22 @@ public class SongService  {
 
     public Song persist(SongDTO songDTO, String id) {
         Song song = new Song();
+        securityService.assertCanCreate(song);
+        Artist artist = securityService.getCurrentArtist();
+//        song.addArtist(artist);
         if (id != null) {
             song = getObjectById(id);
             securityService.assertCanEdit(song);
         }
         song = getObjectFromDTO(songDTO, song);
-        return songRepository.saveAndFlush(song);
+        SongArtistDTO songArtistDTO = new SongArtistDTO();
+        songArtistDTO.setArtistSlug(artist.getSlug());
+        songArtistDTO.setSongSlug(song.getSlug());
+        songArtistDTO.setIsPrincipalArtist(true);
+
+        song = songRepository.save(song);
+        songArtistService.persist(songArtistDTO);
+        return song;
     }
 
     public SongDTO getDTOById(String id) {
@@ -66,22 +83,19 @@ public class SongService  {
     public SongDTO getDTOFromObject(Song song) {
         SongDTO songDTO = new SongDTO();
         songDTO.setName(song.getName());
-        songDTO.setPath(song.getPath());
-        songDTO.setDuration(song.getDuration());
-        songDTO.setImage(song.getImage());
-        songDTO.setNumberOfListen(song.getNumberOfListen());
         return songDTO;
     }
     public Song getObjectFromDTO(SongDTO songDTO) {
         return getObjectFromDTO(songDTO, new Song());
     }
     public Song getObjectFromDTO(SongDTO songDTO, Song song) {
+        System.out.println("setName");
         song.setName(songDTO.getName());
-        song.setPath(songDTO.getPath());
-        song.setDuration(songDTO.getDuration());
-        song.setImage(songDTO.getImage());
-        song.setNumberOfListen(songDTO.getNumberOfListen());
+        System.out.println("setCreatedAt");
+        song.setCreatedAt(songDTO.getCreatedAt());
+        System.out.println("setSlug");
         song.setSlug("test");
+        System.out.println("return");
         return song;
     }
 

@@ -3,6 +3,7 @@ package fr.donovan.spotifish.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.donovan.spotifish.entity.*;
+import fr.donovan.spotifish.entity.embed.SongArtistId;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
@@ -22,17 +23,9 @@ import java.util.List;
 @DiscriminatorValue("SONG")
 public class Song extends LikeableItem  {
 
-    @JsonView(JsonViewsSong.Path.class)
-    @Column(nullable = false)
-    private String path;
-
     @JsonView(JsonViewsSong.Duration.class)
     @Column(nullable = false)
-    private int duration;
-
-    @JsonView(JsonViewsSong.Image.class)
-    @Column(nullable = false)
-    private String image;
+    private long duration;
 
     @JsonView(JsonViewsSong.CreatedAt.class)
     @Column(nullable = false)
@@ -40,7 +33,7 @@ public class Song extends LikeableItem  {
 
     @JsonView(JsonViewsSong.NumberOfListen.class)
     @Column(nullable = false)
-    private Long numberOfListen;
+    private Long numberOfListen = 0L;
 
     @OneToMany(mappedBy = "song")
     @JsonView(JsonViewsSong.SongArtists.class)
@@ -61,6 +54,19 @@ public class Song extends LikeableItem  {
     @JsonView(JsonViewsSong.MusicalGenres.class)
     private List<MusicalGenre> musicalGenres = new ArrayList<>();
 
+    @JsonView(JsonViewsSong.Path.class)
+    public String getPath() {
+        return "songs/" + getSlug() + ".mp3";
+    }
+
+    @Override
+    public boolean canCreate(User user) {
+        System.out.println("user = " + user);
+        System.out.println(this);
+        if (user.isArtist()) return true;
+        return false;
+    }
+
     @Override
     public boolean canDelete(User user) {
         return this.canEdit(user);
@@ -78,5 +84,16 @@ public class Song extends LikeableItem  {
         ) return true;
         if (user.isModerator()) return true;
         return false;
+    }
+
+    public void addArtist(Artist artist) {
+        SongArtist songArtist = new SongArtist();
+        songArtist.setArtist(artist);
+        songArtist.setSong(this);
+//        songArtist.setSlug("this");
+        songArtist.setIsPrincipalArtist(true);
+//        SongArtistId songArtistId = new SongArtistId(this.getUuid(), artist.getUuid());
+//        songArtist.setId(songArtistId);
+        this.songArtists.add(songArtist);
     }
 }
