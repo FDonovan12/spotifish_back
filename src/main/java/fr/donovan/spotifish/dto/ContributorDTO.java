@@ -18,10 +18,7 @@ public class ContributorDTO {
     
     @NotNull(message = "The isOwner can't be null")
     private Boolean isOwner;
-    
-    @NotNull(message = "The stillContributing can't be null")
-    private Boolean stillContributing;
-    
+
     @NotNull(message = "The user can't be null")
     private String userSlug;
     

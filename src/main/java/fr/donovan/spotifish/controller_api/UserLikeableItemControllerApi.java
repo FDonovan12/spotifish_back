@@ -27,13 +27,11 @@ public class UserLikeableItemControllerApi {
     @PostMapping(path = UrlRoute.URL_USERLIKEABLEITEM_NEW + "/{slug}")
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Boolean> create(@PathVariable String slug) {
-        System.out.println("UserLikeableItemControllerApi.create");
         return CustomResponse.created(userLikeableItemService.like(slug));
     }
 
     @DeleteMapping(path = UrlRoute.URL_USERLIKEABLEITEM_DELETE + "/{slug}")
     public CustomResponse<Boolean> delete(@PathVariable String slug) {
-        System.out.println("UserLikeableItemControllerApi.delete");
         return CustomResponse.success(userLikeableItemService.delete(slug));
     }
 }

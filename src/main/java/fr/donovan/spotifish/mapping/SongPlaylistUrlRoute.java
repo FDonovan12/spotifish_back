@@ -2,7 +2,7 @@ package fr.donovan.spotifish.mapping;
 
 public interface SongPlaylistUrlRoute {
 
-    String URL_SONGPLAYLIST = "/songplaylist";
+    String URL_SONGPLAYLIST = "/song-playlist";
     String URL_SONGPLAYLIST_NEW = URL_SONGPLAYLIST + "/new";
     String URL_SONGPLAYLIST_EDIT = URL_SONGPLAYLIST + "/edit";
     String URL_SONGPLAYLIST_DELETE = URL_SONGPLAYLIST + "/delete";

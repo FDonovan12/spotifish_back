@@ -55,11 +55,15 @@ public class ContributorService  {
 
     public Contributor persist(ContributorDTO contributorDTO, ContributorId id) {
         Contributor contributor = new Contributor();
+        contributor.setStillContributing(true);
         if (id != null) {
             contributor = getObjectById(id);
             securityService.assertCanEdit(contributor);
         }
         contributor = getObjectFromDTO(contributorDTO, contributor);
+
+        ContributorId contributorId = new ContributorId(contributor.getUser().getUuid(), contributor.getPlaylist().getUuid());
+        contributor.setId(contributorId);
         return contributorRepository.saveAndFlush(contributor);
     }
 
@@ -71,7 +75,6 @@ public class ContributorService  {
     public ContributorDTO getDTOFromObject(Contributor contributor) {
         ContributorDTO contributorDTO = new ContributorDTO();
         contributorDTO.setIsOwner(contributor.getIsOwner());
-        contributorDTO.setStillContributing(contributor.getStillContributing());
         contributorDTO.setUserSlug(contributor.getUser().getUuid());
         contributorDTO.setPlaylistSlug(contributor.getPlaylist().getUuid());
         return contributorDTO;
@@ -81,7 +84,6 @@ public class ContributorService  {
     }
     public Contributor getObjectFromDTO(ContributorDTO contributorDTO, Contributor contributor) {
         contributor.setIsOwner(contributorDTO.getIsOwner());
-        contributor.setStillContributing(contributorDTO.getStillContributing());
         contributor.setUser(userService.getObjectBySlug(contributorDTO.getUserSlug()));
         contributor.setPlaylist(playlistService.getObjectBySlug(contributorDTO.getPlaylistSlug()));
         contributor.setSlug("test");

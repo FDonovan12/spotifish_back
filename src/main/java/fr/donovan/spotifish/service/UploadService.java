@@ -27,26 +27,21 @@ public class UploadService {
     private final String UPLOAD_DIR = "public/";
 
     public LikeableItem uploadImage(MultipartFile file, String slug) {
-        System.out.println("UploadService.uploadImage");
         LikeableItem likeableItem = this.likeableItemService.getObjectBySlug(slug);
         if (!ImageInterface.class.isAssignableFrom(likeableItem.getClass())) {
             throw new NotFoundSpotifishException("UploadService - uploadImage("+slug+")", "uploadImage", slug);
         }
         ImageInterface imageInterface = (ImageInterface) likeableItem;
-        System.out.println("assignable");
-        System.out.println(imageInterface.getImage());
         return likeableItem;
     }
 
     public Song uploadSong(MultipartFile file, String slug) {
         Song song = this.songService.getObjectBySlug(slug);
         Path path = Paths.get(UPLOAD_DIR + song.getPath());
-        System.out.println("path.toAbsolutePath() = " + path.toAbsolutePath());
         try {
             Files.createDirectories(path.getParent());
             Files.write(path, file.getBytes());
             File file2 = path.toFile();
-            System.out.println("file2.getAbsolutePath() = " + file2.getAbsolutePath());
         } catch (Exception e) {
             throw new NotFoundSpotifishException("UploadService - uploadSong("+slug+")", "uploadSong", slug);
         }

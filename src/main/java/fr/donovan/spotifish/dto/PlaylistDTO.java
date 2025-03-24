@@ -21,10 +21,7 @@ public class PlaylistDTO {
     
     @NotBlank(message = "The description can't be blank")
     private String description;
-    
-    @NotBlank(message = "The image can't be blank")
-    private String image;
-    
+
     @NotNull(message = "The isPrivate can't be null")
     private Boolean isPrivate;
 }

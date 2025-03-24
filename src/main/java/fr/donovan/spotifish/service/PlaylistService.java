@@ -1,6 +1,8 @@
 package fr.donovan.spotifish.service;
 
+import fr.donovan.spotifish.entity.LikeableItem;
 import fr.donovan.spotifish.entity.Playlist;
+import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.repository.PlaylistRepository;
 import fr.donovan.spotifish.dto.PlaylistDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
@@ -67,7 +69,6 @@ public class PlaylistService  {
         PlaylistDTO playlistDTO = new PlaylistDTO();
         playlistDTO.setName(playlist.getName());
         playlistDTO.setDescription(playlist.getDescription());
-        playlistDTO.setImage(playlist.getImage());
         playlistDTO.setIsPrivate(playlist.getIsPrivate());
         return playlistDTO;
     }
@@ -77,7 +78,6 @@ public class PlaylistService  {
     public Playlist getObjectFromDTO(PlaylistDTO playlistDTO, Playlist playlist) {
         playlist.setName(playlistDTO.getName());
         playlist.setDescription(playlistDTO.getDescription());
-        playlist.setImage(playlistDTO.getImage());
         playlist.setIsPrivate(playlistDTO.getIsPrivate());
         playlist.setSlug("test");
         return playlist;
@@ -86,5 +86,12 @@ public class PlaylistService  {
 
     public List<Playlist> search(String search) {
         return playlistRepository.findBySearch(search);
+    }
+
+    public List<Playlist> getByUser() {
+        return this.getByUser(securityService.getCurrentUser());
+    }
+    public List<Playlist> getByUser(User user) {
+        return playlistRepository.getByUser(user);
     }
 }

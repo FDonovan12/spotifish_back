@@ -61,8 +61,6 @@ public class Song extends LikeableItem  {
 
     @Override
     public boolean canCreate(User user) {
-        System.out.println("user = " + user);
-        System.out.println(this);
         if (user.isArtist()) return true;
         return false;
     }

@@ -36,7 +36,7 @@ public class Contributor implements SluggerInterface, PermissionEntityInterface 
 
     @JsonView(JsonViewsContributor.StillContributing.class)
     @Column(nullable = false)
-    private Boolean stillContributing;
+    private Boolean stillContributing = true;
 
     @MapsId("userId")
     @ManyToOne

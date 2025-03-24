@@ -38,6 +38,7 @@ public class SongPlaylistControllerApi {
     @JsonView(JsonViews.SongPlaylistShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<SongPlaylist> create(@Valid @RequestBody SongPlaylistDTO songPlaylistDTO) {
+        System.out.println("songPlaylistDTO = " + songPlaylistDTO);
         return CustomResponse.created(songPlaylistService.persist(songPlaylistDTO));
     }
     

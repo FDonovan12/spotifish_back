@@ -26,7 +26,6 @@ public class Playlist extends LikeableItem  {
     private String description;
 
     @JsonView(JsonViewsPlaylist.Image.class)
-    @Column(nullable = false)
     private String image;
 
     @CreationTimestamp

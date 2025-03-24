@@ -91,6 +91,7 @@ public class User extends LikeableItem implements UserDetails {
     }
 
     public boolean isTheSameUser(User otherUser) {
+        if (otherUser == null) return false;
         return this.getUsername().equals(otherUser.getUsername());
     }
 

@@ -1,9 +1,13 @@
 package fr.donovan.spotifish.controller_api;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import fr.donovan.spotifish.entity.Playlist;
+import fr.donovan.spotifish.dto.ContributorDTO;
+import fr.donovan.spotifish.dto.SongArtistDTO;
+import fr.donovan.spotifish.entity.*;
 import fr.donovan.spotifish.custom_response.*;
 import fr.donovan.spotifish.dto.PlaylistDTO;
+import fr.donovan.spotifish.security.SecurityService;
+import fr.donovan.spotifish.service.ContributorService;
 import fr.donovan.spotifish.service.PlaylistService;
 import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
@@ -21,11 +25,19 @@ import java.util.Optional;
 public class PlaylistControllerApi {
     
     private PlaylistService playlistService;
+    private SecurityService securityService;
+    private ContributorService contributorService;
 
     @GetMapping(path = UrlRoute.URL_PLAYLIST)
     @JsonView(JsonViews.PlaylistShowJsonViews.class)
     public CustomResponse<List<Playlist>> list() {
         return CustomListResponse.success(playlistService.findAll());
+    }
+
+    @GetMapping(path = UrlRoute.URL_PLAYLIST + "/mine/me")
+    @JsonView(JsonViews.PlaylistShowJsonViews.class)
+    public CustomResponse<List<Playlist>> me() {
+        return CustomListResponse.success(playlistService.getByUser());
     }
 
     @GetMapping(path = UrlRoute.URL_PLAYLIST + "/{slug}")
@@ -38,7 +50,19 @@ public class PlaylistControllerApi {
     @JsonView(JsonViews.PlaylistShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Playlist> create(@Valid @RequestBody PlaylistDTO playlistDTO) {
-        return CustomResponse.created(playlistService.persist(playlistDTO));
+        Playlist playlist = playlistService.persist(playlistDTO);
+
+        User user = securityService.getCurrentUser();
+
+        ContributorDTO contributorDTO = new ContributorDTO();
+        contributorDTO.setUserSlug(user.getSlug());
+        contributorDTO.setPlaylistSlug(playlist.getSlug());
+        contributorDTO.setIsOwner(true);
+
+        System.out.println("persist contributor");
+        contributorService.persist(contributorDTO);
+        System.out.println("persist contributor after");
+        return CustomResponse.created(playlist);
     }
     
     @PutMapping(path = UrlRoute.URL_PLAYLIST_EDIT + "/{id}")

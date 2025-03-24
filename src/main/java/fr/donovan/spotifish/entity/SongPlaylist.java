@@ -7,6 +7,7 @@ import fr.donovan.spotifish.entity.embed.SongArtistId;
 import fr.donovan.spotifish.json_view.*;
 import fr.donovan.spotifish.entity.interfaces.*;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,13 +19,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
+@Data
 @Getter
 @Setter
 @Entity
 public class SongPlaylist implements SluggerInterface, PermissionEntityInterface {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @JsonView(JsonViewsSongPlaylist.Id.class)
     private String uuid;
 

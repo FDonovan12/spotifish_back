@@ -3,6 +3,7 @@ package fr.donovan.spotifish.dto;
 import fr.donovan.spotifish.entity.*;
 import fr.donovan.spotifish.entity.embed.ContributorId;
 import jakarta.validation.constraints.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,17 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Data
 public class SongPlaylistDTO {
     
-    @NotNull(message = "The position can't be null")
-    private int position;
-
     @NotNull(message = "The song can't be null")
     private String songSlug;
     
     @NotNull(message = "The playlist can't be null")
     private String playlistSlug;
-    
-    @NotNull(message = "The user can't be null")
-    private String userSlug;
 }

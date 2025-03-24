@@ -98,7 +98,10 @@ public class LikeableItemService  {
 
     public List<LikeableItem> getAllLiked(Principal principal) {
         User user = connectedUserService.getByCurrentUser(principal);
-        return likeableItemRepository.findWithoutSong(user);
+        List<Playlist> playlist = playlistService.getByUser(user);
+        List<LikeableItem> result = new ArrayList<>(playlist);
+        result.addAll(likeableItemRepository.findWithoutSong(user));
+        return result;
     }
 
     public long getSongsLikedNumber(Principal principal) {

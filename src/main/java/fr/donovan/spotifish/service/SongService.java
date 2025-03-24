@@ -25,8 +25,8 @@ import java.util.stream.Stream;
 public class SongService  {
 
     private final SongRepository songRepository;
-    private final SongArtistService songArtistService;
     private final SecurityService securityService;
+
     public List<Song> findAll() {
         return this.songRepository.findAll();
     }
@@ -58,21 +58,13 @@ public class SongService  {
     public Song persist(SongDTO songDTO, String id) {
         Song song = new Song();
         securityService.assertCanCreate(song);
-        Artist artist = securityService.getCurrentArtist();
-//        song.addArtist(artist);
         if (id != null) {
             song = getObjectById(id);
             securityService.assertCanEdit(song);
         }
         song = getObjectFromDTO(songDTO, song);
-        SongArtistDTO songArtistDTO = new SongArtistDTO();
-        songArtistDTO.setArtistSlug(artist.getSlug());
-        songArtistDTO.setSongSlug(song.getSlug());
-        songArtistDTO.setIsPrincipalArtist(true);
 
-        song = songRepository.save(song);
-        songArtistService.persist(songArtistDTO);
-        return song;
+        return songRepository.save(song);
     }
 
     public SongDTO getDTOById(String id) {
@@ -89,13 +81,9 @@ public class SongService  {
         return getObjectFromDTO(songDTO, new Song());
     }
     public Song getObjectFromDTO(SongDTO songDTO, Song song) {
-        System.out.println("setName");
         song.setName(songDTO.getName());
-        System.out.println("setCreatedAt");
         song.setCreatedAt(songDTO.getCreatedAt());
-        System.out.println("setSlug");
         song.setSlug("test");
-        System.out.println("return");
         return song;
     }
 

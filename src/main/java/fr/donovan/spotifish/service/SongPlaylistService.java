@@ -3,6 +3,7 @@ package fr.donovan.spotifish.service;
 import fr.donovan.spotifish.entity.Playlist;
 import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.entity.SongPlaylist;
+import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.embed.ContributorId;
 import fr.donovan.spotifish.repository.SongPlaylistRepository;
 import fr.donovan.spotifish.dto.SongPlaylistDTO;
@@ -61,6 +62,7 @@ public class SongPlaylistService  {
             securityService.assertCanEdit(songPlaylist);
         }
         songPlaylist = getObjectFromDTO(songPlaylistDTO, songPlaylist);
+        System.out.println("songPlaylist = " + songPlaylist);
         return songPlaylistRepository.saveAndFlush(songPlaylist);
     }
 
@@ -71,22 +73,21 @@ public class SongPlaylistService  {
 
     public SongPlaylistDTO getDTOFromObject(SongPlaylist songPlaylist) {
         SongPlaylistDTO songPlaylistDTO = new SongPlaylistDTO();
-        songPlaylistDTO.setPosition(songPlaylist.getPosition());
         songPlaylistDTO.setSongSlug(songPlaylist.getSong().getUuid());
         songPlaylistDTO.setPlaylistSlug(songPlaylist.getPlaylist().getUuid());
-        songPlaylistDTO.setUserSlug(songPlaylist.getContributor().getUser().getUuid());
         return songPlaylistDTO;
     }
     public SongPlaylist getObjectFromDTO(SongPlaylistDTO songPlaylistDTO) {
         return getObjectFromDTO(songPlaylistDTO, new SongPlaylist());
     }
     public SongPlaylist getObjectFromDTO(SongPlaylistDTO songPlaylistDTO, SongPlaylist songPlaylist) {
-        songPlaylist.setPosition(songPlaylistDTO.getPosition());
         Song song  = songService.getObjectBySlug(songPlaylistDTO.getSongSlug());
+        User user  = securityService.getCurrentUser();
         songPlaylist.setSong(song);
-        Playlist playlist  = playlistService.getObjectBySlug(songPlaylistDTO.getPlaylistSlug());
+        Playlist playlist = playlistService.getObjectBySlug(songPlaylistDTO.getPlaylistSlug());
+        songPlaylist.setPosition(playlist.getSongPlaylists().stream().mapToInt(SongPlaylist::getPosition).max().orElse(0)+1);
         songPlaylist.setPlaylist(playlist);
-        ContributorId contributorId = new ContributorId(song.getUuid(), playlist.getUuid());
+        ContributorId contributorId = new ContributorId(user.getUuid(), playlist.getUuid());
         songPlaylist.setContributor(contributorService.getObjectById(contributorId));
         songPlaylist.setSlug("test");
         return songPlaylist;

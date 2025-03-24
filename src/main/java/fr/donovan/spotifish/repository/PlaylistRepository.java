@@ -1,6 +1,8 @@
 package fr.donovan.spotifish.repository;
 
+import fr.donovan.spotifish.entity.LikeableItem;
 import fr.donovan.spotifish.entity.Playlist;
+import fr.donovan.spotifish.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +23,9 @@ public interface PlaylistRepository extends JpaRepository<Playlist, String>, Ent
             "ORDER BY COUNT(p) DESC " +
             "LIMIT 10")
     List<Playlist> findBySearch(String search);
+
+    @Query("SELECT p FROM Playlist p " +
+            "LEFT JOIN Contributor c ON c.playlist = p " +
+            "WHERE c.user = :user")
+    List<Playlist> getByUser(User user);
 }

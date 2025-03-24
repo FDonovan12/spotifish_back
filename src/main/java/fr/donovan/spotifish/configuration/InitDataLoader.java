@@ -192,11 +192,10 @@ public class InitDataLoader implements CommandLineRunner {
         long countInsert = NB_SONGPLAYLIST - songPlaylistRepository.count();
         for (int i = 0; i < countInsert; i++) {
             SongPlaylistDTO songPlaylistDTO = new SongPlaylistDTO();
-            songPlaylistDTO.setPosition(1);
             songPlaylistDTO.setSongSlug(songRepository.findRandom().getSlug());
             Contributor contributor = contributorRepository.findRandom();
             songPlaylistDTO.setPlaylistSlug(contributor.getPlaylist().getSlug());
-            songPlaylistDTO.setUserSlug(contributor.getUser().getSlug());
+//            songPlaylistDTO.setUserSlug(contributor.getUser().getSlug());
             songPlaylistService.persist(songPlaylistDTO);
         }
         songPlaylistRepository.flush();
@@ -206,7 +205,6 @@ public class InitDataLoader implements CommandLineRunner {
         for (int i = 0; i < countInsert; i++) {
             ContributorDTO contributorDTO = new ContributorDTO();
             contributorDTO.setIsOwner(true);
-            contributorDTO.setStillContributing(true);
             contributorDTO.setUserSlug(userRepository.findRandom().getSlug());
             contributorDTO.setPlaylistSlug(playlistRepository.findRandom().getSlug());
             contributorService.persist(contributorDTO);
@@ -219,7 +217,6 @@ public class InitDataLoader implements CommandLineRunner {
             PlaylistDTO playlistDTO = new PlaylistDTO();
             playlistDTO.setName(faker.name().name());
             playlistDTO.setDescription(faker.backToTheFuture().quote());
-            playlistDTO.setImage(faker.internet().url());
             playlistDTO.setIsPrivate(false);
             playlistService.persist(playlistDTO);
         }
