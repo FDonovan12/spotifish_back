@@ -62,7 +62,7 @@ public class SongPlaylist implements SluggerInterface, PermissionEntityInterface
 
     @Override
     public String getField() {
-        return "" + this.uuid;
+        return this.getSong().getSlug() + this.getPlaylist().getSlug();
     }
 
     @Override

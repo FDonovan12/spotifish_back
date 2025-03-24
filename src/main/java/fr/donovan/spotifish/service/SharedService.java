@@ -1,5 +1,8 @@
 package fr.donovan.spotifish.service;
 
+import fr.donovan.spotifish.dto.ContributorDTO;
+import fr.donovan.spotifish.entity.Contributor;
+import fr.donovan.spotifish.entity.Playlist;
 import fr.donovan.spotifish.entity.Shared;
 import fr.donovan.spotifish.repository.SharedRepository;
 import fr.donovan.spotifish.dto.SharedDTO;
@@ -20,6 +23,7 @@ public class SharedService  {
 
     private final SharedRepository sharedRepository;
     private final PlaylistService playlistService;
+    private final ContributorService contributorService;
     private final SecurityService securityService;
     public List<Shared> findAll() {
         return this.sharedRepository.findAll();
@@ -56,6 +60,7 @@ public class SharedService  {
             securityService.assertCanEdit(shared);
         }
         shared = getObjectFromDTO(sharedDTO, shared);
+        securityService.assertCanEdit(shared.getPlaylist());
         return sharedRepository.saveAndFlush(shared);
     }
 
@@ -80,5 +85,23 @@ public class SharedService  {
         shared.setPlaylist(playlistService.getObjectBySlug(sharedDTO.getPlaylistSlug()));
         shared.setSlug("test");
         return shared;
+    }
+
+    public Playlist addContributor(String slug) {
+        Shared shared = this.getObjectBySlug(slug);
+        int remainingInvitation = shared.getRemainingInvitation();
+        if (remainingInvitation <= 0) {
+            return null;
+        }
+        ContributorDTO contributorDTO = new ContributorDTO();
+
+        contributorDTO.setIsOwner(false);
+        contributorDTO.setPlaylistSlug(shared.getPlaylist().getSlug());
+        contributorDTO.setUserSlug(securityService.getCurrentUser().getSlug());
+
+        contributorService.persist(contributorDTO);
+
+        shared.setRemainingInvitation(remainingInvitation-1);
+        return shared.getPlaylist();
     }
 }

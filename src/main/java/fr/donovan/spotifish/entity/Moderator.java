@@ -27,11 +27,6 @@ import java.util.List;
 public class Moderator extends Artist  {
 
     @Override
-    public String getField() {
-        return "" + this.getUuid();
-    }
-
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(
                 new SimpleGrantedAuthority("ROLE_USER"),

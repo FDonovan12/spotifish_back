@@ -1,6 +1,7 @@
 package fr.donovan.spotifish.controller_api;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import fr.donovan.spotifish.entity.Playlist;
 import fr.donovan.spotifish.entity.Shared;
 import fr.donovan.spotifish.custom_response.*;
 import fr.donovan.spotifish.dto.SharedDTO;
@@ -22,31 +23,18 @@ public class SharedControllerApi {
     
     private SharedService sharedService;
 
-    @GetMapping(path = UrlRoute.URL_SHARED)
-    @JsonView(JsonViews.SharedListJsonViews.class)
-    public CustomResponse<List<Shared>> list() {
-        return CustomListResponse.success(sharedService.findAll());
+    @GetMapping(path = UrlRoute.URL_SHARED + "/{slug}")
+    public CustomResponse<Playlist> show(@PathVariable String slug) {
+        return CustomResponse.success(sharedService.addContributor(slug));
     }
 
-    @GetMapping(path = UrlRoute.URL_SHARED + "/{slug}")
-    @JsonView(JsonViews.SharedShowJsonViews.class)
-    public CustomResponse<Shared> show(@PathVariable String slug) {
-        return CustomResponse.success(sharedService.getObjectBySlug(slug));
-    }
-    
     @PostMapping(path = UrlRoute.URL_SHARED_NEW)
     @JsonView(JsonViews.SharedShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Shared> create(@Valid @RequestBody SharedDTO sharedDTO) {
         return CustomResponse.created(sharedService.persist(sharedDTO));
     }
-    
-    @PutMapping(path = UrlRoute.URL_SHARED_EDIT + "/{id}")
-    @JsonView(JsonViews.SharedShowJsonViews.class)
-    public CustomResponse<Shared> update(@Valid @RequestBody SharedDTO sharedDTO, @PathVariable String id) {
-        return CustomResponse.success(sharedService.persist(sharedDTO, id));
-    }
-    
+
     @DeleteMapping(path = UrlRoute.URL_SHARED_DELETE + "/{id}")
     public CustomResponse<Boolean> delete(@PathVariable String id) {
         return CustomResponse.success(sharedService.delete(id));
