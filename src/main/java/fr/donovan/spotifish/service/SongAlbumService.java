@@ -58,6 +58,10 @@ public class SongAlbumService  {
             securityService.assertCanEdit(songAlbum);
         }
         songAlbum = getObjectFromDTO(songAlbumDTO, songAlbum);
+
+        SongAlbumId songAlbumId = new SongAlbumId(songAlbum.getSong().getUuid(), songAlbum.getAlbum().getUuid());
+        songAlbum.setId(songAlbumId);
+
         return songAlbumRepository.saveAndFlush(songAlbum);
     }
 

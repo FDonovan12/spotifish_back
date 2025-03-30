@@ -1,5 +1,7 @@
 package fr.donovan.spotifish.security;
 
+import fr.donovan.spotifish.entity.User;
+import fr.donovan.spotifish.service.ConnectedUserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -22,24 +24,29 @@ public class JwtService {
 
     private final String secretKey;
 
-    public JwtService() {
+    private final ConnectedUserService connectedUserService;
+
+    public JwtService(ConnectedUserService connectedUserService) {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
             SecretKey sk = keyGen.generateKey();
 //            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
-            secretKey = "azsedrtyuiqsdfgyuDTFYGTYUJIdrFTGHJCVGBHNJCGVJHBKNLcgvhjb5445645";
+            this.secretKey = "azsedrtyuiqsdfgyuDTFYGTYUJIdrFTGHJCVGBHNJCGVJHBKNLcgvhjb5445645";
+            this.connectedUserService = connectedUserService;
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String generateToken(UserDetails currentUser) {
+    public String generateToken(UserDetails userDetails) {
         // If ya want to add more claims to this token
         // There you add to the "claims" Map
+        assert userDetails instanceof User;
+        User currentUser = (User) userDetails;
         Map<String, Object> claims = new HashMap<>();
-        claims.put("isAdmin", currentUser.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.equals("ROLE_ADMIN")));
+        claims.put("isModerator", currentUser.isModerator());
+        claims.put("isArtist", currentUser.isArtist());
+        claims.put("slug", currentUser.getSlug());
         return Jwts.builder()
                 .claims()
                 .add(claims)

@@ -18,13 +18,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@NoArgsConstructor
 @Getter
 @Setter
-@Entity
+
+@NoArgsConstructor
 @Data
+@Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class LikeableItem implements SluggerInterface, PermissionEntityInterface {
 
     @Id

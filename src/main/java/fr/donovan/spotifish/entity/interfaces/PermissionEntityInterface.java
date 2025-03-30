@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import fr.donovan.spotifish.entity.Permission;
 import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.json_view.JsonViews;
+import fr.donovan.spotifish.utils.Slugger;
 
 public interface PermissionEntityInterface {
 
-    @JsonProperty("type")
     @JsonView(JsonViews.AllJsonViews.class)
     public default String getType() {
-        return this.getClass().getSimpleName();
+        return Slugger.slugify(this.getClass().getSimpleName());
     }
 
     public Object getIdToSerializer();

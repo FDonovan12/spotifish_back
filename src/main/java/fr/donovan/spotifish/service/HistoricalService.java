@@ -46,18 +46,19 @@ public class HistoricalService  {
         return true;
     }
 
-    public Historical persist(HistoricalDTO historicalDTO) {
+    public Boolean persist(HistoricalDTO historicalDTO) {
         return persist(historicalDTO, null);
     }
 
-    public Historical persist(HistoricalDTO historicalDTO, String id) {
+    public Boolean persist(HistoricalDTO historicalDTO, String id) {
         Historical historical = new Historical();
         if (id != null) {
             historical = getObjectById(id);
             securityService.assertCanEdit(historical);
         }
         historical = getObjectFromDTO(historicalDTO, historical);
-        return historicalRepository.saveAndFlush(historical);
+        historicalRepository.saveAndFlush(historical);
+        return true;
     }
 
     public HistoricalDTO getDTOById(String id) {

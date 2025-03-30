@@ -20,15 +20,11 @@ import java.util.List;
 @Setter
 @Entity
 @DiscriminatorValue("ALBUM")
-public class Album extends LikeableItem  {
+public class Album extends LikeableItem implements ImageInterface {
 
     @JsonView(JsonViewsAlbum.Description.class)
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
-
-    @JsonView(JsonViewsAlbum.Image.class)
-    @Column(nullable = false)
-    private String image;
 
     @JsonView(JsonViewsAlbum.CreatedAt.class)
     @Column(nullable = false)

@@ -7,6 +7,6 @@ public interface ImageInterface {
 
     @JsonView(JsonViews.AllJsonViews.class)
     default String getImage() {
-        return "";
+        return "images/default.png";
     }
 }

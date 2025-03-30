@@ -19,14 +19,11 @@ import java.util.List;
 @Setter
 @Entity
 @DiscriminatorValue("PLAYLIST")
-public class Playlist extends LikeableItem  {
+public class Playlist extends LikeableItem implements ImageInterface {
 
     @JsonView(JsonViewsPlaylist.Description.class)
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
-
-    @JsonView(JsonViewsPlaylist.Image.class)
-    private String image;
 
     @CreationTimestamp
     @JsonView(JsonViewsPlaylist.CreatedAt.class)
@@ -44,7 +41,7 @@ public class Playlist extends LikeableItem  {
     @JsonView(JsonViewsPlaylist.Contributors.class)
     private List<Contributor> contributors = new ArrayList<>();
 
-    @OneToMany(mappedBy = "playlist")
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER)
     @JsonView(JsonViewsPlaylist.SongPlaylists.class)
     private List<SongPlaylist> songPlaylists = new ArrayList<>();
 

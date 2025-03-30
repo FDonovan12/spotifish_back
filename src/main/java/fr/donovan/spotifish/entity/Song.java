@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 @Entity
 @DiscriminatorValue("SONG")
-public class Song extends LikeableItem  {
+public class Song extends LikeableItem implements ImageInterface {
 
     @JsonView(JsonViewsSong.Duration.class)
     @Column(nullable = false)
@@ -61,8 +61,8 @@ public class Song extends LikeableItem  {
 
     @Override
     public boolean canCreate(User user) {
-        if (user.isArtist()) return true;
-        return false;
+//        if (user.isArtist()) return true;
+        return true;
     }
 
     @Override

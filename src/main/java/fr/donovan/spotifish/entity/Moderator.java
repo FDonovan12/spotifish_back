@@ -34,4 +34,9 @@ public class Moderator extends Artist  {
                 new SimpleGrantedAuthority("ROLE_MODERATOR")
                 );
     }
+
+    @Override
+    public String getType() {
+        return "artist";
+    }
 }

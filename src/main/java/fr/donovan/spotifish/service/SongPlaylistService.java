@@ -10,6 +10,7 @@ import fr.donovan.spotifish.dto.SongPlaylistDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 
@@ -85,7 +86,9 @@ public class SongPlaylistService  {
         User user  = securityService.getCurrentUser();
         songPlaylist.setSong(song);
         Playlist playlist = playlistService.getObjectBySlug(songPlaylistDTO.getPlaylistSlug());
-        songPlaylist.setPosition(playlist.getSongPlaylists().stream().mapToInt(SongPlaylist::getPosition).max().orElse(0)+1);
+        Hibernate.initialize(playlist.getSongPlaylists());
+        List<SongPlaylist> songPlaylists = playlist.getSongPlaylists();
+        songPlaylist.setPosition(songPlaylists.stream().mapToInt(SongPlaylist::getPosition).max().orElse(0)+1);
         songPlaylist.setPlaylist(playlist);
         ContributorId contributorId = new ContributorId(user.getUuid(), playlist.getUuid());
         songPlaylist.setContributor(contributorService.getObjectById(contributorId));

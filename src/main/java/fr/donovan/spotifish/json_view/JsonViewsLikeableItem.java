@@ -12,3 +12,4 @@ public class JsonViewsLikeableItem {
     public interface Name  {}
     public interface Slug  {}
 }
+

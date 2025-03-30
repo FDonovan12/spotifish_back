@@ -27,7 +27,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("USER")
-public class User extends LikeableItem implements UserDetails {
+public class User extends LikeableItem implements UserDetails, ImageInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -73,12 +73,14 @@ public class User extends LikeableItem implements UserDetails {
         );
     }
 
+    @JsonView(JsonViews.AllJsonViews.class)
     public boolean isArtist() {
         return this.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(authority -> authority.equals("ROLE_ARTIST"));
     }
 
+    @JsonView(JsonViews.AllJsonViews.class)
     public boolean isModerator() {
         return this.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

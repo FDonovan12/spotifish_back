@@ -99,10 +99,6 @@ public class UserService implements UserDetailsService {
         fr.donovan.spotifish.entity.User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Les cochons sont dans la baie"));
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                user.getAuthorities()
-        );
+        return user;
     }
 }

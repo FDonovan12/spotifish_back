@@ -36,6 +36,9 @@ public class ArtistService  {
         Optional<Artist> optionalArtist = artistRepository.findBySlug(slug);
         Artist artist = optionalArtist.orElseThrow(() -> new NotFoundSpotifishException("ArtistService - getObjectBySlug("+slug+")", "Artist", slug));
         securityService.assertCanSee(artist);
+//        System.out.println("artist = " + artist);
+//        System.out.println("artist = " + artist.getAlbums());
+//        System.out.println("artist = " + artist.getSongArtists());
         return artist;
     }
 

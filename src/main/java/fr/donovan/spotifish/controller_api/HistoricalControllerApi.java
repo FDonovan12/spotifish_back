@@ -22,33 +22,10 @@ public class HistoricalControllerApi {
     
     private HistoricalService historicalService;
 
-    @GetMapping(path = UrlRoute.URL_HISTORICAL)
-    @JsonView(JsonViews.HistoricalListJsonViews.class)
-    public CustomResponse<List<Historical>> list() {
-        return CustomListResponse.success(historicalService.findAll());
-    }
-
-    @GetMapping(path = UrlRoute.URL_HISTORICAL + "/{slug}")
-    @JsonView(JsonViews.HistoricalShowJsonViews.class)
-    public CustomResponse<Historical> show(@PathVariable String slug) {
-        return CustomResponse.success(historicalService.getObjectBySlug(slug));
-    }
-    
     @PostMapping(path = UrlRoute.URL_HISTORICAL_NEW)
     @JsonView(JsonViews.HistoricalShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomResponse<Historical> create(@Valid @RequestBody HistoricalDTO historicalDTO) {
+    public CustomResponse<Boolean> create(@Valid @RequestBody HistoricalDTO historicalDTO) {
         return CustomResponse.created(historicalService.persist(historicalDTO));
-    }
-    
-    @PutMapping(path = UrlRoute.URL_HISTORICAL_EDIT + "/{id}")
-    @JsonView(JsonViews.HistoricalShowJsonViews.class)
-    public CustomResponse<Historical> update(@Valid @RequestBody HistoricalDTO historicalDTO, @PathVariable String id) {
-        return CustomResponse.success(historicalService.persist(historicalDTO, id));
-    }
-    
-    @DeleteMapping(path = UrlRoute.URL_HISTORICAL_DELETE + "/{id}")
-    public CustomResponse<Boolean> delete(@PathVariable String id) {
-        return CustomResponse.success(historicalService.delete(id));
     }
 }

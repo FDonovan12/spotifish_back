@@ -191,12 +191,19 @@ public class InitDataLoader implements CommandLineRunner {
     private void createSongPlaylist() {
         long countInsert = NB_SONGPLAYLIST - songPlaylistRepository.count();
         for (int i = 0; i < countInsert; i++) {
-            SongPlaylistDTO songPlaylistDTO = new SongPlaylistDTO();
-            songPlaylistDTO.setSongSlug(songRepository.findRandom().getSlug());
+//            SongPlaylistDTO songPlaylistDTO = new SongPlaylistDTO();
+//            songPlaylistDTO.setSongSlug(songRepository.findRandom().getSlug());
+//            Contributor contributor = contributorRepository.findRandom();
+//            songPlaylistDTO.setPlaylistSlug(contributor.getPlaylist().getSlug());
+////            songPlaylistDTO.setUserSlug(contributor.getUser().getSlug());
+
             Contributor contributor = contributorRepository.findRandom();
-            songPlaylistDTO.setPlaylistSlug(contributor.getPlaylist().getSlug());
-//            songPlaylistDTO.setUserSlug(contributor.getUser().getSlug());
-            songPlaylistService.persist(songPlaylistDTO);
+            SongPlaylist songPlaylist = new SongPlaylist();
+            songPlaylist.setPlaylist(contributor.getPlaylist());
+            songPlaylist.setContributor(contributor);
+            songPlaylist.setSong(songRepository.findRandom());
+            songPlaylist.setSlug("test");
+            songPlaylistRepository.save(songPlaylist);
         }
         songPlaylistRepository.flush();
     }
