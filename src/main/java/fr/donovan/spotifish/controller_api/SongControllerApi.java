@@ -22,19 +22,17 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
 @AllArgsConstructor
+@RestController
 @RequestMapping(UrlRoute.URL_API)
 public class SongControllerApi {
     
     private SongService songService;
-    private SecurityService securityService;
-    private SongArtistService songArtistService;
 
     @GetMapping(path = UrlRoute.URL_SONG)
     @JsonView(JsonViews.SongListJsonViews.class)
     public CustomResponse<List<Song>> list() {
-        return CustomListResponse.success(songService.findAll());
+        return CustomListResponse.success(songService.byUser());
     }
 
     @GetMapping(path = UrlRoute.URL_SONG + "/{slug}")
@@ -42,29 +40,17 @@ public class SongControllerApi {
     public CustomResponse<Song> show(@PathVariable String slug) {
         return CustomResponse.success(songService.getObjectBySlug(slug));
     }
-    
     @PostMapping(path = UrlRoute.URL_SONG_NEW)
     @JsonView(JsonViews.SongShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Song> create(@Valid @RequestBody SongDTO songDTO) {
-        Song song = songService.persist(songDTO);
-
-        Artist artist = securityService.getCurrentArtist();
-
-        SongArtistDTO songArtistDTO = new SongArtistDTO();
-        songArtistDTO.setArtistSlug(artist.getSlug());
-        songArtistDTO.setSongSlug(song.getSlug());
-        songArtistDTO.setIsPrincipalArtist(true);
-
-        songArtistService.persist(songArtistDTO);
-
-        return CustomResponse.created(song);
+        return CustomResponse.created(songService.persist(songDTO));
     }
     
-    @PutMapping(path = UrlRoute.URL_SONG_EDIT + "/{id}")
+    @PutMapping(path = UrlRoute.URL_SONG_EDIT + "/{slug}")
     @JsonView(JsonViews.SongShowJsonViews.class)
-    public CustomResponse<Song> update(@Valid @RequestBody SongDTO songDTO, @PathVariable String id) {
-        return CustomResponse.success(songService.persist(songDTO, id));
+    public CustomResponse<Song> update(@Valid @RequestBody SongDTO songDTO, @PathVariable String slug) {
+        return CustomResponse.success(songService.persist(songDTO, slug));
     }
     
     @DeleteMapping(path = UrlRoute.URL_SONG_DELETE + "/{id}")

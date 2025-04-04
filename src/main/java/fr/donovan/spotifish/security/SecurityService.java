@@ -4,6 +4,7 @@ import fr.donovan.spotifish.entity.Artist;
 import fr.donovan.spotifish.entity.Moderator;
 import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.interfaces.PermissionEntityInterface;
+import fr.donovan.spotifish.exception.AccessDeniedSpotifishException;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import fr.donovan.spotifish.service.ConnectedUserService;
 import fr.donovan.spotifish.service.UserService;
@@ -16,6 +17,26 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class SecurityService {
+
+    public void assertCanCreate(PermissionEntityInterface entity) {
+        if (entity.canCreate(this.getCurrentUser())) return;
+        throw new AccessDeniedSpotifishException(entity.getType(), "create");
+    }
+
+    public void assertCanSee(PermissionEntityInterface entity) {
+        if (entity.canSee(this.getCurrentUser())) return;
+        throw new AccessDeniedSpotifishException(entity.getType(), "show");
+    }
+
+    public void assertCanEdit(PermissionEntityInterface entity) {
+        if (entity.canEdit(this.getCurrentUser())) return;
+        throw new AccessDeniedSpotifishException(entity.getType(), "edit");
+    }
+
+    public void assertCanDelete(PermissionEntityInterface entity) {
+        if (entity.canDelete(this.getCurrentUser())) return;
+        throw new AccessDeniedSpotifishException(entity.getType(), "delete");
+    }
 
     private ObjectProvider<SecurityServiceProvider> securityServiceProvider;
 
@@ -41,23 +62,5 @@ public class SecurityService {
         return null;
     }
 
-    public void assertCanCreate(PermissionEntityInterface entity) {
-        if (entity.canCreate(this.getCurrentUser())) return;
-        throw new NotFoundSpotifishException("type", "field", "object");
-    }
 
-    public void assertCanSee(PermissionEntityInterface entity) {
-        if (entity.canSee(this.getCurrentUser())) return;
-        throw new NotFoundSpotifishException("type", "field", "object");
-    }
-
-    public void assertCanEdit(PermissionEntityInterface entity) {
-        if (entity.canEdit(this.getCurrentUser())) return;
-        throw new NotFoundSpotifishException("type", "field", "object");
-    }
-
-    public void assertCanDelete(PermissionEntityInterface entity) {
-        if (entity.canDelete(this.getCurrentUser())) return;
-        throw new NotFoundSpotifishException("type", "field", "object");
-    }
 }

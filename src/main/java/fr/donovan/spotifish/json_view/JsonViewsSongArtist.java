@@ -16,3 +16,6 @@ public class JsonViewsSongArtist {
     public interface Artist  {}
     public interface Slug  {}
 }
+
+
+

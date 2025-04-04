@@ -44,12 +44,12 @@ public class SongPlaylistControllerApi {
     
     @PutMapping(path = UrlRoute.URL_SONGPLAYLIST_EDIT + "/{id}")
     @JsonView(JsonViews.SongPlaylistShowJsonViews.class)
-    public CustomResponse<SongPlaylist> update(@Valid @RequestBody SongPlaylistDTO songPlaylistDTO, @PathVariable Long id) {
+    public CustomResponse<SongPlaylist> update(@Valid @RequestBody SongPlaylistDTO songPlaylistDTO, @PathVariable String id) {
         return CustomResponse.success(songPlaylistService.persist(songPlaylistDTO, id));
     }
     
     @DeleteMapping(path = UrlRoute.URL_SONGPLAYLIST_DELETE + "/{id}")
-    public CustomResponse<Boolean> delete(@PathVariable Long id) {
+    public CustomResponse<Boolean> delete(@PathVariable String id) {
         return CustomResponse.success(songPlaylistService.delete(id));
     }
 }

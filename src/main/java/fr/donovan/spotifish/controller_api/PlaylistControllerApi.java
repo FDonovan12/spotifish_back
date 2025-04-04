@@ -34,7 +34,7 @@ public class PlaylistControllerApi {
         return CustomListResponse.success(playlistService.findAll());
     }
 
-    @GetMapping(path = UrlRoute.URL_PLAYLIST + "/mine/me")
+    @GetMapping(path = UrlRoute.URL_PLAYLIST + "/show/me")
     @JsonView(JsonViews.PlaylistShowJsonViews.class)
     public CustomResponse<List<Playlist>> me() {
         return CustomListResponse.success(playlistService.getByUser());

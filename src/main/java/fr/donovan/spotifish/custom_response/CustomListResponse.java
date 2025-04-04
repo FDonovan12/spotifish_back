@@ -18,8 +18,6 @@ import java.util.List;
 @JsonView(JsonViews.AllJsonViews.class)
 public class CustomListResponse<T> extends CustomResponse<List<T>> {
 
-//    private List<T> body;
-
     private int pagesElement;
 
     private int currentPages;
@@ -38,7 +36,6 @@ public class CustomListResponse<T> extends CustomResponse<List<T>> {
 
     public CustomListResponse(HttpStatus StatusCode, Page<T> page) {
         super(StatusCode, page.getContent());
-//        this.body = page.getContent();
         this.pagesElement = page.getNumberOfElements();
         this.currentPages = page.getNumber();
         this.previousPage = page.previousPageable();
@@ -51,7 +48,6 @@ public class CustomListResponse<T> extends CustomResponse<List<T>> {
 
     public CustomListResponse(HttpStatus StatusCode, List<T> list) {
         super(StatusCode, list);
-//        this.body = list;
         this.pagesElement = list.size();
         this.currentPages = 1;
         this.totalPages = 1;

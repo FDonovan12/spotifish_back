@@ -24,7 +24,7 @@ public class SecurityRestControllerTest {
     @Test
     public void testLoginSuccess() throws Exception {
         ResultActions resultActions = mockMvc.perform(
-            post("/api/login")
+            post("/api/security/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getLoginJsonFromData("louis.riviere@gmail.com", "12345")));
 

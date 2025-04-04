@@ -17,8 +17,8 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND) // Modifie le code HTTP de la réponse
-    @ExceptionHandler(NotFoundSpotifishException.class) // L'exception qui doit être "catch"
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundSpotifishException.class)
     ResponseException notFoundResponseHandler(NotFoundSpotifishException e) {
         return new ResponseException(
             HttpStatus.NOT_FOUND,
@@ -26,11 +26,22 @@ public class GlobalExceptionHandler {
             e.getValue()
         );
     }
-    
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedSpotifishException.class)
+    ResponseException accessDeniedResponseHandler(AccessDeniedSpotifishException e) {
+        return new ResponseException(
+            HttpStatus.FORBIDDEN,
+            e.getMessage(),
+            e.getMethod()
+        );
+    }
+
     @ResponseBody
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ResponseException handleException(MethodArgumentNotValidException e) {
+    public ResponseException MethodArgumentNotValidHandleException(MethodArgumentNotValidException e) {
         List<ErrorModel> errorModels = processErrors(e);
         return new ResponseException(
                 HttpStatus.UNPROCESSABLE_ENTITY,
@@ -45,7 +56,7 @@ public class GlobalExceptionHandler {
             ErrorModel validationErrorModel = new ErrorModel(
                     fieldError.getCode(),
                     fieldError.getObjectName() + "/" + fieldError.getField(),
-                    fieldError.getField() + " " + fieldError.getDefaultMessage());
+                    fieldError.getDefaultMessage());
             validationErrorModels.add(validationErrorModel);
         }
         return validationErrorModels;

@@ -6,6 +6,7 @@ import fr.donovan.spotifish.entity.Artist;
 import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.entity.SongArtist;
 import fr.donovan.spotifish.entity.User;
+import fr.donovan.spotifish.exception.AccessDeniedSpotifishException;
 import fr.donovan.spotifish.repository.SongRepository;
 import fr.donovan.spotifish.dto.SongDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
@@ -26,20 +27,30 @@ public class SongService  {
 
     private final SongRepository songRepository;
     private final SecurityService securityService;
+    private final FileManagerService fileManagerService;
 
     public List<Song> findAll() {
         return this.songRepository.findAll();
     }
 
+    public List<Song> byUser() {
+        User user = securityService.getCurrentUser();
+        if (user.isModerator()) return this.findAll();
+        if (user.isArtist()) return this.songRepository.findByUser((Artist) user);
+        throw new AccessDeniedSpotifishException("song", "list");
+    }
+
     public Song getObjectById(String id) {
         Optional<Song> optionalSong = songRepository.findById(id);
-        Song song = optionalSong.orElseThrow(() -> new NotFoundSpotifishException("SongService - getObjectById("+id+")", "Song", id));
+        Song song = optionalSong.orElseThrow(
+                () -> new NotFoundSpotifishException("SongService - getObjectById("+id+")", "Song", id));
         securityService.assertCanSee(song);
         return song;
     }
     public Song getObjectBySlug(String slug) {
         Optional<Song> optionalSong = songRepository.findBySlug(slug);
-        Song song = optionalSong.orElseThrow(() -> new NotFoundSpotifishException("SongService - getObjectBySlug("+slug+")", "Song", slug));
+        Song song = optionalSong.orElseThrow(
+                () -> new NotFoundSpotifishException("SongService - getObjectBySlug("+slug+")", "Song", slug));
         securityService.assertCanSee(song);
         return song;
     }
@@ -55,16 +66,23 @@ public class SongService  {
         return persist(songDTO, null);
     }
 
-    public Song persist(SongDTO songDTO, String id) {
+    public Song persist(SongDTO songDTO, String slug) {
         Song song = new Song();
+        song.setSlug("test");
+        String oldPath = "";
         securityService.assertCanCreate(song);
-        if (id != null) {
-            song = getObjectById(id);
+        if (slug != null) {
+            song = getObjectBySlug(slug);
             securityService.assertCanEdit(song);
+            oldPath = song.getPath();
         }
         song = getObjectFromDTO(songDTO, song);
-
-        return songRepository.save(song);
+        song = songRepository.save(song);
+        if (slug != null) {
+            String newPath = song.getPath();
+            this.fileManagerService.rename(oldPath, newPath);
+        }
+        return song;
     }
 
     public SongDTO getDTOById(String id) {
@@ -83,7 +101,6 @@ public class SongService  {
     public Song getObjectFromDTO(SongDTO songDTO, Song song) {
         song.setName(songDTO.getName());
         song.setCreatedAt(songDTO.getCreatedAt());
-        song.setSlug("test");
         return song;
     }
 
@@ -95,4 +112,5 @@ public class SongService  {
     public List<Song> search(String search) {
         return songRepository.findBySearch(search);
     }
+
 }

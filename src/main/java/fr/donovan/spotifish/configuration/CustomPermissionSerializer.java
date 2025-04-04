@@ -13,16 +13,6 @@ import java.io.IOException;
 
 public class CustomPermissionSerializer extends StdSerializer<Permission> {
 
-    private final SecurityService securityService;
-
-    private final JsonSerializer<Object> defaultSerializer;
-
-    protected CustomPermissionSerializer(JsonSerializer<Object> defaultSerializer, SecurityService securityService) {
-        super(Permission.class);
-        this.securityService = securityService;
-        this.defaultSerializer = defaultSerializer;
-    }
-
     @Override
     public void serialize(
             Permission permission,
@@ -32,5 +22,15 @@ public class CustomPermissionSerializer extends StdSerializer<Permission> {
         permission = permission.getEntity().computePermission(securityService.getCurrentUser());
         defaultSerializer.serialize(permission, jsonGenerator, serializerProvider);
 
+    }
+
+    private final SecurityService securityService;
+
+    private final JsonSerializer<Object> defaultSerializer;
+
+    protected CustomPermissionSerializer(JsonSerializer<Object> defaultSerializer, SecurityService securityService) {
+        super(Permission.class);
+        this.securityService = securityService;
+        this.defaultSerializer = defaultSerializer;
     }
 }

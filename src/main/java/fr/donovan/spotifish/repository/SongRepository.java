@@ -1,5 +1,6 @@
 package fr.donovan.spotifish.repository;
 
+import fr.donovan.spotifish.entity.Artist;
 import fr.donovan.spotifish.entity.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,7 @@ public interface SongRepository extends JpaRepository<Song, String>, EntitySlugR
             "ORDER BY COUNT(s) DESC " +
             "LIMIT 10")
     List<Song> findBySearch(String search);
+
+    @Query("SELECT s FROM Song s LEFT JOIN SongArtist sa ON sa.song = s WHERE sa.artist = :artist")
+    List<Song> findByUser(Artist artist);
 }
