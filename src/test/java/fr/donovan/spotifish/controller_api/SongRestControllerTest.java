@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Sql(scripts = "/data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -61,6 +63,25 @@ public class SongRestControllerTest {
                 .andExpect(jsonPath("$.body.slug").exists())
                 .andExpect(jsonPath("$.body.uuid").exists())
                 .andExpect(jsonPath("$.body.name").value("une super musique"))
+                .andExpect(jsonPath("$.body.permission").exists())
+        ;
+    }
+
+    @Test
+    public void testSong2CreateWork() throws Exception {
+        SongDTO songDTO = new SongDTO();
+        songDTO.setName("une super musique 2");
+        songDTO.setCreatedAt(LocalDate.now());
+
+        ResultActions resultActions = mockMvc.perform(
+                post("/api/song/new")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJsonFromData(songDTO)));
+
+        resultActions.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.body.slug").exists())
+                .andExpect(jsonPath("$.body.uuid").exists())
+                .andExpect(jsonPath("$.body.name").value("une super musique 2"))
                 .andExpect(jsonPath("$.body.permission").exists())
         ;
     }

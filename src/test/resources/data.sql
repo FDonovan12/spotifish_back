@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mar. 08 avr. 2025 à 11:20
+-- Généré le : mar. 08 avr. 2025 à 13:40
 -- Version du serveur : 11.3.2-MariaDB
 -- Version de PHP : 8.2.18
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -277,6 +278,7 @@ INSERT INTO `song` (`uuid`, `name`, `slug`, `created_at`, `duration`, `number_of
 ('1e1c43b7-24dc-45c4-8830-4cadb328f16d', 'Noah Nicolas', 'noah-nicolas-1e1c43b7', '2018-12-17', 0, 0),
 ('21483d2f-ac83-4348-b88e-45076734d824', 'Girard Maxence', 'girard-maxence-21483d2f', '2019-09-07', 0, 0),
 ('68c0bbdc-baea-4a7b-8920-b3379ea0bcb8', 'Thomas Pierre', 'thomas-pierre-68c0bbdc', '2021-11-09', 0, 0),
+('7a59e57a-a3c5-4bcd-8e1b-a6a2a1c2778e', 'un super nom', 'un-super-nom-7a59e57a', '2025-04-03', 0, 0),
 ('e7bb3a28-4b1d-40a2-8692-810dd2ba1bf0', 'Chevalier Pauline', 'chevalier-pauline-e7bb3a28', '2021-03-23', 0, 0);
 
 -- --------------------------------------------------------
@@ -497,6 +499,7 @@ ALTER TABLE `song_playlist`
   ADD CONSTRAINT `FK6pfyf3itv8vjxcodmhpkut4ym` FOREIGN KEY (`contributor_playlist_uuid`,`contributor_user_uuid`) REFERENCES `contributor` (`playlist_uuid`, `user_uuid`),
   ADD CONSTRAINT `FKlaijk5mb0583kujfqeaaw21ym` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`),
   ADD CONSTRAINT `FKob04uo0xeoymvsaasfu6rlex8` FOREIGN KEY (`playlist_uuid`) REFERENCES `playlist` (`uuid`);
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
