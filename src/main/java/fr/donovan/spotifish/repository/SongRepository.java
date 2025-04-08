@@ -23,7 +23,7 @@ public interface SongRepository extends JpaRepository<Song, String>, EntitySlugR
             "WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "GROUP BY s " +
             "ORDER BY COUNT(s) DESC " +
-            "LIMIT 10")
+            "LIMIT 5")
     List<Song> findBySearch(String search);
 
     @Query("SELECT s FROM Song s LEFT JOIN SongArtist sa ON sa.song = s WHERE sa.artist = :artist")

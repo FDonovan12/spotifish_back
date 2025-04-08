@@ -54,7 +54,7 @@ public class Song extends LikeableItem implements ImageInterface {
     @JsonView(JsonViewsSong.MusicalGenres.class)
     private List<MusicalGenre> musicalGenres = new ArrayList<>();
 
-    @JsonView(JsonViewsSong.Path.class)
+    @JsonView(JsonViews.AllJsonViews.class)
     public String getPath() {
         return "songs/" + getSlug() + ".mp3";
     }

@@ -1,5 +1,6 @@
 package fr.donovan.spotifish.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -73,14 +74,14 @@ public class User extends LikeableItem implements UserDetails, ImageInterface {
         );
     }
 
-    @JsonView(JsonViews.AllJsonViews.class)
+    @JsonIgnore
     public boolean isArtist() {
         return this.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(authority -> authority.equals("ROLE_ARTIST"));
     }
 
-    @JsonView(JsonViews.AllJsonViews.class)
+    @JsonIgnore
     public boolean isModerator() {
         return this.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

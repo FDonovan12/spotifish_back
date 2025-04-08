@@ -47,6 +47,7 @@ public class JwtService {
         claims.put("isModerator", currentUser.isModerator());
         claims.put("isArtist", currentUser.isArtist());
         claims.put("slug", currentUser.getSlug());
+        claims.put("name", currentUser.getName());
         return Jwts.builder()
                 .claims()
                 .add(claims)

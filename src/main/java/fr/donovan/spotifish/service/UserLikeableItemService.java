@@ -44,6 +44,7 @@ public class UserLikeableItemService  {
         userLikeableItem.setUser(user);
         UserLikeableItemId userLikeableItemId = new UserLikeableItemId(user, likeableItem);
         userLikeableItem.setId(userLikeableItemId);
+        userLikeableItem.setAddAt(LocalDateTime.now());
 
         userLikeableItemRepository.saveAndFlush(userLikeableItem);
         return true;

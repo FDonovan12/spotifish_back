@@ -24,11 +24,7 @@ public class InitDataLoader implements CommandLineRunner {
     private static final long NB_MODERATOR = 5;
     private static final long NB_USERLIKEABLEITEM = 5;
     private static final long NB_ALBUM = 5;
-    private static final long NB_SONGALBUM = 5;
-    private static final long NB_SONGARTIST = 5;
     private static final long NB_SONG = 5;
-    private static final long NB_SONGPLAYLIST = 5;
-    private static final long NB_CONTRIBUTOR = 5;
     private static final long NB_PLAYLIST = 5;
     private static final long NB_MUSICALGENRE = 5;
     private static final long NB_HISTORICAL = 5;
@@ -78,23 +74,20 @@ public class InitDataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        createSong();
         createUser();
         createArtist();
         createModerator();
         createUserLikeableItem();
         createAlbum();
-        createSong();
         createPlaylist();
-        createContributor();
-        createSongAlbum();
-        createSongArtist();
-        createSongPlaylist();
         createMusicalGenre();
         createHistorical();
     System.out.println(" end of init !!!");
     }
 
     private void createUser() {
+        System.out.println("InitDataLoader.createUser");
         long countInsert = NB_USER - userRepository.count();
         for (int i = 0; i < countInsert; i++) {
             UserDTO userDTO = new UserDTO();
@@ -109,6 +102,7 @@ public class InitDataLoader implements CommandLineRunner {
         userRepository.flush();
     }
     private void createArtist() {
+        System.out.println("InitDataLoader.createArtist");
         long countInsert = NB_ARTIST - artistRepository.count();
         for (int i = 0; i < countInsert; i++) {
             ArtistDTO artistDTO = new ArtistDTO();
@@ -118,11 +112,14 @@ public class InitDataLoader implements CommandLineRunner {
             artistDTO.setFirstName(faker.name().firstName());
             artistDTO.setLastName(faker.name().lastName());
             artistDTO.setBirthAt(faker.timeAndDate().birthday(18, 70));
-            artistService.persist(artistDTO);
+            Artist artist = artistService.persist(artistDTO);
+
+            createSongArtist(artist);
         }
         artistRepository.flush();
     }
     private void createModerator() {
+        System.out.println("InitDataLoader.createModerator");
         long countInsert = NB_MODERATOR - moderatorRepository.count();
         for (int i = 0; i < countInsert; i++) {
             ModeratorDTO moderatorDTO = new ModeratorDTO();
@@ -137,6 +134,7 @@ public class InitDataLoader implements CommandLineRunner {
         moderatorRepository.flush();
     }
     private void createUserLikeableItem() {
+        System.out.println("InitDataLoader.createUserLikeableItem");
         long countInsert = NB_USERLIKEABLEITEM - userLikeableItemRepository.count();
         for (int i = 0; i < countInsert; i++) {
             userLikeableItemService.persist(likeableItemRepository.findRandom().getSlug(), userRepository.findRandom());
@@ -144,6 +142,7 @@ public class InitDataLoader implements CommandLineRunner {
         userLikeableItemRepository.flush();
     }
     private void createAlbum() {
+        System.out.println("InitDataLoader.createAlbum");
         long countInsert = NB_ALBUM - albumRepository.count();
         for (int i = 0; i < countInsert; i++) {
             AlbumDTO albumDTO = new AlbumDTO();
@@ -152,33 +151,14 @@ public class InitDataLoader implements CommandLineRunner {
             albumDTO.setCreatedAt(faker.timeAndDate().birthday(1, 10));
             albumDTO.setImage(faker.internet().url());
             albumDTO.setArtistSlug(artistRepository.findRandom().getSlug());
-            albumService.persist(albumDTO);
+            Album album = albumService.persist(albumDTO);
+
+            createSongAlbum(album);
         }
         albumRepository.flush();
     }
-    private void createSongAlbum() {
-        long countInsert = NB_SONGALBUM - songAlbumRepository.count();
-        for (int i = 0; i < countInsert; i++) {
-            SongAlbumDTO songAlbumDTO = new SongAlbumDTO();
-            songAlbumDTO.setPosition(1);
-            songAlbumDTO.setSongSlug(songRepository.findRandom().getSlug());
-            songAlbumDTO.setAlbumSlug(albumRepository.findRandom().getSlug());
-            songAlbumService.persist(songAlbumDTO);
-        }
-        songAlbumRepository.flush();
-    }
-    private void createSongArtist() {
-        long countInsert = NB_SONGARTIST - songArtistRepository.count();
-        for (int i = 0; i < countInsert; i++) {
-            SongArtistDTO songArtistDTO = new SongArtistDTO();
-            songArtistDTO.setIsPrincipalArtist(true);
-            songArtistDTO.setSongSlug(songRepository.findRandom().getSlug());
-            songArtistDTO.setArtistSlug(artistRepository.findRandom().getSlug());
-            songArtistService.persist(songArtistDTO);
-        }
-        songArtistRepository.flush();
-    }
     private void createSong() {
+        System.out.println("InitDataLoader.createSong");
         long countInsert = NB_SONG - songRepository.count();
         for (int i = 0; i < countInsert; i++) {
             SongDTO songDTO = new SongDTO();
@@ -188,48 +168,25 @@ public class InitDataLoader implements CommandLineRunner {
         }
         songRepository.flush();
     }
-    private void createSongPlaylist() {
-        long countInsert = NB_SONGPLAYLIST - songPlaylistRepository.count();
-        for (int i = 0; i < countInsert; i++) {
-//            SongPlaylistDTO songPlaylistDTO = new SongPlaylistDTO();
-//            songPlaylistDTO.setSongSlug(songRepository.findRandom().getSlug());
-//            Contributor contributor = contributorRepository.findRandom();
-//            songPlaylistDTO.setPlaylistSlug(contributor.getPlaylist().getSlug());
-////            songPlaylistDTO.setUserSlug(contributor.getUser().getSlug());
 
-            Contributor contributor = contributorRepository.findRandom();
-            SongPlaylist songPlaylist = new SongPlaylist();
-            songPlaylist.setPlaylist(contributor.getPlaylist());
-            songPlaylist.setContributor(contributor);
-            songPlaylist.setSong(songRepository.findRandom());
-            songPlaylist.setSlug("test");
-            songPlaylistRepository.save(songPlaylist);
-        }
-        songPlaylistRepository.flush();
-    }
-    private void createContributor() {
-        long countInsert = NB_CONTRIBUTOR - contributorRepository.count();
-        for (int i = 0; i < countInsert; i++) {
-            ContributorDTO contributorDTO = new ContributorDTO();
-            contributorDTO.setIsOwner(true);
-            contributorDTO.setUserSlug(userRepository.findRandom().getSlug());
-            contributorDTO.setPlaylistSlug(playlistRepository.findRandom().getSlug());
-            contributorService.persist(contributorDTO);
-        }
-        contributorRepository.flush();
-    }
     private void createPlaylist() {
+        System.out.println("InitDataLoader.createPlaylist");
         long countInsert = NB_PLAYLIST - playlistRepository.count();
         for (int i = 0; i < countInsert; i++) {
             PlaylistDTO playlistDTO = new PlaylistDTO();
             playlistDTO.setName(faker.name().name());
             playlistDTO.setDescription(faker.backToTheFuture().quote());
             playlistDTO.setIsPrivate(false);
-            playlistService.persist(playlistDTO);
+            Playlist playlist = playlistService.persist(playlistDTO);
+
+            Contributor contributor = createContributor(playlist);
+            createSongPlaylist(contributor);
         }
         playlistRepository.flush();
     }
+
     private void createMusicalGenre() {
+        System.out.println("InitDataLoader.createMusicalGenre");
         long countInsert = NB_MUSICALGENRE - musicalGenreRepository.count();
         for (int i = 0; i < countInsert; i++) {
             MusicalGenreDTO musicalGenreDTO = new MusicalGenreDTO();
@@ -241,6 +198,7 @@ public class InitDataLoader implements CommandLineRunner {
         musicalGenreRepository.flush();
     }
     private void createHistorical() {
+        System.out.println("InitDataLoader.createHistorical");
         long countInsert = NB_HISTORICAL - historicalRepository.count();
         for (int i = 0; i < countInsert; i++) {
             HistoricalDTO historicalDTO = new HistoricalDTO();
@@ -251,5 +209,43 @@ public class InitDataLoader implements CommandLineRunner {
             historicalService.persist(historicalDTO);
         }
         historicalRepository.flush();
+    }
+    private void createSongAlbum(Album album) {
+        SongAlbumDTO songAlbumDTO = new SongAlbumDTO();
+        songAlbumDTO.setPosition(1);
+        songAlbumDTO.setSongSlug(songRepository.findRandom().getSlug());
+        songAlbumDTO.setAlbumSlug(album.getSlug());
+        songAlbumService.persist(songAlbumDTO);
+
+        songAlbumRepository.flush();
+    }
+    private void createSongArtist(Artist artist) {
+        SongArtistDTO songArtistDTO = new SongArtistDTO();
+        songArtistDTO.setIsPrincipalArtist(true);
+        songArtistDTO.setSongSlug(songRepository.findRandom().getSlug());
+        songArtistDTO.setArtistSlug(artist.getSlug());
+        songArtistService.persist(songArtistDTO);
+
+        songArtistRepository.flush();
+    }
+    private void createSongPlaylist(Contributor contributor) {
+        SongPlaylist songPlaylist = new SongPlaylist();
+        songPlaylist.setPlaylist(contributor.getPlaylist());
+        songPlaylist.setContributor(contributor);
+        songPlaylist.setSong(songRepository.findRandom());
+        songPlaylist.setSlug("test");
+        songPlaylistRepository.save(songPlaylist);
+
+        songPlaylistRepository.flush();
+    }
+    private Contributor createContributor(Playlist playlist) {
+        ContributorDTO contributorDTO = new ContributorDTO();
+        contributorDTO.setIsOwner(true);
+        contributorDTO.setUserSlug(userRepository.findRandom().getSlug());
+        contributorDTO.setPlaylistSlug(playlist.getSlug());
+        Contributor contributor = contributorService.persist(contributorDTO);
+
+        contributorRepository.flush();
+        return contributor;
     }
 }

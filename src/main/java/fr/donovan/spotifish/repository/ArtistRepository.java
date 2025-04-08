@@ -19,6 +19,6 @@ public interface ArtistRepository extends JpaRepository<Artist, String>, EntityS
             "WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "GROUP BY a " +
             "ORDER BY COUNT(a) DESC " +
-            "LIMIT 10")
+            "LIMIT 5")
     List<Artist> findBySearch(String search);
 }

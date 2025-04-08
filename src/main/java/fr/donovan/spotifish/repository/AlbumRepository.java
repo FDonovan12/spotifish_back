@@ -19,6 +19,6 @@ public interface AlbumRepository extends JpaRepository<Album, String>, EntitySlu
             "WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "GROUP BY a " +
             "ORDER BY COUNT(a) DESC " +
-            "LIMIT 10")
+            "LIMIT 5")
     List<Album> findBySearch(String search);
 }

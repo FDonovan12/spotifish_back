@@ -21,7 +21,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, String>, Ent
             "WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "GROUP BY p " +
             "ORDER BY COUNT(p) DESC " +
-            "LIMIT 10")
+            "LIMIT 5")
     List<Playlist> findBySearch(String search);
 
     @Query("SELECT p FROM Playlist p " +
