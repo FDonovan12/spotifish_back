@@ -59,9 +59,7 @@ public class PlaylistControllerApi {
         contributorDTO.setPlaylistSlug(playlist.getSlug());
         contributorDTO.setIsOwner(true);
 
-        System.out.println("persist contributor");
         contributorService.persist(contributorDTO);
-        System.out.println("persist contributor after");
         return CustomResponse.created(playlist);
     }
     

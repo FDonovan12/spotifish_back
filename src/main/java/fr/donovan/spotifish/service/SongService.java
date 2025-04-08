@@ -63,6 +63,7 @@ public class SongService  {
     }
 
     public Song persist(SongDTO songDTO) {
+        System.out.println("SongService.persist");
         return persist(songDTO, null);
     }
 
@@ -70,7 +71,9 @@ public class SongService  {
         Song song = new Song();
         song.setSlug("test");
         String oldPath = "";
+        System.out.println("avant");
         securityService.assertCanCreate(song);
+        System.out.println("apres");
         if (slug != null) {
             song = getObjectBySlug(slug);
             securityService.assertCanEdit(song);

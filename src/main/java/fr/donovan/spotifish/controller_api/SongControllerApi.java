@@ -40,10 +40,12 @@ public class SongControllerApi {
     public CustomResponse<Song> show(@PathVariable String slug) {
         return CustomResponse.success(songService.getObjectBySlug(slug));
     }
+
     @PostMapping(path = UrlRoute.URL_SONG_NEW)
     @JsonView(JsonViews.SongShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Song> create(@Valid @RequestBody SongDTO songDTO) {
+        System.out.println("SongControllerApi.create");
         return CustomResponse.created(songService.persist(songDTO));
     }
     

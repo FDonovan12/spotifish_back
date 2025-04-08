@@ -32,7 +32,6 @@ public class UserLikeableItemService  {
     }
 
     public boolean like(String slugLikeableItem) {
-        System.out.println("UserLikeableItemService.like");
         return persist(slugLikeableItem, securityService.getCurrentUser());
     }
 

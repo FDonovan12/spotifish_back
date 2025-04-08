@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @AllArgsConstructor
+@Profile({"prod", "dev"})
 public class InitDataLoader implements CommandLineRunner {
     
     private static final Faker faker = new Faker(Locale.FRANCE);

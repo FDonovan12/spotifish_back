@@ -63,7 +63,6 @@ public class SongPlaylistService  {
             securityService.assertCanEdit(songPlaylist);
         }
         songPlaylist = getObjectFromDTO(songPlaylistDTO, songPlaylist);
-        System.out.println("songPlaylist = " + songPlaylist);
         return songPlaylistRepository.saveAndFlush(songPlaylist);
     }
 
