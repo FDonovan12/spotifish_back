@@ -60,10 +60,18 @@ public class JsonViews {
     public interface ContributorShowJsonViews extends AllJsonViews, FromContributorSongPlaylistWithoutId, MinimalUser, MinimalPlaylist {}
 
     public interface SharedListJsonViews extends AllJsonViews, MinimalShared, MinimalPlaylist {}
-    public interface SharedShowJsonViews extends AllJsonViews, AllShared, MinimalPlaylist {}
+    public interface SharedShowJsonViews extends AllJsonViews, AllShared {}
 
     public interface PlaylistListJsonViews extends AllJsonViews, MinimalPlaylist, FromPlaylistSongPlaylistWithoutId, MinimalContributor, MinimalSong {}
-    public interface PlaylistShowJsonViews extends AllJsonViews, AllPlaylist, FromPlaylistSongPlaylistWithoutId, FromSongSongArtistWithoutId, MinimalContributor, MinimalSong {}
+    public interface PlaylistShowJsonViews extends
+            AllJsonViews,
+            AllPlaylist,
+            FromPlaylistSongPlaylistWithoutId,
+            FromSongSongArtistWithoutId,
+            FromPlaylistContributorWithoutId,
+            MinimalUser,
+            MinimalSong,
+            MinimalShared {}
 
     public interface MusicalGenreListJsonViews extends AllJsonViews, MinimalMusicalGenre {}
     public interface MusicalGenreShowJsonViews extends AllJsonViews, AllMusicalGenre {}

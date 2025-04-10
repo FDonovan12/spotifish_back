@@ -41,12 +41,19 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth ->
                 auth
-                    .requestMatchers("/api/**").permitAll()
-                    .requestMatchers("/api/login").permitAll()
-                    .requestMatchers("/api/register").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
-                    .requestMatchers(HttpMethod.POST, "/api/**").hasAnyAuthority("ROLE_ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyAuthority("ROLE_ADMIN")
+//                    .requestMatchers("/api/**").permitAll()
+                    .requestMatchers("/api/security/login").permitAll()
+                    .requestMatchers("/api/security/register").permitAll()
+                    .requestMatchers("/api/security/refresh").permitAll()
+//                    .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
+//                    .requestMatchers("/api/userlikeableitem/**").authenticated()
+//                    .requestMatchers("/api/historical/**").authenticated()
+//                    .requestMatchers("/api/shared/**").authenticated()
+//                    .requestMatchers("/api/upload/image/**").authenticated()
+//                    .requestMatchers(HttpMethod.POST, "/api/**").hasAnyAuthority("ROLE_ARTIST", "ROLE_MODERATOR")
+//                    .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyAuthority("ROLE_ARTIST", "ROLE_MODERATOR")
+//                    .requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyAuthority("ROLE_ARTIST", "ROLE_MODERATOR")
+                    .requestMatchers("/api/**").authenticated()
             );
 
         return http.build();

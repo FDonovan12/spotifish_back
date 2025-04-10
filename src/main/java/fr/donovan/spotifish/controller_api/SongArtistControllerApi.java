@@ -10,6 +10,7 @@ import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
@@ -24,6 +25,7 @@ public class SongArtistControllerApi {
     private SongArtistService songArtistService;
 
     @GetMapping(path = UrlRoute.URL_SONGARTIST)
+    @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
     @JsonView(JsonViews.SongArtistListJsonViews.class)
     public CustomResponse<List<SongArtist>> list() {
         return CustomListResponse.success(songArtistService.findAll());

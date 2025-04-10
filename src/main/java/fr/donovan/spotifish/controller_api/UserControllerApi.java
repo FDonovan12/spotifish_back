@@ -9,6 +9,7 @@ import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
@@ -23,6 +24,7 @@ public class UserControllerApi {
     private UserService userService;
 
     @GetMapping(path = UrlRoute.URL_USER)
+    @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
     @JsonView(JsonViews.UserListJsonViews.class)
     public CustomResponse<List<User>> list() {
         return CustomListResponse.success(userService.findAll());

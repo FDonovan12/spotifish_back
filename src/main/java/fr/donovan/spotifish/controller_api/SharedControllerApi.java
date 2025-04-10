@@ -24,7 +24,8 @@ public class SharedControllerApi {
     private SharedService sharedService;
 
     @GetMapping(path = UrlRoute.URL_SHARED + "/{slug}")
-    public CustomResponse<Playlist> show(@PathVariable String slug) {
+    @JsonView(JsonViews.PlaylistShowJsonViews.class)
+    public CustomResponse<Playlist> addContributor(@PathVariable String slug) {
         return CustomResponse.success(sharedService.addContributor(slug));
     }
 

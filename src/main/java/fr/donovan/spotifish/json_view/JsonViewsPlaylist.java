@@ -2,7 +2,7 @@ package fr.donovan.spotifish.json_view;
 
 public class JsonViewsPlaylist {
     
-    public interface AllPlaylist extends Description, Image, CreatedAt, IsPrivate, Contributors, SongPlaylists, JsonViewsLikeableItem.AllLikeableItem {}
+    public interface AllPlaylist extends Description, Image, CreatedAt, IsPrivate, Contributors, SongPlaylists, Shared, JsonViewsLikeableItem.AllLikeableItem {}
     public interface MinimalPlaylist extends Description, Image, CreatedAt, IsPrivate, Contributors, JsonViewsLikeableItem.MinimalLikeableItem {}
 
     public interface AllPlaylistWithoutId extends Description, Image, CreatedAt, IsPrivate, Contributors, SongPlaylists, JsonViewsLikeableItem.AllLikeableItemWithoutId {}

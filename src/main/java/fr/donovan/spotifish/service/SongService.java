@@ -35,8 +35,11 @@ public class SongService  {
 
     public List<Song> byUser() {
         User user = securityService.getCurrentUser();
+        System.out.println("findAll");
         if (user.isModerator()) return this.findAll();
+        System.out.println("findByUser");
         if (user.isArtist()) return this.songRepository.findByUser((Artist) user);
+        System.out.println("AccessDeniedSpotifishException");
         throw new AccessDeniedSpotifishException("song", "list");
     }
 
@@ -63,7 +66,6 @@ public class SongService  {
     }
 
     public Song persist(SongDTO songDTO) {
-        System.out.println("SongService.persist");
         return persist(songDTO, null);
     }
 
@@ -71,9 +73,7 @@ public class SongService  {
         Song song = new Song();
         song.setSlug("test");
         String oldPath = "";
-        System.out.println("avant");
         securityService.assertCanCreate(song);
-        System.out.println("apres");
         if (slug != null) {
             song = getObjectBySlug(slug);
             securityService.assertCanEdit(song);

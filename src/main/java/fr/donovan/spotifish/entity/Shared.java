@@ -28,14 +28,14 @@ public class Shared implements SluggerInterface, PermissionEntityInterface {
 
     @JsonView(JsonViewsShared.ExpireAt.class)
     @Column(nullable = false)
-    private LocalDateTime expireAt;
+    private LocalDate expireAt;
 
     @JsonView(JsonViewsShared.RemainingInvitation.class)
     @Column(nullable = false)
     private Integer remainingInvitation;
 
     @OneToOne
-    @JsonView(JsonViewsShared.User.class)
+    @JsonView(JsonViewsShared.Playlist.class)
     private Playlist playlist;
 
     @JsonView(JsonViewsShared.Slug.class)

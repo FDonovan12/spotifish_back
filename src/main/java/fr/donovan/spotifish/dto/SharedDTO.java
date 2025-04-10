@@ -17,10 +17,11 @@ import java.util.List;
 public class SharedDTO {
     
     @NotNull(message = "The expireAt can't be null")
-    private LocalDateTime expireAt;
+    private LocalDate expireAt;
     
     @NotNull(message = "The remainingInvitation can't be null")
     private Integer remainingInvitation;
-    
+
+    @NotBlank(message = "The playlistSlug can't be blank")
     private String playlistSlug;
 }

@@ -109,6 +109,13 @@
 			<artifactId>datafaker</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+
+		<!--        Audio duration-->
+		<dependency>
+			<groupId>com.mpatric</groupId>
+			<artifactId>mp3agic</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

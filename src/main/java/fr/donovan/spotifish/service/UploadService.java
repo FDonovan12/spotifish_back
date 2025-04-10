@@ -1,10 +1,13 @@
 package fr.donovan.spotifish.service;
 
+import com.mpatric.mp3agic.Mp3File;
 import fr.donovan.spotifish.entity.LikeableItem;
 import fr.donovan.spotifish.entity.Permission;
 import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.entity.interfaces.ImageInterface;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
+import fr.donovan.spotifish.repository.SongRepository;
+import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +27,16 @@ import java.nio.file.Paths;
 @Service
 public class UploadService {
 
-    private LikeableItemService likeableItemService;
-    private SongService songService;
+    private final LikeableItemService likeableItemService;
+    private final SongService songService;
+    private final SongRepository songRepository;
+    private final SecurityService securityService;
 
     private final String UPLOAD_DIR = "public/";
 
     public LikeableItem uploadImage(MultipartFile file, String slug) {
         LikeableItem likeableItem = this.likeableItemService.getObjectBySlug(slug);
+        this.securityService.assertCanEdit(likeableItem);
         if (!ImageInterface.class.isAssignableFrom(likeableItem.getClass())) {
             throw new NotFoundSpotifishException("UploadService - uploadImage("+slug+")", "uploadImage", slug);
         }
@@ -40,30 +46,21 @@ public class UploadService {
 
     public Song uploadSong(MultipartFile file, String slug) {
         Song song = this.songService.getObjectBySlug(slug);
+        this.securityService.assertCanEdit(song);
         Path path = Paths.get(UPLOAD_DIR + song.getPath());
         try {
             Files.createDirectories(path.getParent());
             Files.write(path, file.getBytes());
-            File file2 = path.toFile();
+            Mp3File mp3File = new Mp3File(path.toString());
+            if (mp3File.hasId3v2Tag() || mp3File.hasId3v1Tag()) {
+                int durationInSeconds = (int) mp3File.getLengthInSeconds();
+                song.setDuration(durationInSeconds);
+                this.songRepository.flush();
+            }
         } catch (Exception e) {
             throw new NotFoundSpotifishException("UploadService - uploadSong("+slug+")", "uploadSong", slug);
         }
         return song;
-    }
-
-    public void rename(String oldName, String newName) {
-        Path oldPath = Paths.get(UPLOAD_DIR + oldName);
-        Path newPath = Paths.get(UPLOAD_DIR + newName);
-
-        if (!Files.exists(oldPath)) {
-            throw new NotFoundSpotifishException("UploadService - rename("+oldName+")", "uploadSong", oldName);
-        }
-
-        try {
-            Files.move(oldPath, newPath);
-        } catch (IOException e) {
-        }
-
     }
 
     private long getAudioDuration(File file) throws Exception {

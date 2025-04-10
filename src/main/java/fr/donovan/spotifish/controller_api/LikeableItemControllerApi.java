@@ -10,6 +10,7 @@ import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
@@ -26,6 +27,7 @@ public class LikeableItemControllerApi {
     private LikeableItemService likeableItemService;
 
     @GetMapping(path = UrlRoute.URL_LIKEABLEITEM)
+    @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
     @JsonView(JsonViews.LikeableItemListJsonViews.class)
     public CustomResponse<List<LikeableItem>> list() {
         return CustomListResponse.success(likeableItemService.findAll());

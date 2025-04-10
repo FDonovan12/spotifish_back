@@ -33,10 +33,6 @@ public class Playlist extends LikeableItem implements ImageInterface {
     @Column(nullable = false)
     private Boolean isPrivate;
 
-    @OneToOne
-    @JsonView(JsonViewsPlaylist.Shared.class)
-    private Shared shared;
-
     @OneToMany(mappedBy = "playlist")
     @JsonView(JsonViewsPlaylist.Contributors.class)
     private List<Contributor> contributors = new ArrayList<>();

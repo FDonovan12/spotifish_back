@@ -1,11 +1,14 @@
 package fr.donovan.spotifish.controller_api;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import fr.donovan.spotifish.dto.ContributorDTO;
 import fr.donovan.spotifish.dto.SongArtistDTO;
 import fr.donovan.spotifish.entity.Artist;
+import fr.donovan.spotifish.entity.Playlist;
 import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.custom_response.*;
 import fr.donovan.spotifish.dto.SongDTO;
+import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.security.SecurityService;
 import fr.donovan.spotifish.service.ConnectedUserService;
 import fr.donovan.spotifish.service.SongArtistService;
@@ -14,6 +17,7 @@ import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,9 +31,12 @@ import java.util.Optional;
 @RequestMapping(UrlRoute.URL_API)
 public class SongControllerApi {
     
-    private SongService songService;
+    private final SongService songService;
+    private final SecurityService securityService;
+    private final SongArtistService songArtistService;
 
     @GetMapping(path = UrlRoute.URL_SONG)
+    @PreAuthorize("hasAuthority('ROLE_ARTIST')")
     @JsonView(JsonViews.SongListJsonViews.class)
     public CustomResponse<List<Song>> list() {
         return CustomListResponse.success(songService.byUser());
@@ -45,7 +52,16 @@ public class SongControllerApi {
     @JsonView(JsonViews.SongShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Song> create(@Valid @RequestBody SongDTO songDTO) {
-        System.out.println("SongControllerApi.create");
+        Song song = songService.persist(songDTO);
+
+        Artist artist = securityService.getCurrentArtist();
+
+        SongArtistDTO songArtistDTO = new SongArtistDTO();
+        songArtistDTO.setArtistSlug(artist.getSlug());
+        songArtistDTO.setSongSlug(song.getSlug());
+        songArtistDTO.setIsPrincipalArtist(true);
+
+        this.songArtistService.persist(songArtistDTO);
         return CustomResponse.created(songService.persist(songDTO));
     }
     

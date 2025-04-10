@@ -10,6 +10,7 @@ import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
@@ -24,6 +25,7 @@ public class ContributorControllerApi {
     private ContributorService contributorService;
 
     @GetMapping(path = UrlRoute.URL_CONTRIBUTOR)
+    @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
     @JsonView(JsonViews.ContributorListJsonViews.class)
     public CustomResponse<List<Contributor>> list() {
         return CustomListResponse.success(contributorService.findAll());

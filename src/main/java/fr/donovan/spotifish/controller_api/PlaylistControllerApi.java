@@ -13,6 +13,7 @@ import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
@@ -29,6 +30,7 @@ public class PlaylistControllerApi {
     private ContributorService contributorService;
 
     @GetMapping(path = UrlRoute.URL_PLAYLIST)
+    @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
     @JsonView(JsonViews.PlaylistShowJsonViews.class)
     public CustomResponse<List<Playlist>> list() {
         return CustomListResponse.success(playlistService.findAll());
