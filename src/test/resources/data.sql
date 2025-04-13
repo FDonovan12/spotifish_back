@@ -451,54 +451,54 @@ INSERT INTO `user_likeable_item` (`add_at`, `user_uuid`, `likeable_item_uuid`) V
 --
 -- Contraintes pour la table `contributor`
 --
-ALTER TABLE `contributor`
-  ADD CONSTRAINT `FK8w2ktglqps6ghfnwlqkasy28p` FOREIGN KEY (`playlist_uuid`) REFERENCES `playlist` (`uuid`);
-
+--ALTER TABLE `contributor`
+--  ADD CONSTRAINT `FK8w2ktglqps6ghfnwlqkasy28p` FOREIGN KEY (`playlist_uuid`) REFERENCES `playlist` (`uuid`);
 --
--- Contraintes pour la table `historical`
+----
+---- Contraintes pour la table `historical`
+----
+--ALTER TABLE `historical`
+--  ADD CONSTRAINT `FKm6b5s4d07ro0nfbhh9paewqem` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`);
 --
-ALTER TABLE `historical`
-  ADD CONSTRAINT `FKm6b5s4d07ro0nfbhh9paewqem` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`);
-
+----
+---- Contraintes pour la table `playlist`
+----
+--ALTER TABLE `playlist`
+--  ADD CONSTRAINT `FKjj8a7um5s0o5kh1h30uimycn5` FOREIGN KEY (`shared_uuid`) REFERENCES `shared` (`uuid`);
 --
--- Contraintes pour la table `playlist`
+----
+---- Contraintes pour la table `shared`
+----
+--ALTER TABLE `shared`
+--  ADD CONSTRAINT `FK4fqdfseb2aouy79ef7iursfvw` FOREIGN KEY (`playlist_uuid`) REFERENCES `playlist` (`uuid`);
 --
-ALTER TABLE `playlist`
-  ADD CONSTRAINT `FKjj8a7um5s0o5kh1h30uimycn5` FOREIGN KEY (`shared_uuid`) REFERENCES `shared` (`uuid`);
-
+----
+---- Contraintes pour la table `song_album`
+----
+--ALTER TABLE `song_album`
+--  ADD CONSTRAINT `FKjs0hbnhiq3i61oru0ett7wqfd` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`),
+--  ADD CONSTRAINT `FKrnwl5eyuobtvekqv1us90i1kn` FOREIGN KEY (`album_uuid`) REFERENCES `album` (`uuid`);
 --
--- Contraintes pour la table `shared`
+----
+---- Contraintes pour la table `song_artist`
+----
+--ALTER TABLE `song_artist`
+--  ADD CONSTRAINT `FKcemtkbcmb4bntyrhhhnosyut` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`);
 --
-ALTER TABLE `shared`
-  ADD CONSTRAINT `FK4fqdfseb2aouy79ef7iursfvw` FOREIGN KEY (`playlist_uuid`) REFERENCES `playlist` (`uuid`);
-
+----
+---- Contraintes pour la table `song_musical_genre`
+----
+--ALTER TABLE `song_musical_genre`
+--  ADD CONSTRAINT `FK8cubs8pxf6519xn44xeuuuo0m` FOREIGN KEY (`musical_genre_uuid`) REFERENCES `musical_genre` (`uuid`),
+--  ADD CONSTRAINT `FK9ht3padpsffkw3epw5yu1931f` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`);
 --
--- Contraintes pour la table `song_album`
---
-ALTER TABLE `song_album`
-  ADD CONSTRAINT `FKjs0hbnhiq3i61oru0ett7wqfd` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`),
-  ADD CONSTRAINT `FKrnwl5eyuobtvekqv1us90i1kn` FOREIGN KEY (`album_uuid`) REFERENCES `album` (`uuid`);
-
---
--- Contraintes pour la table `song_artist`
---
-ALTER TABLE `song_artist`
-  ADD CONSTRAINT `FKcemtkbcmb4bntyrhhhnosyut` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`);
-
---
--- Contraintes pour la table `song_musical_genre`
---
-ALTER TABLE `song_musical_genre`
-  ADD CONSTRAINT `FK8cubs8pxf6519xn44xeuuuo0m` FOREIGN KEY (`musical_genre_uuid`) REFERENCES `musical_genre` (`uuid`),
-  ADD CONSTRAINT `FK9ht3padpsffkw3epw5yu1931f` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`);
-
---
--- Contraintes pour la table `song_playlist`
---
-ALTER TABLE `song_playlist`
-  ADD CONSTRAINT `FK6pfyf3itv8vjxcodmhpkut4ym` FOREIGN KEY (`contributor_playlist_uuid`,`contributor_user_uuid`) REFERENCES `contributor` (`playlist_uuid`, `user_uuid`),
-  ADD CONSTRAINT `FKlaijk5mb0583kujfqeaaw21ym` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`),
-  ADD CONSTRAINT `FKob04uo0xeoymvsaasfu6rlex8` FOREIGN KEY (`playlist_uuid`) REFERENCES `playlist` (`uuid`);
+----
+---- Contraintes pour la table `song_playlist`
+----
+--ALTER TABLE `song_playlist`
+--  ADD CONSTRAINT `FK6pfyf3itv8vjxcodmhpkut4ym` FOREIGN KEY (`contributor_playlist_uuid`,`contributor_user_uuid`) REFERENCES `contributor` (`playlist_uuid`, `user_uuid`),
+--  ADD CONSTRAINT `FKlaijk5mb0583kujfqeaaw21ym` FOREIGN KEY (`song_uuid`) REFERENCES `song` (`uuid`),
+--  ADD CONSTRAINT `FKob04uo0xeoymvsaasfu6rlex8` FOREIGN KEY (`playlist_uuid`) REFERENCES `playlist` (`uuid`);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

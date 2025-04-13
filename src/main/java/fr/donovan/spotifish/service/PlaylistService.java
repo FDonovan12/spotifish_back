@@ -91,6 +91,7 @@ public class PlaylistService  {
     public List<Playlist> getByUser() {
         return this.getByUser(securityService.getCurrentUser());
     }
+
     public List<Playlist> getByUser(User user) {
         return playlistRepository.getByUser(user);
     }

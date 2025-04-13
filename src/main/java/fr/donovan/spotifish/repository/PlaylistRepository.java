@@ -19,6 +19,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, String>, Ent
     @Query("SELECT p, COUNT(p) FROM Playlist p " +
             "LEFT JOIN UserLikeableItem uli ON uli.likeableItem = p " +
             "WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "AND p.isPrivate = false " +
             "GROUP BY p " +
             "ORDER BY COUNT(p) DESC " +
             "LIMIT 5")

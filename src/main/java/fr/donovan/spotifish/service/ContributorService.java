@@ -2,6 +2,7 @@ package fr.donovan.spotifish.service;
 
 import fr.donovan.spotifish.entity.Contributor;
 import fr.donovan.spotifish.entity.Playlist;
+import fr.donovan.spotifish.entity.SongPlaylist;
 import fr.donovan.spotifish.entity.User;
 import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.ContributorRepository;
@@ -35,6 +36,12 @@ public class ContributorService  {
         securityService.assertCanSee(contributor);
         return contributor;
     }
+    public Contributor getObjectById(String id) {
+        Optional<Contributor> optionalContributor = contributorRepository.findByUuid(id);
+        Contributor contributor = optionalContributor.orElseThrow(() -> new NotFoundSpotifishException("ContributorService - getObjectById("+id+")", "Contributor", id));
+        securityService.assertCanSee(contributor);
+        return contributor;
+    }
     public Contributor getObjectBySlug(String slug) {
         Optional<Contributor> optionalContributor = contributorRepository.findBySlug(slug);
         Contributor contributor = optionalContributor.orElseThrow(() -> new NotFoundSpotifishException("ContributorService - getObjectBySlug("+slug+")", "Contributor", slug));
@@ -42,22 +49,34 @@ public class ContributorService  {
         return contributor;
     }
 
-    public Boolean delete(ContributorId id) {
+    public Boolean delete(String id) {
+        System.out.println("contributor id = " + id);
         Contributor contributor = getObjectById(id);
         securityService.assertCanDelete(contributor);
         contributorRepository.delete(contributor);
         return true;
     }
 
+    public Contributor createOwnerOfPlaylist(Playlist playlist) {
+        User user = securityService.getCurrentUser();
+
+        ContributorDTO contributorDTO = new ContributorDTO();
+        contributorDTO.setUserSlug(user.getSlug());
+        contributorDTO.setPlaylistSlug(playlist.getSlug());
+        contributorDTO.setIsOwner(true);
+
+        return this.persist(contributorDTO);
+    }
+
     public Contributor persist(ContributorDTO contributorDTO) {
         return persist(contributorDTO, null);
     }
 
-    public Contributor persist(ContributorDTO contributorDTO, ContributorId id) {
+    public Contributor persist(ContributorDTO contributorDTO, String slug) {
         Contributor contributor = new Contributor();
         contributor.setStillContributing(true);
-        if (id != null) {
-            contributor = getObjectById(id);
+        if (slug != null) {
+            contributor = getObjectBySlug(slug);
             securityService.assertCanEdit(contributor);
         }
         contributor = getObjectFromDTO(contributorDTO, contributor);
@@ -65,11 +84,6 @@ public class ContributorService  {
         ContributorId contributorId = new ContributorId(contributor.getUser().getUuid(), contributor.getPlaylist().getUuid());
         contributor.setId(contributorId);
         return contributorRepository.saveAndFlush(contributor);
-    }
-
-    public ContributorDTO getDTOById(ContributorId id) {
-        Contributor contributor = getObjectById(id);
-        return getDTOFromObject(contributor);
     }
 
     public ContributorDTO getDTOFromObject(Contributor contributor) {
@@ -88,5 +102,11 @@ public class ContributorService  {
         contributor.setPlaylist(playlistService.getObjectBySlug(contributorDTO.getPlaylistSlug()));
         contributor.setSlug("test");
         return contributor;
+    }
+
+    public void deleteFromPlaylist(Playlist playlist) {
+        playlist.getContributors().stream()
+                .map(Contributor::getIdToSerializer)
+                .forEach(id -> this.delete(id));
     }
 }

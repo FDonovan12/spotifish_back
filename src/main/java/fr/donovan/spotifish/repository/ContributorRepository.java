@@ -14,4 +14,6 @@ public interface ContributorRepository extends JpaRepository<Contributor, Contri
 
     @Query("SELECT e FROM Contributor AS e ORDER BY RAND() LIMIT 1")
     Contributor findRandom();
+
+    Optional<Contributor> findByUuid(String id);
 }

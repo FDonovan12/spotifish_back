@@ -11,6 +11,7 @@ import fr.donovan.spotifish.service.ContributorService;
 import fr.donovan.spotifish.service.PlaylistService;
 import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
+import fr.donovan.spotifish.service.SongPlaylistService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,7 @@ public class PlaylistControllerApi {
     private PlaylistService playlistService;
     private SecurityService securityService;
     private ContributorService contributorService;
+    private SongPlaylistService songPlaylistService;
 
     @GetMapping(path = UrlRoute.URL_PLAYLIST)
     @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
@@ -53,15 +55,7 @@ public class PlaylistControllerApi {
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Playlist> create(@Valid @RequestBody PlaylistDTO playlistDTO) {
         Playlist playlist = playlistService.persist(playlistDTO);
-
-        User user = securityService.getCurrentUser();
-
-        ContributorDTO contributorDTO = new ContributorDTO();
-        contributorDTO.setUserSlug(user.getSlug());
-        contributorDTO.setPlaylistSlug(playlist.getSlug());
-        contributorDTO.setIsOwner(true);
-
-        contributorService.persist(contributorDTO);
+        this.contributorService.createOwnerOfPlaylist(playlist);
         return CustomResponse.created(playlist);
     }
     
@@ -73,6 +67,16 @@ public class PlaylistControllerApi {
     
     @DeleteMapping(path = UrlRoute.URL_PLAYLIST_DELETE + "/{id}")
     public CustomResponse<Boolean> delete(@PathVariable String id) {
+        System.out.println("PlaylistControllerApi.delete");
+        Playlist playlist = playlistService.getObjectById(id);
+        System.out.println("playlist = " + playlist);
+        System.out.println("assert");
+        securityService.assertCanDelete(playlist);
+        System.out.println("songPlaylistService");
+        songPlaylistService.deleteFromPlaylist(playlist);
+        System.out.println("contributorService");
+        contributorService.deleteFromPlaylist(playlist);
+        System.out.println("CustomResponse");
         return CustomResponse.success(playlistService.delete(id));
     }
 }

@@ -49,19 +49,12 @@ public class SongControllerApi {
     }
 
     @PostMapping(path = UrlRoute.URL_SONG_NEW)
+    @PreAuthorize("hasAuthority('ROLE_ARTIST')")
     @JsonView(JsonViews.SongShowJsonViews.class)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomResponse<Song> create(@Valid @RequestBody SongDTO songDTO) {
         Song song = songService.persist(songDTO);
-
-        Artist artist = securityService.getCurrentArtist();
-
-        SongArtistDTO songArtistDTO = new SongArtistDTO();
-        songArtistDTO.setArtistSlug(artist.getSlug());
-        songArtistDTO.setSongSlug(song.getSlug());
-        songArtistDTO.setIsPrincipalArtist(true);
-
-        this.songArtistService.persist(songArtistDTO);
+        this.songArtistService.createPrincipalArtistOfSong(song);
         return CustomResponse.created(songService.persist(songDTO));
     }
     

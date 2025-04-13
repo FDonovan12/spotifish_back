@@ -1,5 +1,7 @@
 package fr.donovan.spotifish.service;
 
+import fr.donovan.spotifish.entity.Artist;
+import fr.donovan.spotifish.entity.Song;
 import fr.donovan.spotifish.entity.SongArtist;
 import fr.donovan.spotifish.entity.embed.*;
 import fr.donovan.spotifish.repository.SongArtistRepository;
@@ -45,6 +47,17 @@ public class SongArtistService  {
         securityService.assertCanDelete(songArtist);
         songArtistRepository.delete(songArtist);
         return true;
+    }
+
+    public SongArtist createPrincipalArtistOfSong(Song song) {
+        Artist artist = securityService.getCurrentArtist();
+
+        SongArtistDTO songArtistDTO = new SongArtistDTO();
+        songArtistDTO.setArtistSlug(artist.getSlug());
+        songArtistDTO.setSongSlug(song.getSlug());
+        songArtistDTO.setIsPrincipalArtist(true);
+
+        return this.persist(songArtistDTO);
     }
 
     public SongArtist persist(SongArtistDTO songArtistDTO) {

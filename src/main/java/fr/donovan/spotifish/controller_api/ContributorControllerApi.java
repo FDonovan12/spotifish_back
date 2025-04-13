@@ -44,14 +44,14 @@ public class ContributorControllerApi {
         return CustomResponse.created(contributorService.persist(contributorDTO));
     }
     
-    @PutMapping(path = UrlRoute.URL_CONTRIBUTOR_EDIT + "/{id}")
+    @PutMapping(path = UrlRoute.URL_CONTRIBUTOR_EDIT + "/{slug}")
     @JsonView(JsonViews.ContributorShowJsonViews.class)
-    public CustomResponse<Contributor> update(@Valid @RequestBody ContributorDTO contributorDTO, @PathVariable ContributorId id) {
-        return CustomResponse.success(contributorService.persist(contributorDTO, id));
+    public CustomResponse<Contributor> update(@Valid @RequestBody ContributorDTO contributorDTO, @PathVariable String slug) {
+        return CustomResponse.success(contributorService.persist(contributorDTO, slug));
     }
     
     @DeleteMapping(path = UrlRoute.URL_CONTRIBUTOR_DELETE + "/{id}")
-    public CustomResponse<Boolean> delete(@PathVariable ContributorId id) {
+    public CustomResponse<Boolean> delete(@PathVariable String id) {
         return CustomResponse.success(contributorService.delete(id));
     }
 }

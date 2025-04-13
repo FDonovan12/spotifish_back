@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -76,22 +77,21 @@ public class InitDataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        createSong();
         createUser();
         createArtist();
+        createSong();
         createModerator();
-        createUserLikeableItem();
         createAlbum();
         createPlaylist();
         createMusicalGenre();
-        createHistorical();
-    System.out.println(" end of init !!!");
+        System.out.println(" end of init !!!");
     }
 
     private void createUser() {
         System.out.println("InitDataLoader.createUser");
         long countInsert = NB_USER - userRepository.count();
         for (int i = 0; i < countInsert; i++) {
+            System.out.println("i = " + i);
             UserDTO userDTO = new UserDTO();
             userDTO.setName(faker.name().name());
             userDTO.setEmail(faker.internet().emailAddress());
@@ -99,24 +99,25 @@ public class InitDataLoader implements CommandLineRunner {
             userDTO.setFirstName(faker.name().firstName());
             userDTO.setLastName(faker.name().lastName());
             userDTO.setBirthAt(faker.timeAndDate().birthday(18, 70));
-            userService.persist(userDTO);
+            System.out.println("userDTO = " + userDTO);
+            User user = userService.persist(userDTO);
+            System.out.println("user = " + user);
         }
         userRepository.flush();
     }
     private void createArtist() {
         System.out.println("InitDataLoader.createArtist");
+        List<String> names = List.of("Alegend", "Aylex", "Dagored", "Pufino", "Zambolino");
         long countInsert = NB_ARTIST - artistRepository.count();
         for (int i = 0; i < countInsert; i++) {
             ArtistDTO artistDTO = new ArtistDTO();
-            artistDTO.setName(faker.name().name());
+            artistDTO.setName(names.get(i));
             artistDTO.setEmail(faker.internet().emailAddress());
             artistDTO.setPassword("12345");
             artistDTO.setFirstName(faker.name().firstName());
             artistDTO.setLastName(faker.name().lastName());
             artistDTO.setBirthAt(faker.timeAndDate().birthday(18, 70));
             Artist artist = artistService.persist(artistDTO);
-
-            createSongArtist(artist);
         }
         artistRepository.flush();
     }
@@ -162,11 +163,14 @@ public class InitDataLoader implements CommandLineRunner {
     private void createSong() {
         System.out.println("InitDataLoader.createSong");
         long countInsert = NB_SONG - songRepository.count();
+        List<String> names = List.of("Majestic", "Energizer", "Wall Of Sound", "Rock Me Now", "Go On");
         for (int i = 0; i < countInsert; i++) {
             SongDTO songDTO = new SongDTO();
-            songDTO.setName(faker.name().name());
+            songDTO.setName(names.get(i));
             songDTO.setCreatedAt(faker.timeAndDate().birthday(1, 10));
-            songService.persist(songDTO);
+            Song song = songService.persist(songDTO);
+
+            createSongArtist(song);
         }
         songRepository.flush();
     }
@@ -221,11 +225,11 @@ public class InitDataLoader implements CommandLineRunner {
 
         songAlbumRepository.flush();
     }
-    private void createSongArtist(Artist artist) {
+    private void createSongArtist(Song song) {
         SongArtistDTO songArtistDTO = new SongArtistDTO();
         songArtistDTO.setIsPrincipalArtist(true);
-        songArtistDTO.setSongSlug(songRepository.findRandom().getSlug());
-        songArtistDTO.setArtistSlug(artist.getSlug());
+        songArtistDTO.setSongSlug(song.getSlug());
+        songArtistDTO.setArtistSlug(artistRepository.findRandom().getSlug());
         songArtistService.persist(songArtistDTO);
 
         songArtistRepository.flush();

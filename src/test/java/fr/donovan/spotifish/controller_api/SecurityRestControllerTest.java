@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+@Sql(scripts = "/data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,7 +34,7 @@ public class SecurityRestControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testLoginSuccess() throws Exception {
+    public void assertLoginSuccess() throws Exception {
         ResultActions resultActions = mockMvc.perform(
             post("/api/security/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,7 +45,7 @@ public class SecurityRestControllerTest {
     }
 
     @Test
-    public void testLoginFailedWithBadPassword() throws Exception {
+    public void assertLoginFailedWithBadPassword() throws Exception {
         ResultActions resultActions = mockMvc.perform(
             post("/api/security/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -53,7 +55,7 @@ public class SecurityRestControllerTest {
     }
 
     @Test
-    public void testLoginFailedWithBadEmail() throws Exception {
+    public void assertLoginFailedWithBadEmail() throws Exception {
         ResultActions resultActions = mockMvc.perform(
             post("/api/security/login")
                 .contentType(MediaType.APPLICATION_JSON)

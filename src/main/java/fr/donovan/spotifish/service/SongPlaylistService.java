@@ -46,6 +46,7 @@ public class SongPlaylistService  {
     }
 
     public Boolean delete(String id) {
+        System.out.println("song playlist id = " + id);
         SongPlaylist songPlaylist = getObjectById(id);
         securityService.assertCanDelete(songPlaylist);
         songPlaylistRepository.delete(songPlaylist);
@@ -93,5 +94,12 @@ public class SongPlaylistService  {
         songPlaylist.setContributor(contributorService.getObjectById(contributorId));
         songPlaylist.setSlug("test");
         return songPlaylist;
+    }
+
+    public void deleteFromPlaylist(Playlist playlist) {
+        System.out.println("SongPlaylistService.deleteFromPlaylist " + playlist.getSongPlaylists());
+        playlist.getSongPlaylists().stream()
+                .map(SongPlaylist::getIdToSerializer)
+                .forEach(id -> this.delete(id));
     }
 }

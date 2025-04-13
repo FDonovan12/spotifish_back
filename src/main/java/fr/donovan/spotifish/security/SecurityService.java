@@ -53,13 +53,13 @@ public class SecurityService {
     public Artist getCurrentArtist() {
         User user = this.getCurrentUser();
         if (user.isArtist()) return (Artist) user;
-        return null;
+        throw new AccessDeniedSpotifishException(user.getType(), "getCurrentUser");
     }
 
     public Moderator getCurrentModerator() {
         User user = this.getCurrentUser();
-        if (user.isArtist()) return (Moderator) user;
-        return null;
+        if (user.isModerator()) return (Moderator) user;
+        throw new AccessDeniedSpotifishException(user.getType(), "getCurrentUser");
     }
 
 
