@@ -68,10 +68,4 @@ public class SongControllerApi {
     public CustomResponse<Boolean> delete(@PathVariable String id) {
         return CustomResponse.success(songService.delete(id));
     }
-
-    @GetMapping(path = UrlRoute.URL_SONG+"/searchSongByEverything")
-    @JsonView(JsonViews.SongListJsonViews.class)
-    public CustomResponse<List<Song>> searchSongByEverything() {
-        return CustomListResponse.success(songService.searchSongByEverything());
-    }
 }

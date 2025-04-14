@@ -50,10 +50,10 @@ public class PlaylistService  {
         return persist(playlistDTO, null);
     }
 
-    public Playlist persist(PlaylistDTO playlistDTO, String id) {
+    public Playlist persist(PlaylistDTO playlistDTO, String slug) {
         Playlist playlist = new Playlist();
-        if (id != null) {
-            playlist = getObjectById(id);
+        if (slug != null) {
+            playlist = getObjectBySlug(slug);
             securityService.assertCanEdit(playlist);
         }
         playlist = getObjectFromDTO(playlistDTO, playlist);

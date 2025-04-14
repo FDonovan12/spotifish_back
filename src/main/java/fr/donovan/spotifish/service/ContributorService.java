@@ -50,7 +50,6 @@ public class ContributorService  {
     }
 
     public Boolean delete(String id) {
-        System.out.println("contributor id = " + id);
         Contributor contributor = getObjectById(id);
         securityService.assertCanDelete(contributor);
         contributorRepository.delete(contributor);

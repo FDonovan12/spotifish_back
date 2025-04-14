@@ -28,7 +28,8 @@ public class FileManagerService {
         Path newPath = Paths.get(UPLOAD_DIR + newName);
 
         if (!Files.exists(oldPath)) {
-            throw new NotFoundSpotifishException("UploadService - rename("+oldName+")", "uploadSong", oldName);
+            return;
+//            throw new NotFoundSpotifishException("UploadService - rename("+oldName+")", "uploadSong", oldName);
         }
 
         try {

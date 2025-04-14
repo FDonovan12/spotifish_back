@@ -12,7 +12,9 @@ import fr.donovan.spotifish.dto.SongDTO;
 import fr.donovan.spotifish.exception.NotFoundSpotifishException;
 import fr.donovan.spotifish.security.SecurityService;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -35,11 +37,8 @@ public class SongService  {
 
     public List<Song> byUser() {
         User user = securityService.getCurrentUser();
-        System.out.println("findAll");
         if (user.isModerator()) return this.findAll();
-        System.out.println("findByUser");
         if (user.isArtist()) return this.songRepository.findByUser((Artist) user);
-        System.out.println("AccessDeniedSpotifishException");
         throw new AccessDeniedSpotifishException("song", "list");
     }
 
@@ -116,4 +115,9 @@ public class SongService  {
         return songRepository.findBySearch(search);
     }
 
+    @Transactional
+    @Scheduled(cron = "0 */1 * * * *")
+    public void updateNumberOfListen() {
+        this.songRepository.updateNumberOfListen();
+    }
 }

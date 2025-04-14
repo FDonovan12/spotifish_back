@@ -5,15 +5,12 @@ import lombok.Getter;
 @Getter
 public class NotFoundSpotifishException extends RuntimeException {
 
-    private final String type;
-
     private final String field;
 
     private final Object value;
 
-    public NotFoundSpotifishException(String type, String field, Object value) {
-        super("Entity not found");
-        this.type = type;
+    public NotFoundSpotifishException(String message, String field, Object value) {
+        super(message);
         this.field = field;
         this.value = value;
     }

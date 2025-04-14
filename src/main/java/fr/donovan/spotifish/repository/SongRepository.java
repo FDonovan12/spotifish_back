@@ -3,6 +3,8 @@ package fr.donovan.spotifish.repository;
 import fr.donovan.spotifish.entity.Artist;
 import fr.donovan.spotifish.entity.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -28,4 +30,15 @@ public interface SongRepository extends JpaRepository<Song, String>, EntitySlugR
 
     @Query("SELECT s FROM Song s LEFT JOIN SongArtist sa ON sa.song = s WHERE sa.artist = :artist")
     List<Song> findByUser(Artist artist);
+
+    @Query("SELECT COUNT(s) FROM Song s " +
+            "RIGHT JOIN Historical h ON h.song = s " +
+            "WHERE s = :song ")
+    Long countListenOfSong(Song song);
+
+    @Modifying
+    @Query("UPDATE Song s " +
+            "SET s.numberOfListen = (SELECT COUNT(h) FROM Historical h " +
+            "WHERE h.song = s) ")
+    void updateNumberOfListen();
 }

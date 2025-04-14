@@ -59,24 +59,18 @@ public class PlaylistControllerApi {
         return CustomResponse.created(playlist);
     }
     
-    @PutMapping(path = UrlRoute.URL_PLAYLIST_EDIT + "/{id}")
+    @PutMapping(path = UrlRoute.URL_PLAYLIST_EDIT + "/{slug}")
     @JsonView(JsonViews.PlaylistShowJsonViews.class)
-    public CustomResponse<Playlist> update(@Valid @RequestBody PlaylistDTO playlistDTO, @PathVariable String id) {
-        return CustomResponse.success(playlistService.persist(playlistDTO, id));
+    public CustomResponse<Playlist> update(@Valid @RequestBody PlaylistDTO playlistDTO, @PathVariable String slug) {
+        return CustomResponse.success(playlistService.persist(playlistDTO, slug));
     }
     
     @DeleteMapping(path = UrlRoute.URL_PLAYLIST_DELETE + "/{id}")
     public CustomResponse<Boolean> delete(@PathVariable String id) {
-        System.out.println("PlaylistControllerApi.delete");
         Playlist playlist = playlistService.getObjectById(id);
-        System.out.println("playlist = " + playlist);
-        System.out.println("assert");
         securityService.assertCanDelete(playlist);
-        System.out.println("songPlaylistService");
         songPlaylistService.deleteFromPlaylist(playlist);
-        System.out.println("contributorService");
         contributorService.deleteFromPlaylist(playlist);
-        System.out.println("CustomResponse");
         return CustomResponse.success(playlistService.delete(id));
     }
 }

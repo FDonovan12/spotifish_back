@@ -101,7 +101,6 @@ public class SharedService  {
     }
 
     public Playlist addContributor(String slug) {
-        System.out.println("SharedService.addContributor");
         Shared shared = this.getObjectBySlug(slug);
         int remainingInvitation = shared.getRemainingInvitation();
         if (remainingInvitation <= 0 || shared.getExpireAt().isBefore(LocalDate.now())) {
