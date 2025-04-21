@@ -54,7 +54,7 @@ public class JwtService {
                 .subject(currentUser.getUsername())
                 .issuer("spotifish")
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10 * 1)) // Update the time limit 1 hour here
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 1 * 1)) // Update the time limit 1 hour here
                 .and() // add more infos to the token ?
                 .signWith(getKey())
                 .compact();

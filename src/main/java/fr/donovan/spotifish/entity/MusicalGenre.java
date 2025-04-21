@@ -19,7 +19,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("MUSICAL_GENRE")
 public class MusicalGenre extends LikeableItem  {
 
     @JsonView(JsonViewsMusicalGenre.Description.class)

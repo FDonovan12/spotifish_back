@@ -47,7 +47,7 @@ public class JsonViews {
     public interface SongAlbumListJsonViews extends AllJsonViews, MinimalSongAlbum, MinimalSong, MinimalAlbum {}
     public interface SongAlbumShowJsonViews extends AllJsonViews, AllSongAlbum, MinimalSong, MinimalAlbum {}
 
-    public interface SongArtistListJsonViews extends AllJsonViews, MinimalSongArtist, MinimalSong, MinimalArtist {}
+    public interface SongArtistListJsonViews extends AllJsonViews, AllSongArtist, MinimalSong, MinimalArtist {}
     public interface SongArtistShowJsonViews extends AllJsonViews, AllSongArtist, MinimalSong, MinimalArtist {}
 
     public interface SongListJsonViews extends AllJsonViews, MinimalSong, FromSongSongPlaylistWithoutId, FromSongSongArtistWithoutId, MinimalArtist, MinimalMusicalGenre {}

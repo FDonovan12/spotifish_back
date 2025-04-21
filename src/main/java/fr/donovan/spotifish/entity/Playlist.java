@@ -18,7 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("PLAYLIST")
 public class Playlist extends LikeableItem implements ImageInterface {
 
     @JsonView(JsonViewsPlaylist.Description.class)
@@ -37,7 +36,7 @@ public class Playlist extends LikeableItem implements ImageInterface {
     @JsonView(JsonViewsPlaylist.Contributors.class)
     private List<Contributor> contributors = new ArrayList<>();
 
-    @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "playlist")
     @JsonView(JsonViewsPlaylist.SongPlaylists.class)
     private List<SongPlaylist> songPlaylists = new ArrayList<>();
 
@@ -50,11 +49,10 @@ public class Playlist extends LikeableItem implements ImageInterface {
     public boolean canEdit(User user) {
         if (user == null) return false;
         if (
-                !this.getContributors().stream()
+                this.getContributors().stream()
                         .filter(Contributor::getIsOwner)
                         .map(Contributor::getUser)
-                        .filter(user::isTheSameUser)
-                        .toList().isEmpty()
+                        .anyMatch(user::isTheSameUser)
         ) return true;
         if (user.isModerator()) return true;
         return false;
@@ -64,10 +62,9 @@ public class Playlist extends LikeableItem implements ImageInterface {
     public boolean canSee(User user) {
         if (!this.isPrivate) return true;
         if (
-                !this.contributors.stream()
+                this.contributors.stream()
                         .map(Contributor::getUser)
-                        .filter(user::isTheSameUser)
-                        .toList().isEmpty()
+                        .anyMatch(user::isTheSameUser)
         ) return true;
         return false;
     }

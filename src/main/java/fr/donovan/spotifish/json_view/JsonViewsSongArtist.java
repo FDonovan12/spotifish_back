@@ -3,10 +3,7 @@ package fr.donovan.spotifish.json_view;
 public class JsonViewsSongArtist {
     
     public interface AllSongArtist extends IsPrincipalArtist, Song, Artist, Slug {}
-    public interface MinimalSongArtist extends IsPrincipalArtist, Song, Artist, Slug {}
 
-    public interface AllSongArtistWithoutId extends IsPrincipalArtist, Song, Artist, Slug {}
-    public interface MinimalSongArtistWithoutId extends IsPrincipalArtist, Slug {}
     public interface FromSongSongArtistWithoutId extends IsPrincipalArtist, Slug, Artist {}
     public interface FromArtistSongArtistWithoutId extends IsPrincipalArtist, Slug, Song {}
 

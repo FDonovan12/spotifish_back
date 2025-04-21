@@ -55,7 +55,7 @@ public class SongControllerApi {
     public CustomResponse<Song> create(@Valid @RequestBody SongDTO songDTO) {
         Song song = songService.persist(songDTO);
         this.songArtistService.createPrincipalArtistOfSong(song);
-        return CustomResponse.created(songService.persist(songDTO));
+        return CustomResponse.created(song);
     }
     
     @PutMapping(path = UrlRoute.URL_SONG_EDIT + "/{slug}")

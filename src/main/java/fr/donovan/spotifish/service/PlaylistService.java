@@ -21,7 +21,9 @@ import java.util.stream.Stream;
 public class PlaylistService  {
 
     private final PlaylistRepository playlistRepository;
+
     private final SecurityService securityService;
+
     public List<Playlist> findAll() {
         return this.playlistRepository.findAll();
     }
@@ -33,14 +35,23 @@ public class PlaylistService  {
         return playlist;
     }
     public Playlist getObjectBySlug(String slug) {
+        return getObjectBySlug(slug, true);
+    }
+    public Playlist getObjectBySlug(String slug, Boolean isAssert) {
         Optional<Playlist> optionalPlaylist = playlistRepository.findBySlug(slug);
         Playlist playlist = optionalPlaylist.orElseThrow(() -> new NotFoundSpotifishException("PlaylistService - getObjectBySlug("+slug+")", "Playlist", slug));
-        securityService.assertCanSee(playlist);
+        if (isAssert) {
+            securityService.assertCanSee(playlist);
+        }
         return playlist;
     }
 
     public Boolean delete(String id) {
         Playlist playlist = getObjectById(id);
+        return delete(playlist);
+    }
+
+    public Boolean delete(Playlist playlist) {
         securityService.assertCanDelete(playlist);
         playlistRepository.delete(playlist);
         return true;
@@ -60,21 +71,10 @@ public class PlaylistService  {
         return playlistRepository.saveAndFlush(playlist);
     }
 
-    public PlaylistDTO getDTOById(String id) {
-        Playlist playlist = getObjectById(id);
-        return getDTOFromObject(playlist);
-    }
-
-    public PlaylistDTO getDTOFromObject(Playlist playlist) {
-        PlaylistDTO playlistDTO = new PlaylistDTO();
-        playlistDTO.setName(playlist.getName());
-        playlistDTO.setDescription(playlist.getDescription());
-        playlistDTO.setIsPrivate(playlist.getIsPrivate());
-        return playlistDTO;
-    }
     public Playlist getObjectFromDTO(PlaylistDTO playlistDTO) {
         return getObjectFromDTO(playlistDTO, new Playlist());
     }
+
     public Playlist getObjectFromDTO(PlaylistDTO playlistDTO, Playlist playlist) {
         playlist.setName(playlistDTO.getName());
         playlist.setDescription(playlistDTO.getDescription());

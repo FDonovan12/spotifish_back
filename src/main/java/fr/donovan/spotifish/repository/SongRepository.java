@@ -15,9 +15,6 @@ import java.util.Optional;
 public interface SongRepository extends JpaRepository<Song, String>, EntitySlugRepositoryInterface<Song> {
 
     @Query("SELECT e FROM Song AS e ORDER BY RAND() LIMIT 1")
-    public List<Song> searchSongByEverything();
-
-    @Query("SELECT e FROM Song AS e ORDER BY RAND() LIMIT 1")
     Song findRandom();
 
     @Query("SELECT s, COUNT(s) FROM Song s " +
@@ -28,13 +25,18 @@ public interface SongRepository extends JpaRepository<Song, String>, EntitySlugR
             "LIMIT 5")
     List<Song> findBySearch(String search);
 
+//    @Query(
+//            """
+//            SELECT s, COUNT(s) FROM Song s " +
+//            "LEFT JOIN UserLikeableItem uli ON uli.likeableItem = s " +
+//            "WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
+//            "GROUP BY s " +
+//            "ORDER BY COUNT(s) DESC " +
+//            "LIMIT 5")
+//    List<Song> findBySearch(String search);
+
     @Query("SELECT s FROM Song s LEFT JOIN SongArtist sa ON sa.song = s WHERE sa.artist = :artist")
     List<Song> findByUser(Artist artist);
-
-    @Query("SELECT COUNT(s) FROM Song s " +
-            "RIGHT JOIN Historical h ON h.song = s " +
-            "WHERE s = :song ")
-    Long countListenOfSong(Song song);
 
     @Modifying
     @Query("UPDATE Song s " +

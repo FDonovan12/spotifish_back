@@ -16,5 +16,4 @@ public class JsonViewsPlaylist {
     public interface Shared  {}
     public interface Contributors  {}
     public interface SongPlaylists  {}
-    public interface User {}
 }

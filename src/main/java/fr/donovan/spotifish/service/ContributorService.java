@@ -26,6 +26,7 @@ public class ContributorService  {
     private final UserService userService;
     private final PlaylistService playlistService;
     private final SecurityService securityService;
+
     public List<Contributor> findAll() {
         return this.contributorRepository.findAll();
     }
@@ -36,12 +37,14 @@ public class ContributorService  {
         securityService.assertCanSee(contributor);
         return contributor;
     }
+
     public Contributor getObjectById(String id) {
         Optional<Contributor> optionalContributor = contributorRepository.findByUuid(id);
         Contributor contributor = optionalContributor.orElseThrow(() -> new NotFoundSpotifishException("ContributorService - getObjectById("+id+")", "Contributor", id));
         securityService.assertCanSee(contributor);
         return contributor;
     }
+
     public Contributor getObjectBySlug(String slug) {
         Optional<Contributor> optionalContributor = contributorRepository.findBySlug(slug);
         Contributor contributor = optionalContributor.orElseThrow(() -> new NotFoundSpotifishException("ContributorService - getObjectBySlug("+slug+")", "Contributor", slug));
@@ -85,20 +88,14 @@ public class ContributorService  {
         return contributorRepository.saveAndFlush(contributor);
     }
 
-    public ContributorDTO getDTOFromObject(Contributor contributor) {
-        ContributorDTO contributorDTO = new ContributorDTO();
-        contributorDTO.setIsOwner(contributor.getIsOwner());
-        contributorDTO.setUserSlug(contributor.getUser().getUuid());
-        contributorDTO.setPlaylistSlug(contributor.getPlaylist().getUuid());
-        return contributorDTO;
-    }
     public Contributor getObjectFromDTO(ContributorDTO contributorDTO) {
         return getObjectFromDTO(contributorDTO, new Contributor());
     }
+
     public Contributor getObjectFromDTO(ContributorDTO contributorDTO, Contributor contributor) {
         contributor.setIsOwner(contributorDTO.getIsOwner());
         contributor.setUser(userService.getObjectBySlug(contributorDTO.getUserSlug()));
-        contributor.setPlaylist(playlistService.getObjectBySlug(contributorDTO.getPlaylistSlug()));
+        contributor.setPlaylist(playlistService.getObjectBySlug(contributorDTO.getPlaylistSlug(), false));
         contributor.setSlug("test");
         return contributor;
     }

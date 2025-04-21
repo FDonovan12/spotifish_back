@@ -106,11 +106,6 @@ public class SongService  {
         return song;
     }
 
-    public List<Song> searchSongByEverything() {
-        return this.songRepository.searchSongByEverything(); 
-    }
-
-
     public List<Song> search(String search) {
         return songRepository.findBySearch(search);
     }

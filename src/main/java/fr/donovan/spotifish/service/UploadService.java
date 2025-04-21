@@ -46,7 +46,9 @@ public class UploadService {
 
     public Song uploadSong(MultipartFile file, String slug) {
         Song song = this.songService.getObjectBySlug(slug);
+        System.out.println(song);
         this.securityService.assertCanEdit(song);
+        System.out.println("UPLOAD_DIR");
         Path path = Paths.get(UPLOAD_DIR + song.getPath());
         try {
             Files.createDirectories(path.getParent());

@@ -11,6 +11,7 @@ import fr.donovan.spotifish.service.ContributorService;
 import fr.donovan.spotifish.service.PlaylistService;
 import fr.donovan.spotifish.json_view.JsonViews;
 import fr.donovan.spotifish.mapping.UrlRoute;
+import fr.donovan.spotifish.service.SharedService;
 import fr.donovan.spotifish.service.SongPlaylistService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class PlaylistControllerApi {
     private SecurityService securityService;
     private ContributorService contributorService;
     private SongPlaylistService songPlaylistService;
+    private SharedService sharedService;
 
     @GetMapping(path = UrlRoute.URL_PLAYLIST)
     @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
@@ -38,7 +40,7 @@ public class PlaylistControllerApi {
         return CustomListResponse.success(playlistService.findAll());
     }
 
-    @GetMapping(path = UrlRoute.URL_PLAYLIST + "/show/me")
+    @GetMapping(path = UrlRoute.URL_PLAYLIST + "/show/mine")
     @JsonView(JsonViews.PlaylistShowJsonViews.class)
     public CustomResponse<List<Playlist>> me() {
         return CustomListResponse.success(playlistService.getByUser());
@@ -71,6 +73,7 @@ public class PlaylistControllerApi {
         securityService.assertCanDelete(playlist);
         songPlaylistService.deleteFromPlaylist(playlist);
         contributorService.deleteFromPlaylist(playlist);
-        return CustomResponse.success(playlistService.delete(id));
+        sharedService.deleteFromPlaylist(playlist);
+        return CustomResponse.success(playlistService.delete(playlist));
     }
 }
